@@ -8,6 +8,7 @@ include_directories(
 
 set(SRCS
 	src/main.cpp
+	src/loggertest.cpp
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})
