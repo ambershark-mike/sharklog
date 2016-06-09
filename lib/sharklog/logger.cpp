@@ -22,23 +22,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __logger_H
-#define __logger_H
+#include "logger.h"
 
-#include <string>
+using namespace sharklog;
+using namespace std;
 
-namespace sharklog
+Logger::Logger()
 {
+}
 
-class Logger
+Logger::~Logger()
 {
-public:
-    Logger();
-    virtual ~Logger();
-
-    bool test() { return false; }
-};
-
-} // sharklog
-
-#endif // logger_H
+}

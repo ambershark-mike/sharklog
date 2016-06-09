@@ -27,6 +27,7 @@ include_directories(
 	)
 
 set(SRCS
+	sharklog/logger.cpp
 	)
 
 # build
