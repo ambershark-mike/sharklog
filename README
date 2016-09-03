@@ -1,7 +1,7 @@
 sharklog Copyright (c) 2016 Ambershark, LLC.
 Released under the L-GPL license available at http://www.gnu.org/licenses/lgpl.html.
 
-Sharklog is a powerful and fast logging library written in C++ for use in C++ applications.  It can be used on multiple platforms including, linux, windows (visual c++), windows (mingw), and OSX.
+Sharklog is a powerful and fast logging library written in C++ for use in C++ applications.  It can be used on multiple platforms including, linux, windows (visual c++), windows (mingw), and OSX.  It can be built for the ARM processor and used on the Android platform as well.
 
 REQUIREMENTS:
 
