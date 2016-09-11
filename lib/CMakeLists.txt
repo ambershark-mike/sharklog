@@ -10,9 +10,6 @@ set(sharklog_VERSION_STRING
 	)
 add_definitions("-DSHARKLOG_VERSION=${sharklog_VERSION_STRING}")
 
-# packages
-find_package(Doxygen)
-
 # set lib type
 if (NOT LIBTYPE)
 	message("Libtype is SHARED, use -DLIBTYPE=STATIC to change to static")
@@ -45,7 +42,7 @@ if (DOXYGEN_FOUND)
 
 	add_custom_target(
 		sharklog_docs
-		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_SOURCE_DIR}/docs/Doxyfile
+		${DOXYGEN_EXECUTABLE} ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile
 		COMMENT "Enabling docuemntation build, build with make sharklog_docs"
 		)
 else()

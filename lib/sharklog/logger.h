@@ -30,13 +30,16 @@
 namespace sharklog
 {
 
+/*!
+ * \brief Logger instance
+ *
+ * This class covers the logging and logger creation for SharkLog.
+ */
 class Logger
 {
-public:
+protected:
     Logger();
     virtual ~Logger();
-
-    bool test() { return false; }
 };
 
 } // sharklog
