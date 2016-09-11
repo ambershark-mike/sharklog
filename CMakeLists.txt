@@ -19,4 +19,4 @@ add_subdirectory(lib)
 add_subdirectory(unittest)
 
 # TODO: add check for if gtest is found
-add_test(unittest unittest/unittest)
+add_test(unittest bin/unittest)
