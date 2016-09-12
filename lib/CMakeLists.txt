@@ -24,8 +24,9 @@ include_directories(
 	)
 
 set(SRCS
-	sharklog/logger.cpp
-	)
+	sharklog/Logger.cpp
+    sharklog/Logger.h
+    sharklog/UtilFunctions.cpp sharklog/UtilFunctions.h)
 
 # build
 add_library(${PROJECT_NAME} ${LIBTYPE} ${SRCS})

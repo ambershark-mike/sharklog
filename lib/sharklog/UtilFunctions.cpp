@@ -22,26 +22,23 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __logger_H
-#define __logger_H
+#include "UtilFunctions.h"
+#include <sstream>
 
-#include <string>
+using namespace sharklog;
+using namespace std;
 
-namespace sharklog
+std::vector<std::string> sharklog::UtilFunctions::split(const std::string &toSplit, char delim, bool discardEmptyTokens)
 {
-
-/*!
- * \brief Logger instance
- *
- * This class covers the logging and logger creation for SharkLog.
- */
-class Logger
-{
-protected:
-    Logger();
-    virtual ~Logger();
-};
-
-} // sharklog
-
-#endif // logger_H
+    std::vector<std::string> split;
+    std::stringstream ss;
+    ss.str(toSplit);
+    std::string item;
+    while (getline(ss, item, delim))
+    {
+        if (item.size() || !discardEmptyTokens)
+            split.push_back(item);
+    }
+    
+    return split;
+}

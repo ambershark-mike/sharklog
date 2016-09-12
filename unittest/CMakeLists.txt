@@ -9,7 +9,7 @@ include_directories(
 set(SRCS
 	src/main.cpp
 	src/loggertest.cpp
-	)
+    src/UtilFunctionsTest.cpp src/UtilFunctionsTest.h)
 
 add_executable(${PROJECT_NAME} ${SRCS})
 target_link_libraries(${PROJECT_NAME} sharklog /usr/lib/libgtest.so)
