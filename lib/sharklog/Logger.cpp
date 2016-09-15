@@ -74,6 +74,7 @@ LoggerPtr Logger::logger(const std::string &name)
     if (root->hasChild(name))
     {
         // get the named logger
+        return LoggerPtr();
     }
     
     // create the logger
@@ -83,13 +84,27 @@ LoggerPtr Logger::logger(const std::string &name)
     return logger;
 }
 
-bool Logger::hasChild(const std::string &name)
+bool Logger::hasChild(const std::string &name) const
 {
     auto tokens = UtilFunctions::split(name, '.');
-    return false;
+    return hasChild(&tokens);
 }
 
 LoggerPtr Logger::parent() const
 {
     return parent_;
+}
+
+bool Logger::hasChild(std::vector<std::string> *tokens) const
+{
+    if (tokens->empty())
+        return false;
+    
+    for (auto it : children_)
+    {
+        if (it->name() == tokens->front())
+            return true;
+    }
+    
+    return false;
 }

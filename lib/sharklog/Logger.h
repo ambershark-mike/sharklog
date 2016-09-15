@@ -159,7 +159,8 @@ protected:
     Logger();
     
 private:
-    bool hasChild(const std::string &name);
+    bool hasChild(const std::string &name) const;
+    bool hasChild(std::vector<std::string> *tokens) const;
     
 private:
     static LoggerPtr rootLogger_;
