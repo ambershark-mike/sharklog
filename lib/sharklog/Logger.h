@@ -128,16 +128,33 @@ public:
     bool isRoot() const;
     
     /*!
-     * \brief Gets the name of the logger
+     * \brief Gets the full name of the logger
      *
      * Returns the name of this logger.  Name will be blank if it is the root logger.
      * No other loggers can be created with a blank name.
      * You can test if it's the root logger with \ref isRoot().
      *
+     * If you want just the base name, i.e. the final token/part in the name, use
+     * \ref baseName().
+     *
      * @return The name of this logger.
-     * \sa logger()
+     * \sa logger(), baseName()
      */
     std::string name() const;
+    
+    /*!
+     * \brief Gets the short/base name of the logger
+     *
+     * \todo finish docs here
+     *
+     * This gives you the last piece of a name in case of a tokenized logger with parents.
+     * So if you had com.ambershark.sharklog as the name, this function would give you
+     * just *sharklog*.  If you want the full name, see \ref fullName().
+     *
+     * @return
+     * @sa logger(), name()
+     */
+    std::string baseName() const;
     
     /*!
      * \brief Gets the parent Logger
@@ -159,12 +176,16 @@ protected:
     Logger();
     
 private:
-    bool hasChild(const std::string &name) const;
-    bool hasChild(std::vector<std::string> *tokens) const;
+    LoggerPtr findLogger(std::vector<std::string> *tokens) const;
+    void setName(const std::string &name);
+    void setParent(LoggerPtr parent);
+    LoggerPtr createLogger(const std::string &name);
+    LoggerPtr createLoggers(std::vector<std::string> *loggers);
     
 private:
     static LoggerPtr rootLogger_;
-    std::string name_;
+    std::string baseName_;
+    std::string fullName_;
     LoggerList children_;
     LoggerPtr parent_;
 };

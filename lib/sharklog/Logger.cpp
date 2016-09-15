@@ -25,6 +25,7 @@
 #include <assert.h>
 #include <sstream>
 #include <vector>
+#include <algorithm>
 #include "Logger.h"
 #include "UtilFunctions.h"
 
@@ -61,7 +62,7 @@ bool Logger::isRoot() const
 
 std::string Logger::name() const
 {
-    return name_;
+    return fullName_;
 }
 
 LoggerPtr Logger::logger(const std::string &name)
@@ -71,23 +72,25 @@ LoggerPtr Logger::logger(const std::string &name)
     if (name.empty())
         return root;
     
-    if (root->hasChild(name))
+    // check to see if we have this logger, or a parent for it
+    auto tokens = UtilFunctions::split(name, '.');
+    std::reverse(tokens.begin(), tokens.end());
+    auto parent = root->findLogger(&tokens);
+    if (parent && parent->name() == name)
     {
-        // get the named logger
-        return LoggerPtr();
+        // we found our logger
+        return parent;
     }
     
+    if (!parent)
+        parent = root;
+    
     // create the logger
-    LoggerPtr logger(new Logger());
-    logger->name_ = name;
-    logger->parent_ = root;
-    return logger;
-}
-
-bool Logger::hasChild(const std::string &name) const
-{
-    auto tokens = UtilFunctions::split(name, '.');
-    return hasChild(&tokens);
+    return parent->createLogger(name);
+    //LoggerPtr logger(new Logger());
+    //logger->setName(name);
+    //logger->setParent(parent);
+    //return logger;
 }
 
 LoggerPtr Logger::parent() const
@@ -95,16 +98,81 @@ LoggerPtr Logger::parent() const
     return parent_;
 }
 
-bool Logger::hasChild(std::vector<std::string> *tokens) const
+// takes a tokenized list (in reverse order), so com.ambershark.sharklog would be sharklog, ambershark, com
+LoggerPtr Logger::findLogger(std::vector<std::string> *tokens) const
 {
     if (tokens->empty())
-        return false;
+        return LoggerPtr();
     
     for (auto it : children_)
     {
-        if (it->name() == tokens->front())
-            return true;
+        if (it->name() == tokens->back())
+        {
+            // found a match, strip last token and call again
+            tokens->pop_back();
+            auto logptr = it->findLogger(tokens);
+            
+            // if we dont find the next token, return our current iterator LoggerPtr
+            if (!logptr)
+                return it;
+            else // otherwise return the pointer it found
+                return logptr;
+        }
     }
     
-    return false;
+    return LoggerPtr();
+}
+
+std::string Logger::baseName() const
+{
+    return baseName_;
+}
+
+void Logger::setName(const std::string &name)
+{
+    fullName_ = name;
+    
+    // set our short name
+    auto base = name;
+    if (base.back() == '.')
+        base = name.substr(0, base.size()-1);
+        
+    auto pos = base.find_last_of('.');
+    if (pos == string::npos || pos == base.size()-1)
+        baseName_ = name;
+    else
+        baseName_ = base.substr(pos+1);
+}
+
+void Logger::setParent(LoggerPtr parent)
+{
+    parent_ = parent;
+}
+
+LoggerPtr Logger::createLogger(const std::string &name)
+{
+    vector<string> loggersToCreate;
+    
+    // get the loggers we need to create, taking out the full name of the loggers we have in this parent
+    auto pos = name.find(this->name());
+    if (pos != string::npos)
+        loggersToCreate = UtilFunctions::split(name.substr(pos), '.');
+    else
+        loggersToCreate = UtilFunctions::split(name, '.');
+    
+    // we should have at least 1 logger to create
+    assert(loggersToCreate.size());
+    if (loggersToCreate.empty())
+        return LoggerPtr();
+    
+    return createLoggers(&loggersToCreate);
+}
+
+LoggerPtr Logger::createLoggers(std::vector<std::string> *loggers)
+{
+    // create first logger, might want to reverse the vector for pop_back()
+    // creating needs to set name, parent, add to children, etc, parent is this
+    // call recursively with new pointer to create children loggers
+    
+    return sharklog::LoggerPtr();
 }
