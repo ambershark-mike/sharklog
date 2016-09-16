@@ -28,6 +28,7 @@
 #include <algorithm>
 #include "Logger.h"
 #include "UtilFunctions.h"
+#include <iostream>
 
 using namespace sharklog;
 using namespace std;
@@ -36,10 +37,12 @@ LoggerPtr Logger::rootLogger_;
 
 Logger::Logger()
 {
+    std::cout << "create logger " << this << endl;
 }
 
 Logger::~Logger()
 {
+    std::cout << "decon logger " << this << " name " << name() << endl;
 }
 
 LoggerPtr Logger::rootLogger()
@@ -165,14 +168,24 @@ LoggerPtr Logger::createLogger(const std::string &name)
     if (loggersToCreate.empty())
         return LoggerPtr();
     
+    std::reverse(loggersToCreate.begin(), loggersToCreate.end());
     return createLoggers(&loggersToCreate);
 }
 
 LoggerPtr Logger::createLoggers(std::vector<std::string> *loggers)
 {
-    // create first logger, might want to reverse the vector for pop_back()
-    // creating needs to set name, parent, add to children, etc, parent is this
-    // call recursively with new pointer to create children loggers
+    if (loggers->empty())
+        return LoggerPtr(this);
     
-    return sharklog::LoggerPtr();
+    // create first logger, might want to reverse the vector for pop_back()
+    LoggerPtr logger(new Logger());
+    
+    // creating needs to set name, parent, add to children, etc, parent is this
+    logger->setName(loggers->back());
+    loggers->pop_back();
+    logger->setParent(LoggerPtr(this));
+    children_.push_back(logger);
+    
+    // call recursively with new pointer to create children loggers
+    return logger->createLoggers(loggers);
 }

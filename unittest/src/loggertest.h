@@ -2,6 +2,7 @@
 #define __loggertest_H
 
 #include <gtest/gtest.h>
+#include "Logger.h"
 
 class LoggerTest : public ::testing::Test
 {
@@ -11,6 +12,8 @@ protected:
 
     virtual void SetUp();
     virtual void TearDown();
+    
+    sharklog::LoggerPtr rootLogger;
 };
 
 #endif // loggertest_H
