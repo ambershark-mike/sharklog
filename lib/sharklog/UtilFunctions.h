@@ -62,6 +62,22 @@ public:
      * @return A vector of strings with all the tokens
      */
     static std::vector<std::string> split(const std::string &toSplit, char delim, bool discardEmptyTokens=true);
+    
+    /*!
+     * @brief Strip the last token off a string
+     *
+     * This is a support function to strip a token based on a delimited (\a delim) off
+     * a string.
+     *
+     * For example if you pass x.y.z (delim is .) you would get back x.y from the function.
+     *
+     * If a delimiter is not found the whole entry string is returned.
+     *
+     * @param s string to take a token off
+     * @param delim the delimiter to split the string with
+     * @return A string without the final token
+     */
+    static std::string stripLastToken(const std::string &s, char delim);
 };
 
 } // sharklog

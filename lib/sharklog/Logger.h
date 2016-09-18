@@ -30,6 +30,7 @@
 #include <list>
 #include <vector>
 #include <sstream>
+#include <map>
 
 /*!
  * The main namespace of the SharkLog project.
@@ -58,6 +59,7 @@ using LoggerPtr = std::shared_ptr<Logger>;
 class Logger
 {
     using LoggerList = std::list<LoggerPtr>;
+    using LoggerMap = std::map<std::string, LoggerPtr>;
     
 public:
     virtual ~Logger();
@@ -92,6 +94,10 @@ public:
      *
      * \note Names are NOT case sensitive.
      *
+     * \warning Logger names with trailing or extra periods will have the periods stripped.
+     * So *com.* is the same as *com* ,  *x..y.z* is the same as *x.y.z*, and a name
+     * of '.' is equivalent to an empty name.
+     *
      * Loggers will inherit properties from their parents.  Parents are determined by the
      * name of the logger.  Using Java style naming i.e. com.company.product.logger.child,
      * you can create a parent child relationship between Loggers.  Properties inherited are
@@ -119,6 +125,27 @@ public:
      * \sa rootLogger(), name()
      */
     static LoggerPtr logger(const std::string &name);
+    
+    /*!
+     * @brief Check to see if a named logger exists
+     *
+     * \todo finish hasLogger
+     *
+     * @param name
+     * @return
+     */
+    static bool hasLogger(const std::string &name);
+    
+    /*!
+     * @brief Total allocated loggers
+     *
+     * Returns the total number of allocated loggers, including root.
+     *
+     * This function does not call @ref rootLogger() so it can be 0.
+     *
+     * @return number of allocated loggers
+     */
+    static unsigned int count();
     
     /*!
      * \brief Checks if this logger is the root logger
@@ -151,7 +178,7 @@ public:
      * So if you had com.ambershark.sharklog as the name, this function would give you
      * just *sharklog*.  If you want the full name, see \ref fullName().
      *
-     * @return
+     * @return The base name
      * @sa logger(), name()
      */
     std::string baseName() const;
@@ -166,6 +193,9 @@ public:
      */
     LoggerPtr parent() const;
     
+    static void closeRootLogger();
+    static void closeLogger(LoggerPtr logger);
+    
 protected:
     /*!
      * Logger constructor
@@ -176,14 +206,14 @@ protected:
     Logger();
     
 private:
-    LoggerPtr findLogger(std::vector<std::string> *tokens) const;
-    void setName(const std::string &name);
-    void setParent(LoggerPtr parent);
-    LoggerPtr createLogger(const std::string &name);
-    LoggerPtr createLoggers(std::vector<std::string> *loggers);
+    LoggerPtr createLoggers(const std::string &loggerName);
+    LoggerPtr createLogger(LoggerPtr parent, const std::string &baseName);
+    void setName(const std::string &loggerName, const std::string &baseName);
+    LoggerPtr findParent(const std::string &loggerName);
     
 private:
     static LoggerPtr rootLogger_;
+    static LoggerMap allNamedLoggers_;
     std::string baseName_;
     std::string fullName_;
     LoggerList children_;

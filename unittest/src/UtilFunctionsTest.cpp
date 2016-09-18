@@ -70,3 +70,30 @@ TEST_F(UtilFunctionsTest, TestWithSpaceDelim)
     auto vec = UtilFunctions::split("hello world", ' ');
     ASSERT_EQ(2, vec.size());
 }
+
+TEST_F(UtilFunctionsTest, StripLastWorksWith2)
+{
+    auto s = UtilFunctions::stripLastToken("com.ambershark", '.');
+    ASSERT_STREQ("com", s.c_str());
+}
+
+TEST_F(UtilFunctionsTest, StripLastWorksWith3)
+{
+    auto s = UtilFunctions::stripLastToken("com.ambershark.sharklog", '.');
+    ASSERT_STREQ("com.ambershark", s.c_str());
+    
+    s = UtilFunctions::stripLastToken(s, '.');
+    ASSERT_STREQ("com", s.c_str());
+}
+
+TEST_F(UtilFunctionsTest, StripLastReturnsEmptyWhenPassedEmpty)
+{
+    auto s = UtilFunctions::stripLastToken("", '.');
+    ASSERT_STREQ("", s.c_str());
+}
+
+TEST_F(UtilFunctionsTest, StripLastReturnsStringWhenNoDelim)
+{
+    auto s = UtilFunctions::stripLastToken("testing 1 2 3", '.');
+    ASSERT_STREQ("testing 1 2 3", s.c_str());
+}

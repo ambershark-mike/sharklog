@@ -34,15 +34,16 @@ using namespace sharklog;
 using namespace std;
 
 LoggerPtr Logger::rootLogger_;
+Logger::LoggerMap Logger::allNamedLoggers_;
 
 Logger::Logger()
 {
-    std::cout << "create logger " << this << endl;
+    //std::cout << "create logger " << this << endl;
 }
 
 Logger::~Logger()
 {
-    std::cout << "decon logger " << this << " name " << name() << endl;
+    //std::cout << "decon logger " << this << " name " << name() << endl;
 }
 
 LoggerPtr Logger::rootLogger()
@@ -70,30 +71,13 @@ std::string Logger::name() const
 
 LoggerPtr Logger::logger(const std::string &name)
 {
-    auto root = rootLogger();
+    // find our if we have this logger already
+    auto logger = allNamedLoggers_.find(name);
+    if (logger != allNamedLoggers_.end())
+        return logger->second;
     
-    if (name.empty())
-        return root;
-    
-    // check to see if we have this logger, or a parent for it
-    auto tokens = UtilFunctions::split(name, '.');
-    std::reverse(tokens.begin(), tokens.end());
-    auto parent = root->findLogger(&tokens);
-    if (parent && parent->name() == name)
-    {
-        // we found our logger
-        return parent;
-    }
-    
-    if (!parent)
-        parent = root;
-    
-    // create the logger
-    return parent->createLogger(name);
-    //LoggerPtr logger(new Logger());
-    //logger->setName(name);
-    //logger->setParent(parent);
-    //return logger;
+    // create the logger since we don't have it
+    return rootLogger()->createLoggers(name);
 }
 
 LoggerPtr Logger::parent() const
@@ -101,91 +85,130 @@ LoggerPtr Logger::parent() const
     return parent_;
 }
 
-// takes a tokenized list (in reverse order), so com.ambershark.sharklog would be sharklog, ambershark, com
-LoggerPtr Logger::findLogger(std::vector<std::string> *tokens) const
-{
-    if (tokens->empty())
-        return LoggerPtr();
-    
-    for (auto it : children_)
-    {
-        if (it->name() == tokens->back())
-        {
-            // found a match, strip last token and call again
-            tokens->pop_back();
-            auto logptr = it->findLogger(tokens);
-            
-            // if we dont find the next token, return our current iterator LoggerPtr
-            if (!logptr)
-                return it;
-            else // otherwise return the pointer it found
-                return logptr;
-        }
-    }
-    
-    return LoggerPtr();
-}
-
 std::string Logger::baseName() const
 {
     return baseName_;
 }
 
-void Logger::setName(const std::string &name)
+void Logger::closeRootLogger()
 {
-    fullName_ = name;
+    if (!rootLogger_)
+        return;
     
-    // set our short name
-    auto base = name;
-    if (base.back() == '.')
-        base = name.substr(0, base.size()-1);
-        
-    auto pos = base.find_last_of('.');
-    if (pos == string::npos || pos == base.size()-1)
-        baseName_ = name;
-    else
-        baseName_ = base.substr(pos+1);
+    //cout << "closing root" << endl;
+    closeLogger(rootLogger_);
+    
+    allNamedLoggers_.clear();
+    rootLogger_.reset();
 }
 
-void Logger::setParent(LoggerPtr parent)
+LoggerPtr Logger::createLoggers(const std::string &loggerName)
 {
-    parent_ = parent;
-}
-
-LoggerPtr Logger::createLogger(const std::string &name)
-{
+    // make sure we don't have this named logger already
+    assert(allNamedLoggers_.find(loggerName) == allNamedLoggers_.end());
+    
+    // find our parent logger and which loggers we need to create.
     vector<string> loggersToCreate;
-    
-    // get the loggers we need to create, taking out the full name of the loggers we have in this parent
-    auto pos = name.find(this->name());
+    auto parent = findParent(loggerName);
+    auto pos = loggerName.find(parent->name());
     if (pos != string::npos)
-        loggersToCreate = UtilFunctions::split(name.substr(pos), '.');
+        loggersToCreate = UtilFunctions::split(loggerName.substr(pos), '.');
     else
-        loggersToCreate = UtilFunctions::split(name, '.');
+        loggersToCreate = UtilFunctions::split(loggerName, '.');
     
-    // we should have at least 1 logger to create
-    assert(loggersToCreate.size());
-    if (loggersToCreate.empty())
-        return LoggerPtr();
+    // create all our loggers
+    for (auto it : loggersToCreate)
+    {
+        parent = createLogger(parent, it);
+    }
     
-    std::reverse(loggersToCreate.begin(), loggersToCreate.end());
-    return createLoggers(&loggersToCreate);
+    return parent;
 }
 
-LoggerPtr Logger::createLoggers(std::vector<std::string> *loggers)
+LoggerPtr Logger::findParent(const string &loggerName)
 {
-    if (loggers->empty())
-        return LoggerPtr(this);
+    // do we have any . delimiters, if not, parent is root
+    if (loggerName.find('.') == string::npos)
+        return rootLogger();
     
-    // create first logger, might want to reverse the vector for pop_back()
+    // find our lowest parent
+    LoggerPtr parent;
+    string s = loggerName;
+    while (s.find('.') != string::npos)
+    {
+        s = UtilFunctions::stripLastToken(s, '.');
+        auto it = allNamedLoggers_.find(s);
+        if (it != allNamedLoggers_.end())
+        {
+            parent = it->second;
+            break;
+        }
+    }
+    
+    if (!parent)
+        parent = rootLogger();
+    
+    return parent;
+}
+
+LoggerPtr Logger::createLogger(LoggerPtr parent, const std::string &baseName)
+{
+    assert(parent);
+    assert(baseName.size());
+    
+    // create our full name
+    stringstream ss;
+    if (!parent->isRoot())
+        ss << parent->name() << "." << baseName;
+    else
+        ss << baseName;
+    
+    auto fullName = ss.str();
+    
+    // make sure we don't have this logger already
+    assert(allNamedLoggers_.find(fullName) == allNamedLoggers_.end());
+    
+    // create the logger
     LoggerPtr logger(new Logger());
+    logger->parent_ = parent;
+    logger->setName(fullName, baseName);
+    logger->allNamedLoggers_[fullName] = logger;
+    parent->children_.push_back(logger);
     
-    // creating needs to set name, parent, add to children, etc, parent is this
-    logger->setName(loggers->back());
-    loggers->pop_back();
-    logger->setParent(LoggerPtr(this));
-    children_.push_back(logger);
+    return logger;
+}
+
+void Logger::setName(const std::string &loggerName, const std::string &baseName)
+{
+    fullName_ = loggerName;
+    baseName_ = baseName;
+    //cout << "logger " << this << " named " << fullName_ << endl;
+}
+
+bool Logger::hasLogger(const std::string &name)
+{
+    return (allNamedLoggers_.find(name) != allNamedLoggers_.end());
+}
+
+unsigned int Logger::count()
+{
+    if (!rootLogger_)
+        return 0;
     
-    // call recursively with new pointer to create children loggers
-    return logger->createLoggers(loggers);
+    return (unsigned int)rootLogger()->allNamedLoggers_.size() + 1;
+}
+
+void Logger::closeLogger(LoggerPtr logger)
+{
+    assert(logger);
+    
+    // clean up children
+    for (auto it : logger->children_)
+        closeLogger(it);
+    
+    logger->children_.clear();
+    
+    // clean up logger
+    logger->parent_.reset();
+    logger->allNamedLoggers_[logger->name()].reset();
 }

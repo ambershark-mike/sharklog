@@ -3,20 +3,14 @@
 #include <iostream>
 
 using namespace sharklog;
+using namespace std;
 
 LoggerTest::LoggerTest()
 {
-    std::cout << "getting main root" << std::endl;
-    rootLogger = Logger::rootLogger();
-    std::cout << "root obtained " << rootLogger.get() << std::endl;
 }
 
 LoggerTest::~LoggerTest()
 {
-    std::cout << "logger closing unique " << rootLogger.unique() << " count " << rootLogger.use_count()
-              << " ptr " << rootLogger.get()
-              << std::endl;
-    //assert(rootLogger.unique());
 }
 
 void LoggerTest::SetUp()
@@ -25,11 +19,12 @@ void LoggerTest::SetUp()
 
 void LoggerTest::TearDown()
 {
+    Logger::closeRootLogger();
 }
 
 TEST_F(LoggerTest, HasRootLogger)
 {
-    //ASSERT_TRUE((bool)Logger::rootLogger());
+    ASSERT_TRUE((bool)Logger::rootLogger());
 }
 
 TEST_F(LoggerTest, RootLoggerIsTaggedAsRoot)
@@ -42,6 +37,28 @@ TEST_F(LoggerTest, RootLoggerIsNameless)
     ASSERT_TRUE(Logger::rootLogger()->name().empty());
 }
 
+TEST_F(LoggerTest, CloseRootWorks)
+{
+    auto oldRoot = Logger::rootLogger();
+    oldRoot->closeRootLogger();
+    ASSERT_NE(oldRoot, Logger::rootLogger());
+}
+
+TEST_F(LoggerTest, CloseRootCleansChildren)
+{
+    Logger::logger("x.y.z");
+    ASSERT_EQ(4, Logger::count());
+    
+    Logger::closeRootLogger();
+    
+    ASSERT_EQ(0, Logger::count());
+}
+
+TEST_F(LoggerTest, RootHasNoParent)
+{
+    ASSERT_FALSE((bool)Logger::rootLogger()->parent());
+}
+
 TEST_F(LoggerTest, GetANamedLoggerWorks)
 {
     ASSERT_TRUE((bool)Logger::logger("test"));
@@ -49,17 +66,21 @@ TEST_F(LoggerTest, GetANamedLoggerWorks)
 
 TEST_F(LoggerTest, NamedLoggerNameMatches)
 {
-    ASSERT_STREQ(Logger::logger("test")->name().c_str(), "test");
+    ASSERT_STREQ("test", Logger::logger("test")->name().c_str());
 }
 
 TEST_F(LoggerTest, SimpleNameLoggerParentIsRoot)
 {
-    ASSERT_TRUE(Logger::logger("test")->parent() == Logger::rootLogger());
+    //FAIL() << "test name " << test->name() << " parent name " << test->parent()->name() << " parent is root " << test->parent()->isRoot()
+        //<< " stored root ptr " << root << " root pointer " << Logger::rootLogger() << " test ptr " << test << " test parent ptr " << test->parent();
+    ASSERT_EQ(Logger::logger("test")->parent(), Logger::rootLogger());
 }
 
-TEST_F(LoggerTest, RootHasNoParent)
+TEST_F(LoggerTest, GetNamedLoggerThatExists)
 {
-    ASSERT_FALSE((bool)Logger::rootLogger()->parent());
+    auto logger = Logger::logger("test");
+    EXPECT_TRUE((bool) logger);
+    ASSERT_EQ(logger, Logger::logger("test"));
 }
 
 TEST_F(LoggerTest, EmptyNameLoggerGetsRoot)
@@ -90,23 +111,32 @@ TEST_F(LoggerTest, BaseNameIsOkWithMultiTier)
 TEST_F(LoggerTest, BaseNameOkEndingWithPeriod)
 {
     auto log = Logger::logger("com.");
-    ASSERT_STREQ("com.", log->baseName().c_str());
+    ASSERT_STREQ("com", log->baseName().c_str());
 }
 
-TEST_F(LoggerTest, DISABLED_BaseIsOkWithOnlyAPeriodInName)
+TEST_F(LoggerTest, ExtraPeriodsAreStrippedFromName)
+{
+    auto log = Logger::logger(".x..y.z...");
+    ASSERT_STREQ("x.y.z", log->name().c_str());
+}
+
+TEST_F(LoggerTest, BaseIsOkWithOnlyAPeriodInName)
 {
     auto log = Logger::logger(".");
-    ASSERT_STREQ(".", log->name().c_str());
-    ASSERT_STREQ(".", log->baseName().c_str());
+    ASSERT_STREQ("", log->name().c_str());
+    ASSERT_STREQ("", log->baseName().c_str());
+    ASSERT_EQ(log, Logger::rootLogger());
 }
 
-TEST_F(LoggerTest, DISABLED_BaseNameIsOkWithMultipleDots)
+TEST_F(LoggerTest, BaseNameIsOkWithMultipleDots)
 {
     auto log = Logger::logger("..");
-    ASSERT_STREQ("..", log->baseName().c_str());
+    ASSERT_STREQ("", log->baseName().c_str());
+    ASSERT_STREQ("", log->name().c_str());
     
     log = Logger::logger("...");
-    ASSERT_STREQ("...", log->baseName().c_str());
+    ASSERT_STREQ("", log->baseName().c_str());
+    ASSERT_STREQ("", log->name().c_str());
 }
 
 TEST_F(LoggerTest, TestSingleCharName)
@@ -123,8 +153,23 @@ TEST_F(LoggerTest, TestLongNameWithSpaces)
     ASSERT_STREQ(name, log->baseName().c_str());
 }
 
-TEST_F(LoggerTest, GetNamedLoggerThatExists)
+TEST_F(LoggerTest, HasCreatedNamedLogger)
 {
-    EXPECT_TRUE((bool)Logger::logger("existloggertest"));
-    ASSERT_TRUE((bool)Logger::logger("existloggertest"));
+    Logger::logger("test");
+    ASSERT_TRUE(Logger::hasLogger("test"));
+    
+    Logger::logger("mike.is.cool");
+    ASSERT_TRUE(Logger::hasLogger("mike"));
+    ASSERT_TRUE(Logger::hasLogger("mike.is"));
+    ASSERT_TRUE(Logger::hasLogger("mike.is.cool"));
+}
+
+TEST_F(LoggerTest, LoggerCountIsZero)
+{
+    ASSERT_EQ(0, Logger::count());
+}
+
+TEST_F(LoggerTest, LoggerCountIsOne)
+{
+    ASSERT_EQ(1, Logger::rootLogger()->count());
 }

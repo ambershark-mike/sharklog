@@ -42,3 +42,12 @@ std::vector<std::string> sharklog::UtilFunctions::split(const std::string &toSpl
     
     return split;
 }
+
+std::string UtilFunctions::stripLastToken(const std::string &s, char delim)
+{
+    auto pos = s.find_last_of(delim);
+    if (pos == string::npos)
+        return s;
+    
+    return s.substr(0, pos);
+}
