@@ -129,10 +129,15 @@ public:
     /*!
      * @brief Check to see if a named logger exists
      *
-     * \todo finish hasLogger
+     * Checks the list of named loggers to see if \a name exists.  This works like
+     * @ref logger() but without creating the logger if it doesn't exist already.
      *
-     * @param name
-     * @return
+     * @note Can not find the root logger using a blank name.  This only applies to
+     * named loggers.
+     *
+     * @param name the name of the logger to find
+     * @return true if exists, false if not
+     * @sa logger()
      */
     static bool hasLogger(const std::string &name);
     
@@ -193,7 +198,32 @@ public:
      */
     LoggerPtr parent() const;
     
+    /*!
+     * @brief Closes the root logger
+     *
+     * This will close the root logger and all it's children.  This effectively closes all
+     * the loggers.  It is the same as calling \ref closeLogger(rootLogger()).
+     *
+     * \note This does not guarantee all loggers will be closed as the logger system uses
+     * smart pointers, so until everything releases their pointers the loggers will stay
+     * open.  However, any new calls to \ref rootLogger() will create a new root logger
+     * and it will have to be configured again.
+     *
+     * @sa closeLogger()
+     */
     static void closeRootLogger();
+    
+    /*!
+     * @brief Closes the logger
+     *
+     * This will close the logger specified in the \a logger parameter.  It will close all of
+     * it's children as well.
+     *
+     * See the note in \ref closeRootLogger() for information on actually freeing the loggers.
+     *
+     * @param logger pointer to the logger to close
+     * @sa closeRootLogger()
+     */
     static void closeLogger(LoggerPtr logger);
     
 protected:
