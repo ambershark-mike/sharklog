@@ -38,12 +38,12 @@ Logger::LoggerMap Logger::allNamedLoggers_;
 
 Logger::Logger()
 {
-    //std::cout << "create logger " << this << endl;
+    //cout << "create logger " << this << endl;
 }
 
 Logger::~Logger()
 {
-    //std::cout << "decon logger " << this << " name " << name() << endl;
+    //cout << "decon logger " << this << " name " << name() << endl;
 }
 
 LoggerPtr Logger::rootLogger()
@@ -211,4 +211,5 @@ void Logger::closeLogger(LoggerPtr logger)
     // clean up logger
     logger->parent_.reset();
     logger->allNamedLoggers_[logger->name()].reset();
+    logger->allNamedLoggers_.erase(logger->name());
 }

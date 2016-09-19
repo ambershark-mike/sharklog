@@ -173,3 +173,43 @@ TEST_F(LoggerTest, LoggerCountIsOne)
 {
     ASSERT_EQ(1, Logger::rootLogger()->count());
 }
+
+TEST_F(LoggerTest, CloseChildLoggerKeepsParents)
+{
+    Logger::logger("ab.cd.ef");
+    ASSERT_TRUE(Logger::hasLogger("ab.cd.ef"));
+    ASSERT_TRUE(Logger::hasLogger("ab"));
+    ASSERT_EQ(4, Logger::count());
+    
+    Logger::closeLogger(Logger::logger("ab.cd.ef"));
+    ASSERT_EQ(3, Logger::count());
+    
+    Logger::closeLogger(Logger::logger("ab.cd"));
+    ASSERT_EQ(2, Logger::count());
+}
+
+TEST_F(LoggerTest, CloseParentClosesAllChildren)
+{
+    Logger::logger("x1.2.3");
+    EXPECT_TRUE(Logger::hasLogger("x1.2.3"));
+    EXPECT_TRUE(Logger::hasLogger("x1"));
+    
+    Logger::closeLogger(Logger::logger("x1.2"));
+    EXPECT_EQ(2, Logger::count());
+    ASSERT_FALSE(Logger::hasLogger("x1.2.3"));
+    ASSERT_FALSE(Logger::hasLogger("x1.2"));
+}
+
+TEST_F(LoggerTest, ClosingAndMakingANewLoggerWorks)
+{
+    auto old = Logger::logger("xy.zzy");
+    EXPECT_TRUE((bool)old);
+    
+    Logger::closeLogger(old);
+    EXPECT_FALSE(Logger::hasLogger("xy.zzy"));
+    
+    auto n = Logger::logger("xy.zzy");
+    EXPECT_TRUE((bool)n);
+    
+    ASSERT_NE(old, n);
+}
