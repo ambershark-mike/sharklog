@@ -22,7 +22,7 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "UtilFunctions.h"
+#include "utilfunctions.h"
 #include <sstream>
 
 using namespace sharklog;

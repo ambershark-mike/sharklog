@@ -2,8 +2,8 @@
 // Created by mike on 9/11/16.
 //
 
-#include "UtilFunctionsTest.h"
-#include "UtilFunctions.h"
+#include "utilfunctionstest.h"
+#include "utilfunctions.h"
 
 using namespace sharklog;
 using namespace std;

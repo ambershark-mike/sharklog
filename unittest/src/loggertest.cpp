@@ -1,5 +1,5 @@
 #include "loggertest.h"
-#include "Logger.h"
+#include "logger.h"
 #include <iostream>
 
 using namespace sharklog;

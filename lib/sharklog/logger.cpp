@@ -26,8 +26,8 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
-#include "Logger.h"
-#include "UtilFunctions.h"
+#include "logger.h"
+#include "utilfunctions.h"
 #include <iostream>
 
 using namespace sharklog;
