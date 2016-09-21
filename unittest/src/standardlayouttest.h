@@ -22,24 +22,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "layout.h"
+#ifndef __standardlayouttest_H
+#define __standardlayouttest_H
 
-using namespace sharklog;
-using namespace std;
+#include <gtest/gtest.h>
 
-std::string Layout::contentType() const
+class StandardLayoutTest : public ::testing::Test
 {
-    return std::string("text/plain");
-}
+protected:
+	StandardLayoutTest()
+	{
+	}
+	
+	virtual ~StandardLayoutTest()
+	{
+	}
+	
+	virtual void SetUp()
+	{
+	}
+	
+	virtual void TearDown()
+	{
+	}
+};
 
-void Layout::appendHeader(std::string &result)
-{
-}
-
-void Layout::appendFooter(std::string &result)
-{
-}
-
-Layout::~Layout()
-{
-}
+#endif // standardlayouttest_H

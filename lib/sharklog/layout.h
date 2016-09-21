@@ -40,6 +40,8 @@ class Level;
 class Layout
 {
 public:
+    virtual ~Layout();
+    
     virtual void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) = 0;
     
     virtual std::string contentType() const;

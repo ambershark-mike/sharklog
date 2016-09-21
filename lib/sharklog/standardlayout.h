@@ -22,24 +22,26 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#ifndef __standardlayout_H
+#define __standardlayout_H
+
 #include "layout.h"
+#include <string>
 
-using namespace sharklog;
-using namespace std;
-
-std::string Layout::contentType() const
+namespace sharklog
 {
-    return std::string("text/plain");
-}
-
-void Layout::appendHeader(std::string &result)
+    
+class StandardLayout : public Layout
 {
-}
+public:
+    virtual ~StandardLayout();
+    
+    void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) override;
+    
+    void appendHeader(std::string &result) override;
+    void appendFooter(std::string &result) override;
+};
+    
+} // sharklog
 
-void Layout::appendFooter(std::string &result)
-{
-}
-
-Layout::~Layout()
-{
-}
+#endif // standardlayout_H
