@@ -30,6 +30,7 @@ set(SRCS
 	sharklog/utilfunctions.h
 	sharklog/level.cpp
 	sharklog/level.h
+	sharklog/layout.h
 	)
 
 # build
