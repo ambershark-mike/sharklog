@@ -11,6 +11,8 @@ set(SRCS
 	src/loggertest.cpp
     src/utilfunctionstest.cpp
 	src/utilfunctionstest.h
+	src/leveltest.cpp
+	src/leveltest.h
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})

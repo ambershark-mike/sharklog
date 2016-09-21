@@ -28,6 +28,8 @@ set(SRCS
     sharklog/logger.h
     sharklog/utilfunctions.cpp
 	sharklog/utilfunctions.h
+	sharklog/level.cpp
+	sharklog/level.h
 	)
 
 # build
