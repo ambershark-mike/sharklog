@@ -22,31 +22,37 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __layout_H
-#define __layout_H
+#include <gtest/gtest.h>
+#include "layout.h"
 
-#include <string>
+using namespace sharklog;
 
-namespace sharklog
-{
-    
-class Level;
-    
-/*!
- * @brief Base Layout
- *
- * @todo document
- */
-class Layout
+class TestLayout : public Layout
 {
 public:
-    virtual void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) = 0;
-    
-    virtual std::string contentType() const;
-    virtual void appendHeader(std::string &result);
-    virtual void appendFooter(std::string &result);
+    void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) final
+    {
+    }
 };
-    
-} // sharklog
 
-#endif // layout_H
+TEST(LayoutTest, BaseContentTypeIsTextPlain)
+{
+    TestLayout lay;
+    ASSERT_STREQ("text/plain", lay.contentType().c_str());
+}
+
+TEST(LayoutTest, BaseAppendHeaderDoesNothing)
+{
+    TestLayout lay;
+    std::string res;
+    lay.appendHeader(res);
+    ASSERT_TRUE(res.empty());
+}
+
+TEST(LayoutTest, BaseAppendFooterDoesNothing)
+{
+    TestLayout lay;
+    std::string res;
+    lay.appendFooter(res);
+    ASSERT_TRUE(res.empty());
+}
