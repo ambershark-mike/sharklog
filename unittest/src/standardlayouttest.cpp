@@ -24,5 +24,16 @@
 
 #include "standardlayouttest.h"
 #include "standardlayout.h"
+#include <regex>
 
 using namespace sharklog;
+using namespace std;
+
+TEST_F(StandardLayoutTest, AppendHeaderWorks)
+{
+    StandardLayout layout;
+    string s;
+    layout.appendHeader(s);
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]");
+    ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
+}

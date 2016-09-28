@@ -40,6 +40,11 @@ public:
     
     void appendHeader(std::string &result) override;
     void appendFooter(std::string &result) override;
+    
+private:
+    void setupDate(std::string &s);
+    void setupTime(std::string &s);
+    void setupThread(std::string &s);
 };
     
 } // sharklog

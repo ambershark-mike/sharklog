@@ -23,9 +23,14 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "standardlayout.h"
+#include <sstream>
+#include <chrono>
+#include <thread>
+#include <iomanip>
 
 using namespace sharklog;
 using namespace std;
+using namespace std::chrono;
 
 StandardLayout::~StandardLayout()
 {
@@ -38,8 +43,42 @@ void StandardLayout::formatMessage(std::string &result, const Level &level, cons
 
 void StandardLayout::appendHeader(std::string &result)
 {
+    setupDate(result);
+    setupTime(result);
+    setupThread(result);
 }
 
 void StandardLayout::appendFooter(std::string &result)
 {
+}
+
+void StandardLayout::setupDate(std::string &s)
+{
+    stringstream ss;
+    
+    time_t current = system_clock::to_time_t(system_clock::now());
+    tm *tmt = localtime(&current);
+    
+    ss << "[" << put_time(tmt, "%m/%d/%Y") << "]";
+    
+    s.append(ss.str());
+}
+
+void StandardLayout::setupTime(std::string &s)
+{
+    stringstream ss;
+    auto ms = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
+    time_t current = duration_cast<seconds>(ms).count();
+    auto msec = ms.count() % 1000;
+    tm *tmt = localtime(&current);
+    
+    ss << "[" << put_time(tmt, "%H:%M:%S") << "." << setfill('0') << setw(3) << msec << "]";
+    s.append(ss.str());
+}
+
+void StandardLayout::setupThread(std::string &s)
+{
+    stringstream ss;
+    ss << "[0x" << hex << this_thread::get_id() << "]";
+    s.append(ss.str());
 }
