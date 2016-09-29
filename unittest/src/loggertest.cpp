@@ -24,6 +24,7 @@
 
 #include "loggertest.h"
 #include "logger.h"
+#include "standardlayout.h"
 #include <iostream>
 
 using namespace sharklog;
@@ -250,4 +251,11 @@ TEST_F(LoggerTest, SetLevelWorks)
     auto logger = Logger::rootLogger();
     logger->setLevel(Level::info());
     ASSERT_TRUE(Level::info() == logger->level()) << logger->level().name();
+}
+
+TEST_F(LoggerTest, SetLayoutWorks)
+{
+    auto logger = Logger::rootLogger();
+    LayoutPtr lo(new StandardLayout);
+    FAIL();
 }

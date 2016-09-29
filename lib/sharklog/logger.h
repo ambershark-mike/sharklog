@@ -26,6 +26,7 @@
 #define __Logger_H
 
 #include <sharklog/level.h>
+#include <sharklog/layout.h>
 #include <string>
 #include <memory>
 #include <list>
@@ -42,6 +43,7 @@ namespace sharklog
 {
     
 class Logger;
+class Layout;
     
 /*!
  * \var LoggerPtr
@@ -247,6 +249,22 @@ public:
      */
     void setLevel(const Level &lev);
     
+    /*!
+     * @brief Gets the layout
+     *
+     * @todo finish me
+     *
+     * @return
+     */
+    LayoutPtr layout() const;
+    
+    /*!
+     * @brief Sets the layout
+     * @todo finish me
+     * @param p
+     */
+    void setLayout(LayoutPtr p);
+    
 protected:
     /*!
      * Logger constructor
@@ -270,6 +288,7 @@ private:
     LoggerList children_;
     LoggerPtr parent_;
     Level level_;
+    LayoutPtr layout_;
 };
     
 } // sharklog

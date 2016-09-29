@@ -26,11 +26,27 @@
 #define __layout_H
 
 #include <string>
+#include <memory>
 
 namespace sharklog
 {
     
 class Level;
+class Layout;
+    
+/*!
+ * \var LayoutPtr
+ *
+ * A C++ shared_ptr pointer to a \ref Layout.
+ *
+ * To allocate this you would do:
+ * @code
+ * LayoutPtr p(new StandardLayout);
+ * // or
+ * auto p = std::make_shared<StandardLayout>();
+ * @endcode
+ */
+using LayoutPtr = std::shared_ptr<Layout>;
     
 /*!
  * @brief Base Layout
