@@ -31,6 +31,11 @@
 namespace sharklog
 {
     
+/*!
+ * @brief Standard log layout
+ *
+ * \todo document this
+ */
 class StandardLayout : public Layout
 {
 public:
