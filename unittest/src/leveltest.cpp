@@ -71,7 +71,7 @@ TEST_F(LevelTest, NamesResolveProperly)
     ASSERT_STREQ("INFO", Level::info().name().c_str());
     ASSERT_STREQ("TRACE", Level::trace().name().c_str());
     ASSERT_STREQ("DEBUG", Level::debug().name().c_str());
-    ASSERT_STREQ("FUNCTRACE", Level::functrace().name().c_str());
+    ASSERT_STREQ("FUNC", Level::functrace().name().c_str());
 }
 
 TEST_F(LevelTest, HasLevelWorksOnSameLevel)

@@ -84,7 +84,7 @@ std::string Level::name() const
         levelNames[INFO] = "INFO";
         levelNames[TRACE] = "TRACE";
         levelNames[DEBUG] = "DEBUG";
-        levelNames[FUNCTRACE] = "FUNCTRACE";
+        levelNames[FUNCTRACE] = "FUNC";
     }
     
     return levelNames.at(level_);
