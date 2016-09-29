@@ -24,6 +24,7 @@
 
 #include "standardlayouttest.h"
 #include "standardlayout.h"
+#include "level.h"
 #include <regex>
 
 using namespace sharklog;
@@ -35,5 +36,49 @@ TEST_F(StandardLayoutTest, AppendHeaderWorks)
     string s;
     layout.appendHeader(s);
     auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]");
+    ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
+}
+
+TEST_F(StandardLayoutTest, AppendFooterIsBlank)
+{
+    StandardLayout lo;
+    string s;
+    lo.appendFooter(s);
+    ASSERT_TRUE(s.empty());
+}
+
+TEST_F(StandardLayoutTest, FormatMessageWorks)
+{
+    StandardLayout lo;
+    string s;
+    lo.formatMessage(s, Level::fatal(), "test", "this is a message  123!");
+    auto re = regex("^\\[test\\]\\[(?:TRACE|DEBUG|FATAL|INFO|ERROR|WARN|FUNC)\\] .*\n");
+    ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
+}
+
+TEST_F(StandardLayoutTest, BlankMessageWorks)
+{
+    StandardLayout lo;
+    string s;
+    lo.formatMessage(s, Level::debug(), "test", "");
+    auto re = regex("^\\[test\\]\\[(?:TRACE|DEBUG|FATAL|INFO|ERROR|WARN|FUNC)\\] \n");
+    ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
+}
+
+TEST_F(StandardLayoutTest, BlankNameWorks)
+{
+    StandardLayout lo;
+    string s;
+    lo.formatMessage(s, Level::info(), "", "message");
+    auto re = regex("^\\[UNNAMED\\]\\[(?:TRACE|DEBUG|FATAL|INFO|ERROR|WARN|FUNC)\\] .*\n");
+    ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
+}
+
+TEST_F(StandardLayoutTest, InvalidLevelWorks)
+{
+    StandardLayout lo;
+    string s;
+    lo.formatMessage(s, Level(), "", "message");
+    auto re = regex("^\\[UNNAMED\\]\\[NONE\\] .*\n");
     ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
 }

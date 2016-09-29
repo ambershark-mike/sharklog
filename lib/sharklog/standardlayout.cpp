@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "standardlayout.h"
+#include "level.h"
 #include <sstream>
 #include <chrono>
 #include <thread>
@@ -39,6 +40,23 @@ StandardLayout::~StandardLayout()
 void StandardLayout::formatMessage(std::string &result, const Level &level, const std::string &loggerName,
                                    const std::string &logMessage)
 {
+    stringstream ss;
+    
+    // add name
+    ss << "[";
+    if (loggerName.empty())
+        ss << "UNNAMED";
+    else
+        ss << loggerName;
+    ss << "]";
+    
+    // add level
+    ss << "[" << level.name() << "]";
+    
+    // add message
+    ss << " " << logMessage << endl;
+    
+    result.append(ss.str());
 }
 
 void StandardLayout::appendHeader(std::string &result)
