@@ -4,6 +4,7 @@ project(unittest)
 include_directories(
 	src
 	../lib/sharklog
+    ../lib
 	)
 
 set(SRCS

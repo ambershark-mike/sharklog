@@ -213,3 +213,13 @@ void Logger::closeLogger(LoggerPtr logger)
     logger->allNamedLoggers_[logger->name()].reset();
     logger->allNamedLoggers_.erase(logger->name());
 }
+
+Level Logger::level() const
+{
+    return level_;
+}
+
+void Logger::setLevel(const Level &lev)
+{
+    level_ = lev;
+}

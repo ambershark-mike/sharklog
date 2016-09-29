@@ -244,3 +244,10 @@ TEST_F(LoggerTest, DISABLED_LoggerNamesAreCaseInsensitive)
     EXPECT_TRUE((bool)logger);
     ASSERT_EQ(logger, Logger::logger("mike"));
 }
+
+TEST_F(LoggerTest, SetLevelWorks)
+{
+    auto logger = Logger::rootLogger();
+    logger->setLevel(Level::info());
+    ASSERT_TRUE(Level::info() == logger->level()) << logger->level().name();
+}

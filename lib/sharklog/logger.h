@@ -25,6 +25,7 @@
 #ifndef __Logger_H
 #define __Logger_H
 
+#include <sharklog/level.h>
 #include <string>
 #include <memory>
 #include <list>
@@ -226,6 +227,26 @@ public:
      */
     static void closeLogger(LoggerPtr logger);
     
+    /*!
+     * @brief Gets the current Level
+     *
+     * This will return the current \ref Level of the \ref Logger.  This level is inherited see
+     * \ref Inheritance for more information.
+     *
+     * @return the current Level of the logger
+     */
+    Level level() const;
+    
+    /*!
+     * @brief Sets the Level
+     *
+     * Call this to set the \ref Level of the \ref Logger.  This level can be inherited see
+     * \ref Inheritance for more information.
+     *
+     * @param lev The \ref Level for the Logger.
+     */
+    void setLevel(const Level &lev);
+    
 protected:
     /*!
      * Logger constructor
@@ -248,6 +269,7 @@ private:
     std::string fullName_;
     LoggerList children_;
     LoggerPtr parent_;
+    Level level_;
 };
     
 } // sharklog

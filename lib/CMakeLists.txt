@@ -21,6 +21,7 @@ message(STATUS "Setting output library type to ${LIBTYPE}")
 # source files
 include_directories(
 	sharklog
+    .
 	)
 
 set(SRCS
