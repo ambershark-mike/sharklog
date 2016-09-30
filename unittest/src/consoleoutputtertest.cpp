@@ -22,36 +22,35 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __standardlayout_H
-#define __standardlayout_H
+#include "consoleoutputtertest.h"
+#include "consoleoutputter.h"
 
-#include <sharklog/layout.h>
-#include <string>
+using namespace sharklog;
 
-namespace sharklog
+TEST_F(ConsoleOutputterTest, OpenIsTrue)
 {
-    
-/*!
- * @brief Standard log layout
- *
- * \todo document this
- */
-class StandardLayout : public Layout
-{
-public:
-    virtual ~StandardLayout();
-    
-    void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) override;
-    
-    void appendHeader(std::string &result) override;
-    void appendFooter(std::string &result) override;
-    
-private:
-    void setupDate(std::string &s);
-    void setupTime(std::string &s);
-    void setupThread(std::string &s);
-};
-    
-} // sharklog
+    ConsoleOutputter co;
+    ASSERT_TRUE(co.open());
+}
 
-#endif // standardlayout_H
+TEST_F(ConsoleOutputterTest, IsOpen)
+{
+    ConsoleOutputter co;
+    ASSERT_TRUE(co.isOpen());
+}
+
+TEST_F(ConsoleOutputterTest, SetUseStdOutWorks)
+{
+    ConsoleOutputter co;
+    EXPECT_TRUE(co.useStdOut());
+    co.setUseStdOut(false);
+    ASSERT_FALSE(co.useStdOut());
+}
+
+TEST_F(ConsoleOutputterTest, SetUseStdErrWorks)
+{
+    ConsoleOutputter co;
+    EXPECT_FALSE(co.useStdErr());
+    co.setUseStdErr(true);
+    ASSERT_TRUE(co.useStdErr());
+}

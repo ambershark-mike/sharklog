@@ -22,36 +22,60 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __standardlayout_H
-#define __standardlayout_H
+#include "consoleoutputter.h"
+#include <iostream>
 
-#include <sharklog/layout.h>
-#include <string>
+using namespace sharklog;
+using namespace std;
 
-namespace sharklog
+ConsoleOutputter::ConsoleOutputter()
+    : useStdOut_(true)
+    , useStdErr_(false)
 {
-    
-/*!
- * @brief Standard log layout
- *
- * \todo document this
- */
-class StandardLayout : public Layout
-{
-public:
-    virtual ~StandardLayout();
-    
-    void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) override;
-    
-    void appendHeader(std::string &result) override;
-    void appendFooter(std::string &result) override;
-    
-private:
-    void setupDate(std::string &s);
-    void setupTime(std::string &s);
-    void setupThread(std::string &s);
-};
-    
-} // sharklog
+}
 
-#endif // standardlayout_H
+bool ConsoleOutputter::open()
+{
+    return true;
+}
+
+void ConsoleOutputter::close()
+{
+}
+
+bool ConsoleOutputter::isOpen() const
+{
+    return true;
+}
+
+void ConsoleOutputter::writeLog(const std::string &message)
+{
+    if (useStdErr_)
+        cerr << message;
+    
+    if (useStdOut_)
+        cout << message;
+    
+    cerr.flush();
+    cout.flush();
+}
+
+void ConsoleOutputter::setUseStdOut(bool use)
+{
+    useStdOut_ = use;
+}
+
+bool ConsoleOutputter::useStdOut() const
+{
+    return useStdOut_;
+}
+
+void ConsoleOutputter::setUseStdErr(bool use)
+{
+    useStdErr_ = use;
+}
+
+bool ConsoleOutputter::useStdErr() const
+{
+    return useStdErr_;
+}

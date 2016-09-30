@@ -30,7 +30,7 @@ Outputter::~Outputter()
 {
 }
 
-bool Outputter::isOpen()
+bool Outputter::isOpen() const
 {
     return false;
 }

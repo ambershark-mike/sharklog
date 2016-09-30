@@ -18,6 +18,8 @@ set(SRCS
 	src/standardlayouttest.cpp
 	src/standardlayouttest.h
 	src/outputtertest.cpp
+	src/consoleoutputtertest.cpp
+	src/consoleoutputtertest.h
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})

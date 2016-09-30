@@ -44,7 +44,7 @@ public:
     virtual void writeLog(const std::string &logMessage) = 0;
     virtual void close() = 0;
     
-    virtual bool isOpen();
+    virtual bool isOpen() const;
 };
     
 } // sharklog

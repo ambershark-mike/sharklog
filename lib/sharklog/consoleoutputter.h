@@ -22,36 +22,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __standardlayout_H
-#define __standardlayout_H
+#ifndef __consoleoutputter_H
+#define __consoleoutputter_H
 
-#include <sharklog/layout.h>
-#include <string>
+#include <sharklog/outputter.h>
 
 namespace sharklog
 {
     
-/*!
- * @brief Standard log layout
- *
- * \todo document this
- */
-class StandardLayout : public Layout
+class ConsoleOutputter : public Outputter
 {
 public:
-    virtual ~StandardLayout();
+    ConsoleOutputter();
     
-    void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) override;
+    bool open() final;
+    void close() final;
+    void writeLog(const std::string &message) final;
     
-    void appendHeader(std::string &result) override;
-    void appendFooter(std::string &result) override;
+    bool isOpen() const final;
+    
+    void setUseStdOut(bool use);
+    bool useStdOut() const;
+    
+    void setUseStdErr(bool use);
+    bool useStdErr() const;
     
 private:
-    void setupDate(std::string &s);
-    void setupTime(std::string &s);
-    void setupThread(std::string &s);
+    bool useStdOut_;
+    bool useStdErr_;
 };
     
 } // sharklog
 
-#endif // standardlayout_H
+#endif // consoleoutputter_H

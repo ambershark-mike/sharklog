@@ -22,36 +22,29 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __standardlayout_H
-#define __standardlayout_H
+#ifndef __consoleoutputtertest_H
+#define __consoleoutputtertest_H
 
-#include <sharklog/layout.h>
-#include <string>
+#include <gtest/gtest.h>
 
-namespace sharklog
+class ConsoleOutputterTest : public ::testing::Test
 {
+protected:
+    ConsoleOutputterTest()
+    {
+    }
     
-/*!
- * @brief Standard log layout
- *
- * \todo document this
- */
-class StandardLayout : public Layout
-{
-public:
-    virtual ~StandardLayout();
+    virtual ~ConsoleOutputterTest()
+    {
+    }
     
-    void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) override;
+    void SetUp()
+    {
+    }
     
-    void appendHeader(std::string &result) override;
-    void appendFooter(std::string &result) override;
-    
-private:
-    void setupDate(std::string &s);
-    void setupTime(std::string &s);
-    void setupThread(std::string &s);
+    void TearDown()
+    {
+    }
 };
-    
-} // sharklog
 
-#endif // standardlayout_H
+#endif // consoleoutputtertest_H
