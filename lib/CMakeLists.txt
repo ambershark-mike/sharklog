@@ -35,6 +35,8 @@ set(SRCS
 	sharklog/layout.h
 	sharklog/standardlayout.cpp
 	sharklog/standardlayout.h
+	sharklog/outputter.cpp
+	sharklog/outputter.h
 	)
 
 # build

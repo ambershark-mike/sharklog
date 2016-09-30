@@ -17,6 +17,7 @@ set(SRCS
 	src/layouttest.cpp
 	src/standardlayouttest.cpp
 	src/standardlayouttest.h
+	src/outputtertest.cpp
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})
