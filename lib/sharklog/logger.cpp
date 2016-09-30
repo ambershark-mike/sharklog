@@ -223,3 +223,21 @@ void Logger::setLevel(const Level &lev)
 {
     level_ = lev;
 }
+
+LayoutPtr Logger::layout() const
+{
+    return layout_;
+}
+
+void Logger::setLayout(LayoutPtr p)
+{
+    layout_ = p;
+}
+
+bool Logger::isValid() const
+{
+    if (layout_)
+        return true;
+    
+    return false;
+}

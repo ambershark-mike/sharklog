@@ -257,5 +257,22 @@ TEST_F(LoggerTest, SetLayoutWorks)
 {
     auto logger = Logger::rootLogger();
     LayoutPtr lo(new StandardLayout);
-    FAIL();
+    logger->setLayout(lo);
+    ASSERT_TRUE(logger->layout() == lo);
+}
+
+TEST_F(LoggerTest, RootLoggerHasNoLayoutByDefault)
+{
+    ASSERT_FALSE((Logger::rootLogger()->layout()));
+}
+
+TEST_F(LoggerTest, BaseLoggerNotValid)
+{
+    ASSERT_FALSE(Logger::rootLogger()->isValid());
+}
+
+TEST_F(LoggerTest, RootLoggerIsValidWhenSetUp)
+{
+    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    ASSERT_TRUE(Logger::rootLogger()->isValid());
 }

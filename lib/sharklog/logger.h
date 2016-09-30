@@ -265,6 +265,18 @@ public:
      */
     void setLayout(LayoutPtr p);
     
+    /*!
+     * @brief Checks if valid
+     *
+     * Checks if the Logger is valid.
+     *
+     * It is valid if it has a layout and outputter.
+     *
+     * @return true if valid, false if not
+     * @sa setLayout(), addOutputter()
+     */
+    bool isValid() const;
+    
 protected:
     /*!
      * Logger constructor
