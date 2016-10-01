@@ -25,6 +25,7 @@
 #include "loggertest.h"
 #include "logger.h"
 #include "standardlayout.h"
+#include "consoleoutputter.h"
 #include <iostream>
 
 using namespace sharklog;
@@ -275,4 +276,49 @@ TEST_F(LoggerTest, RootLoggerIsValidWhenSetUp)
 {
     Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
     ASSERT_TRUE(Logger::rootLogger()->isValid());
+}
+
+TEST_F(LoggerTest, AddOutputterWorks)
+{
+	auto logger = Logger::rootLogger();
+	EXPECT_TRUE(logger->outputters().empty());
+
+	auto op = OutputterPtr(new ConsoleOutputter);
+	logger->addOutputter(op);
+	EXPECT_EQ(1, logger->outputters().size());
+	ASSERT_TRUE(logger->outputters().front() == op);
+}
+
+TEST_F(LoggerTest, AddingSameOutputterFails)
+{
+    auto logger = Logger::rootLogger();
+    auto op = OutputterPtr(new ConsoleOutputter);
+    logger->addOutputter(op);
+    EXPECT_EQ(1, logger->outputters().size());
+    logger->addOutputter(op);
+    ASSERT_EQ(1, logger->outputters().size());
+}
+
+TEST_F(LoggerTest, RemoveOutputterWorks)
+{
+    auto logger = Logger::rootLogger();
+    auto op = OutputterPtr(new ConsoleOutputter);
+    logger->addOutputter(op);
+    EXPECT_TRUE(logger->outputters().size());
+    logger->removeOutputter(op);
+    ASSERT_TRUE(logger->outputters().empty());
+}
+
+TEST_F(LoggerTest, RemoveSameOutputterFails)
+{
+    auto logger = Logger::rootLogger();
+    auto op = OutputterPtr(new ConsoleOutputter);
+    logger->addOutputter(op);
+    EXPECT_TRUE(logger->outputters().size());
+    logger->removeOutputter(op);
+    EXPECT_TRUE(logger->outputters().empty());
+    
+    logger->addOutputter(OutputterPtr(new ConsoleOutputter));
+    logger->removeOutputter(op);
+    ASSERT_EQ(1, logger->outputters().size());
 }

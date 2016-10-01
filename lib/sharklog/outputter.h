@@ -26,9 +26,19 @@
 #define __outputter_H
 
 #include <string>
+#include <memory>
 
 namespace sharklog
 {
+
+class Outputter;
+
+/*!
+ * \var OutputterPtr
+ *
+ * A pointer to an \ref Outputter.
+ */
+using OutputterPtr = std::shared_ptr<Outputter>;
     
 /*!
  * @brief Base Outputter

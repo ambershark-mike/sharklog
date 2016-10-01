@@ -26,6 +26,7 @@
 #define __Logger_H
 
 #include <sharklog/level.h>
+#include <sharklog/outputter.h>
 #include <sharklog/layout.h>
 #include <string>
 #include <memory>
@@ -65,6 +66,8 @@ class Logger
     using LoggerMap = std::map<std::string, LoggerPtr>;
     
 public:
+	using OutputterList = std::list<OutputterPtr>;
+
     virtual ~Logger();
     
     /*!
@@ -276,6 +279,35 @@ public:
      * @sa setLayout(), addOutputter()
      */
     bool isValid() const;
+
+	/*!
+	 * @brief Adds an Outputter
+	 *  
+	 * Add an \ref Outputter to the Logger.  All Outputters will be sent the 
+	 * log message when it is logged. 
+	 *  
+	 * \param op The Outputter to add
+	 */
+	void addOutputter(OutputterPtr op);
+
+	/*!
+	 * @brief Remove an Outputter 
+	 *  
+	 * Remove an \ref Outputter from the Logger. 
+	 * 
+	 * \param op The outputter to remove
+	 */
+	void removeOutputter(OutputterPtr op);
+
+	/*!
+	 * @brief List of Outputters 
+	 *  
+	 * Gets a list of all the Outputters that this Logger will use when a message 
+	 * is logged. 
+	 * 
+	 * \return OutputterList List of current Outputters
+	 */
+	OutputterList outputters() const;
     
 protected:
     /*!
@@ -301,6 +333,7 @@ private:
     LoggerPtr parent_;
     Level level_;
     LayoutPtr layout_;
+	OutputterList outputters_;
 };
     
 } // sharklog

@@ -241,3 +241,19 @@ bool Logger::isValid() const
     
     return false;
 }
+
+Logger::OutputterList Logger::outputters() const
+{
+    return outputters_;
+}
+
+void sharklog::Logger::addOutputter(OutputterPtr op)
+{
+	if (find(outputters_.begin(), outputters_.end(), op) == outputters_.end())
+		outputters_.push_back(op);
+}
+
+void Logger::removeOutputter(OutputterPtr op)
+{
+    outputters_.remove(op);
+}
