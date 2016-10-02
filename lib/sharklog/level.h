@@ -40,7 +40,7 @@ class Level
 public:
     enum LogLevel
     {
-        NONE
+        NONE // not really a level, more of a lack of one, all levels include this though
         , FATAL
         , ERROR
         , WARN
@@ -48,6 +48,7 @@ public:
         , TRACE
         , DEBUG
         , FUNCTRACE
+        , ALL // this will always be at the end so it includes everything below it
     };
     
     Level(LogLevel lev = NONE);
@@ -59,6 +60,7 @@ public:
     static Level trace();
     static Level debug();
     static Level functrace();
+    static Level all();
     
     std::string name() const;
     LogLevel level() const;
@@ -72,6 +74,8 @@ public:
     bool hasTrace() const;
     bool hasDebug() const;
     bool hasFuncTrace() const;
+    bool hasAll() const;
+    bool hasNone() const;
     
     bool operator==(const Level &lev);
     bool operator!=(const Level &lev);

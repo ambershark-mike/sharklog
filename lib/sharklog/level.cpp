@@ -85,6 +85,7 @@ std::string Level::name() const
         levelNames[TRACE] = "TRACE";
         levelNames[DEBUG] = "DEBUG";
         levelNames[FUNCTRACE] = "FUNC";
+        levelNames[ALL] = "ALL";
     }
     
     return levelNames.at(level_);
@@ -163,4 +164,19 @@ bool Level::operator<=(const Level &lev)
 bool Level::operator>=(const Level &lev)
 {
     return (level_ >= lev.level());
+}
+
+Level Level::all()
+{
+    return Level(ALL);
+}
+
+bool Level::hasAll() const
+{
+    return hasLevel(ALL);
+}
+
+bool Level::hasNone() const
+{
+    return hasLevel(NONE);
 }
