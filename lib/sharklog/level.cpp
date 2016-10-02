@@ -90,47 +90,47 @@ std::string Level::name() const
     return levelNames.at(level_);
 }
 
-bool Level::hasLevel(const Level &level)
+bool Level::hasLevel(const Level &level) const
 {
     return hasLevel(level.level());
 }
 
-bool Level::hasFatal()
+bool Level::hasFatal() const
 {
     return hasLevel(FATAL);
 }
 
-bool Level::hasError()
+bool Level::hasError() const
 {
     return hasLevel(ERROR);
 }
 
-bool Level::hasWarn()
+bool Level::hasWarn() const
 {
     return hasLevel(WARN);
 }
 
-bool Level::hasInfo()
+bool Level::hasInfo() const
 {
     return hasLevel(INFO);
 }
 
-bool Level::hasTrace()
+bool Level::hasTrace() const
 {
     return hasLevel(TRACE);
 }
 
-bool Level::hasDebug()
+bool Level::hasDebug() const
 {
     return hasLevel(DEBUG);
 }
 
-bool Level::hasFuncTrace()
+bool Level::hasFuncTrace() const
 {
     return hasLevel(FUNCTRACE);
 }
 
-bool Level::hasLevel(LogLevel level)
+bool Level::hasLevel(LogLevel level) const
 {
     return (level <= level_);
 }

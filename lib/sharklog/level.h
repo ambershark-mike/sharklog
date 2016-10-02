@@ -63,15 +63,15 @@ public:
     std::string name() const;
     LogLevel level() const;
     
-    bool hasLevel(const Level &level);
-    bool hasLevel(LogLevel level);
-    bool hasFatal();
-    bool hasError();
-    bool hasWarn();
-    bool hasInfo();
-    bool hasTrace();
-    bool hasDebug();
-    bool hasFuncTrace();
+    bool hasLevel(const Level &level) const;
+    bool hasLevel(LogLevel level) const;
+    bool hasFatal() const;
+    bool hasError() const;
+    bool hasWarn() const;
+    bool hasInfo() const;
+    bool hasTrace() const;
+    bool hasDebug() const;
+    bool hasFuncTrace() const;
     
     bool operator==(const Level &lev);
     bool operator!=(const Level &lev);
