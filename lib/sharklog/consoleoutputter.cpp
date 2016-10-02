@@ -28,6 +28,8 @@
 using namespace sharklog;
 using namespace std;
 
+std::mutex ConsoleOutputter::mutex_;
+
 ConsoleOutputter::ConsoleOutputter()
     : useStdOut_(true)
     , useStdErr_(false)
@@ -50,6 +52,8 @@ bool ConsoleOutputter::isOpen() const
 
 void ConsoleOutputter::writeLog(const std::string &message)
 {
+    lock_guard<mutex> lock(mutex_);
+    
     if (useStdErr_)
         cerr << message;
     

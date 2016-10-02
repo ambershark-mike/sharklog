@@ -26,6 +26,7 @@
 #define __consoleoutputter_H
 
 #include <sharklog/outputter.h>
+#include <mutex>
 
 namespace sharklog
 {
@@ -50,6 +51,7 @@ public:
 private:
     bool useStdOut_;
     bool useStdErr_;
+    static std::mutex mutex_;
 };
     
 } // sharklog
