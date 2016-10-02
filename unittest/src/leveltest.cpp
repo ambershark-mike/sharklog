@@ -72,6 +72,8 @@ TEST_F(LevelTest, NamesResolveProperly)
     ASSERT_STREQ("TRACE", Level::trace().name().c_str());
     ASSERT_STREQ("DEBUG", Level::debug().name().c_str());
     ASSERT_STREQ("FUNC", Level::functrace().name().c_str());
+    ASSERT_STREQ("ALL", Level::all().name().c_str());
+    ASSERT_STREQ("NONE", Level().name().c_str());
 }
 
 TEST_F(LevelTest, HasLevelWorksOnSameLevel)
@@ -158,4 +160,27 @@ TEST_F(LevelTest, GreaterThanEqualsWorks)
     ASSERT_TRUE(Level::error() >= Level::fatal());
     ASSERT_TRUE(Level::error() >= Level::error());
     ASSERT_FALSE(Level::error() >= Level::warn());
+}
+
+TEST_F(LevelTest, HasAllWorks)
+{
+    ASSERT_TRUE(Level::all().hasAll());
+}
+
+TEST_F(LevelTest, AllIncludesEverything)
+{
+    auto all = Level::all();
+    ASSERT_TRUE(all.hasFuncTrace());
+    ASSERT_TRUE(all.hasDebug());
+    ASSERT_TRUE(all.hasTrace());
+    ASSERT_TRUE(all.hasInfo());
+    ASSERT_TRUE(all.hasWarn());
+    ASSERT_TRUE(all.hasError());
+    ASSERT_TRUE(all.hasFatal());
+    ASSERT_TRUE(all.hasNone());
+}
+
+TEST_F(LevelTest, HasNoneWorks)
+{
+    ASSERT_TRUE(Level().hasNone());
 }

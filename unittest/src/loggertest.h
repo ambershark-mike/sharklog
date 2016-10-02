@@ -26,7 +26,28 @@
 #define __loggertest_H
 
 #include <gtest/gtest.h>
-//#include "Logger.h"
+#include <sharklog/outputter.h>
+#include <string>
+
+class StringOutputter : public sharklog::Outputter
+{
+public:
+    bool open() final
+    {
+        return true;
+    }
+    
+    void writeLog(const std::string &logMessage) final
+    {
+        output_ = logMessage;
+    }
+    
+    void close() final { }
+    
+    bool isOpen() const final { return true; }
+    
+    std::string output_;
+};
 
 class LoggerTest : public ::testing::Test
 {

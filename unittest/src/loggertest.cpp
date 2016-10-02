@@ -27,6 +27,7 @@
 #include "standardlayout.h"
 #include "consoleoutputter.h"
 #include <iostream>
+#include <regex>
 
 using namespace sharklog;
 using namespace std;
@@ -97,8 +98,6 @@ TEST_F(LoggerTest, NamedLoggerNameMatches)
 
 TEST_F(LoggerTest, SimpleNameLoggerParentIsRoot)
 {
-    //FAIL() << "test name " << test->name() << " parent name " << test->parent()->name() << " parent is root " << test->parent()->isRoot()
-        //<< " stored root ptr " << root << " root pointer " << Logger::rootLogger() << " test ptr " << test << " test parent ptr " << test->parent();
     ASSERT_EQ(Logger::logger("test")->parent(), Logger::rootLogger());
 }
 
@@ -321,4 +320,41 @@ TEST_F(LoggerTest, RemoveSameOutputterFails)
     logger->addOutputter(OutputterPtr(new ConsoleOutputter));
     logger->removeOutputter(op);
     ASSERT_EQ(1, logger->outputters().size());
+}
+
+TEST_F(LoggerTest, RootDefaultsToMaxLevel)
+{
+    ASSERT_TRUE(Logger::rootLogger()->level() == Level::all());
+}
+
+TEST_F(LoggerTest, LoggingWithWrongLevelReturnsImmediately)
+{
+    auto logger = Logger::rootLogger();
+    logger->setLevel(Level::fatal());
+    ASSERT_FALSE(logger->log(Level::info(), "test"));
+}
+
+TEST_F(LoggerTest, LoggingWithNoLayoutFails)
+{
+    ASSERT_FALSE(Logger::rootLogger()->log(Level::fatal(), "test"));
+}
+
+TEST_F(LoggerTest, LoggingWithNoOutputtersFails)
+{
+    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    ASSERT_FALSE(Logger::rootLogger()->log(Level::fatal(), "test"));
+}
+
+TEST_F(LoggerTest, LoggingWorks)
+{
+    auto logger = Logger::rootLogger();
+    EXPECT_TRUE(logger->outputters().empty());
+    EXPECT_FALSE(logger->layout());
+    logger->setLayout(LayoutPtr(new StandardLayout));
+    logger->addOutputter(OutputterPtr(new StringOutputter));
+    EXPECT_TRUE(logger->log(Level::fatal(), "this is a test"));
+    
+    auto sop = dynamic_cast<StringOutputter *>(logger->outputters().front().get());
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[UNNAMED\\]\\[FATAL\\] this is a test\n");
+    ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
 }

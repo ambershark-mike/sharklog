@@ -53,6 +53,7 @@ LoggerPtr Logger::rootLogger()
         LoggerPtr p(new Logger());
         rootLogger_ = p;
         assert(rootLogger_);
+        rootLogger_->setLevel(Level::all());
     }
     
     return rootLogger_;
@@ -256,4 +257,31 @@ void sharklog::Logger::addOutputter(OutputterPtr op)
 void Logger::removeOutputter(OutputterPtr op)
 {
     outputters_.remove(op);
+}
+
+bool Logger::log(const Level &level, const std::string &msg) const
+{
+    // make sure we have this level
+    if (!level_.hasLevel(level))
+        return false;
+    
+    // make sure we have a layout
+    if (!layout())
+        return false;
+    
+    // make sure we have at least 1 outputter
+    if (outputters().empty())
+        return false;
+    
+    // format message
+    string res;
+    layout()->appendHeader(res);
+    layout()->formatMessage(res, level, name(), msg);
+    layout()->appendFooter(res);
+    
+    // output message
+    for (auto op : outputters())
+        op->writeLog(res);
+    
+    return true;
 }

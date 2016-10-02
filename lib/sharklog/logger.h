@@ -309,6 +309,22 @@ public:
 	 */
 	OutputterList outputters() const;
     
+    /*!
+     * @brief Log a message
+     *
+     * Logs a message \a msg.  This will use the \ref Layout and all the \a Outputter's that
+     * are attached to this logger.
+     *
+     * You can call this function directly or you can use the macros \ref Macros.  You can also
+     * use the streaming support class to log using a C++ stream.  See \ref LoggerStream.
+     *
+     * @param level The level to log this message with
+     * @param msg the message string to log
+     * @sa addOutputter(), setLayout(), LoggerStream
+     * @returns true if logged, false if not
+     */
+    bool log(const Level &level, const std::string &msg) const;
+    
 protected:
     /*!
      * Logger constructor
