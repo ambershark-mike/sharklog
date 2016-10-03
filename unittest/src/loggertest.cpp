@@ -355,6 +355,6 @@ TEST_F(LoggerTest, LoggingWorks)
     EXPECT_TRUE(logger->log(Level::fatal(), "this is a test"));
     
     auto sop = dynamic_cast<StringOutputter *>(logger->outputters().front().get());
-    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[UNNAMED\\]\\[FATAL\\] this is a test\n");
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[FATAL\\] this is a test\n");
     ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
 }

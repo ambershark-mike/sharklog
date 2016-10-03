@@ -43,12 +43,8 @@ void StandardLayout::formatMessage(std::string &result, const Level &level, cons
     stringstream ss;
     
     // add name
-    ss << "[";
-    if (loggerName.empty())
-        ss << "UNNAMED";
-    else
-        ss << loggerName;
-    ss << "]";
+    if (!loggerName.empty())
+		ss << "[" << loggerName << "]";
     
     // add level
     ss << "[" << level.name() << "]";

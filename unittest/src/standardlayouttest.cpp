@@ -70,7 +70,7 @@ TEST_F(StandardLayoutTest, BlankNameWorks)
     StandardLayout lo;
     string s;
     lo.formatMessage(s, Level::info(), "", "message");
-    auto re = regex("^\\[UNNAMED\\]\\[(?:TRACE|DEBUG|FATAL|INFO|ERROR|WARN|FUNC)\\] .*\n");
+    auto re = regex("^\\[(?:TRACE|DEBUG|FATAL|INFO|ERROR|WARN|FUNC)\\] .*\n");
     ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
 }
 
@@ -79,6 +79,6 @@ TEST_F(StandardLayoutTest, InvalidLevelWorks)
     StandardLayout lo;
     string s;
     lo.formatMessage(s, Level(), "", "message");
-    auto re = regex("^\\[UNNAMED\\]\\[NONE\\] .*\n");
+    auto re = regex("^\\[NONE\\] .*\n");
     ASSERT_TRUE(regex_match(s.c_str(), re)) << s.c_str();
 }
