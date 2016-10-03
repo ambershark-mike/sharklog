@@ -35,6 +35,7 @@ using namespace std;
 
 LoggerPtr Logger::rootLogger_;
 Logger::LoggerMap Logger::allNamedLoggers_;
+std::recursive_mutex Logger::mutex_;
 
 Logger::Logger()
 {
@@ -50,6 +51,7 @@ LoggerPtr Logger::rootLogger()
 {
     if (!rootLogger_)
     {
+		lock_guard<recursive_mutex> lock(mutex_);
         LoggerPtr p(new Logger());
         rootLogger_ = p;
         assert(rootLogger_);
@@ -94,8 +96,9 @@ std::string Logger::baseName() const
 void Logger::closeRootLogger()
 {
     if (!rootLogger_)
-        return;
+		return;
     
+	lock_guard<recursive_mutex> lock(mutex_);
     //cout << "closing root" << endl;
     closeLogger(rootLogger_);
     
@@ -157,6 +160,8 @@ LoggerPtr Logger::createLogger(LoggerPtr parent, const std::string &baseName)
     assert(parent);
     assert(baseName.size());
     
+	lock_guard<recursive_mutex> lock(mutex_);
+
     // create our full name
     stringstream ss;
     if (!parent->isRoot())
@@ -202,6 +207,7 @@ unsigned int Logger::count()
 void Logger::closeLogger(LoggerPtr logger)
 {
     assert(logger);
+	lock_guard<recursive_mutex> lock(mutex_);
     
     // clean up children
     for (auto it : logger->children_)
@@ -250,12 +256,14 @@ Logger::OutputterList Logger::outputters() const
 
 void sharklog::Logger::addOutputter(OutputterPtr op)
 {
+	lock_guard<recursive_mutex> lock(mutex_);
 	if (find(outputters_.begin(), outputters_.end(), op) == outputters_.end())
 		outputters_.push_back(op);
 }
 
 void Logger::removeOutputter(OutputterPtr op)
 {
+	lock_guard<recursive_mutex> lock(mutex_);
     outputters_.remove(op);
 }
 

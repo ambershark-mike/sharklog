@@ -34,6 +34,7 @@
 #include <vector>
 #include <sstream>
 #include <map>
+#include <mutex>
 
 /*!
  * The main namespace of the SharkLog project.
@@ -350,6 +351,7 @@ private:
     Level level_;
     LayoutPtr layout_;
 	OutputterList outputters_;
+	static std::recursive_mutex mutex_;
 };
     
 } // sharklog
