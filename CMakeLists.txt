@@ -24,6 +24,7 @@ endif()
 # projects to build
 add_subdirectory(lib)
 add_subdirectory(unittest)
+add_subdirectory(loggertest)
 
 # TODO: add check for if gtest is found
 add_test(unittest bin/unittest)

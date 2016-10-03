@@ -188,7 +188,7 @@ void Logger::setName(const std::string &loggerName, const std::string &baseName)
 {
     fullName_ = loggerName;
     baseName_ = baseName;
-    //cout << "logger " << this << " named " << fullName_ << endl;
+    //cout << "logger " << this << " named " << fullName_ << " with basename " << baseName << endl;
 }
 
 bool Logger::hasLogger(const std::string &name)
