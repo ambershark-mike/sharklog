@@ -12,7 +12,7 @@ set(SRCS
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})
-target_link_libraries(${PROJECT_NAME} sharklog)
+target_link_libraries(${PROJECT_NAME} sharklog pthread)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 
