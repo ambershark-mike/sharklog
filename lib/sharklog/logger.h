@@ -58,9 +58,44 @@ using LoggerPtr = std::shared_ptr<Logger>;
 /*!
  * \brief Logger instance
  *
- * This class covers the logger creation and interface into the SharkLog system.
+ * This class covers the logger creation and interface into the sharklog system.
  *
- * \todo example usage of logger
+ * The Logger instances are created as singleton objects.  Using new or instantiating
+ * the logger without using the interface will not work.  It will throw a compilation
+ * error.  You will need to use \ref Logger::rootLoot() and \ref Logger::logger() to
+ * get instances of Loggers.
+ *
+ * There will always be a root logger.  Any call into the Logger system will create
+ * this logger if it does not already exist.
+ *
+ * The Logger needs to be configured to be used.  For this release there is no
+ * automatic configuration class.  In fact configuration is severly limited for this
+ * 0.1 release.  Currently the only supported configuration will be with
+ * \ref ConsoleOutputter and \ref StandardLayout.
+ *
+ * The default level on the root logger is \ref Level::all().  You can change this with
+ * \ref setLevel().  See \ref Inheritance for more information on levels for loggers
+ * inherited from the root.
+ *
+ * \code
+ * #include <sharklog/standardlayout.h>
+ * #include <sharklog/consoleoutputter.h>
+ * #include <sharklog/logger.h>
+ *
+ * int main()
+ * {
+ *    // set up logger
+ *    auto root = Logger::rootLogger();
+ *    root->setLayout(LayoutPtr(new StandardLayout()));
+ *    root->addOutputter(OutputterPtr(new ConsoleOutputter()));
+ *
+ *    // log a message to root
+ *    root->log(Level::trace(), "Hello");
+ *
+ *    // log a message to a new name logger that inherits from root
+ *    Logger::logger("test")->log(Level::info(), "World");
+ * }
+ * \endcode
  */
 class Logger
 {

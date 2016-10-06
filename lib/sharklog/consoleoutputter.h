@@ -31,6 +31,11 @@
 namespace sharklog
 {
     
+/*!
+ * \brief Console output
+ *
+ * \todo document this
+ */
 class ConsoleOutputter : public Outputter
 {
 public:
