@@ -35,6 +35,7 @@
 #include <sstream>
 #include <map>
 #include <mutex>
+#include <string.h>
 
 /*!
  * The main namespace of the SharkLog project.
@@ -63,8 +64,17 @@ using LoggerPtr = std::shared_ptr<Logger>;
  */
 class Logger
 {
+    // custom case insensitive string compare
+    struct caseInsensitiveCompare : public std::binary_function<std::string, std::string, bool>
+    {
+        bool operator()(const std::string &lhs, const std::string &rhs) const
+        {
+            return strcasecmp(lhs.c_str(), rhs.c_str()) < 0;
+        }
+    };
+    
     using LoggerList = std::list<LoggerPtr>;
-    using LoggerMap = std::map<std::string, LoggerPtr>;
+    using LoggerMap = std::map<std::string, LoggerPtr, caseInsensitiveCompare>;
     
 public:
 	using OutputterList = std::list<OutputterPtr>;

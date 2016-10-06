@@ -239,11 +239,11 @@ TEST_F(LoggerTest, ClosingAndMakingANewLoggerWorks)
     ASSERT_NE(old, n);
 }
 
-TEST_F(LoggerTest, DISABLED_LoggerNamesAreCaseInsensitive)
+TEST_F(LoggerTest, LoggerNamesAreCaseInsensitive)
 {
-    auto logger = Logger::logger("Mike");
+    auto logger = Logger::logger("Mike IS cool");
     EXPECT_TRUE((bool)logger);
-    ASSERT_EQ(logger, Logger::logger("mike"));
+    ASSERT_EQ(logger, Logger::logger("mike is cool"));
 }
 
 TEST_F(LoggerTest, SetLevelWorks)
