@@ -2,8 +2,10 @@ cmake_minimum_required(VERSION 3.2)
 
 enable_testing()
 
-# TODO: add a check for gtest
-#find_package(gtest)
+find_package(GTest)
+if (NOT GTEST_FOUND)
+	message("No google test was found, will not build test code")
+endif()
 
 if (NOT CMAKE_BUILD_TYPE)
 	message(STATUS "Defaulting to release mode build, set
@@ -23,8 +25,9 @@ endif()
 
 # projects to build
 add_subdirectory(lib)
-add_subdirectory(unittest)
 add_subdirectory(loggertest)
 
-# TODO: add check for if gtest is found
-add_test(unittest bin/unittest)
+if (GTEST_FOUND)
+	add_subdirectory(unittest)
+	add_test(unittest bin/unittest)
+endif()
