@@ -48,7 +48,20 @@ $ ./bin/unittest
 
 ### Mac OSX
 
-TODO
+To build the library:
+
+@code
+$ mkdir build
+$ cd build
+$ cmake ..
+$ make
+.. build docs with
+$ make docs
+.. run test with
+$ make test
+.. or ..
+$ ./bin/unittest
+@endcode
 
 ### Windows
 
