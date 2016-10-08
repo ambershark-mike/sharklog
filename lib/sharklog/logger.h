@@ -229,8 +229,6 @@ public:
     /*!
      * \brief Gets the short/base name of the logger
      *
-     * \todo finish docs here
-     *
      * This gives you the last piece of a name in case of a tokenized logger with parents.
      * So if you had com.ambershark.sharklog as the name, this function would give you
      * just *sharklog*.  If you want the full name, see \ref fullName().
@@ -301,16 +299,25 @@ public:
     /*!
      * @brief Gets the layout
      *
-     * @todo finish me
+     * Returns a LayoutPtr to the current layout for this Logger.
      *
-     * @return
+     * @return the current layout
      */
     LayoutPtr layout() const;
     
     /*!
      * @brief Sets the layout
-     * @todo finish me
-     * @param p
+     *
+     * Set the \ref Layout for this logger.
+     *
+     * For example:
+     *
+     * \code
+     * Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+     * \endcode
+     *
+     * @param p the layout you want to set
+     * \sa layout()
      */
     void setLayout(LayoutPtr p);
     
