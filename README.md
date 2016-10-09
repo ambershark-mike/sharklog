@@ -74,12 +74,12 @@ See \ref copying, or the COPYING.dox file.
 
 To build the library:
 
-`
+~~~~~~~~~~~~~~~~~~~~~~~
 $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-`
+~~~~~~~~~~~~~~~~~~~~~~~
 
 To build the documentation (follow above build then do):
 
@@ -89,17 +89,17 @@ $ make docs
 
 To run the tests (assuming google test is installed, also following steps above):
 
-@code
+~~~~~~~~~~~~~~~~~~~~~~~
 $ make test
 ... alternatively if you want the full test run
 $ ./bin/unittest
-@endcode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Mac OSX
 
 To build the library:
 
-@code
+~~~~~~~~~~~~~~~~~~~~~~~
 $ mkdir build
 $ cd build
 $ cmake ..
@@ -110,7 +110,7 @@ $ make docs
 $ make test
 .. or ..
 $ ./bin/unittest
-@endcode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 ### Windows
 
