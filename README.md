@@ -74,12 +74,12 @@ See \ref copying, or the COPYING.dox file.
 
 To build the library:
 
-@code
+`
 $ mkdir build
 $ cd build
 $ cmake ..
 $ make
-@endcode
+`
 
 To build the documentation (follow above build then do):
 
