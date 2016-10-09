@@ -17,10 +17,16 @@ std::map<int, std::string> threadResults_;
 
 void usage();
 int threadTest();
+int basicTest();
 
 int main(int ac, char **av)
 {
-    if (ac > 1)
+    if (ac == 1)
+    {
+        usage();
+        return 1;
+    }
+    else
     {
         // we have command line params
         list<string> params;
@@ -37,18 +43,28 @@ int main(int ac, char **av)
         {
             return threadTest();
         }
+        
+        if (find(params.begin(), params.end(), "-b") != params.end())
+        {
+            return basicTest();
+        }
     }
-    
-	// setup logger
-	auto root = Logger::rootLogger();
-	root->setLayout(LayoutPtr(new StandardLayout));
-	root->addOutputter(OutputterPtr(new ConsoleOutputter));
-
-	// do some logging
-	//for (int i=0;i<1000;++i)
-    root->log(Level::info(), "testing");
 
 	return 0;
+}
+
+int basicTest()
+{
+    // setup logger
+    auto root = Logger::rootLogger();
+    root->setLayout(LayoutPtr(new StandardLayout));
+    root->addOutputter(OutputterPtr(new ConsoleOutputter));
+    
+    // do some logging
+    //for (int i=0;i<1000;++i)
+    root->log(Level::info(), "testing");
+    
+    return 0;
 }
 
 void usage()
@@ -56,7 +72,10 @@ void usage()
     cout << "loggertest [options]" << endl << endl;
     
     cout << "   --help                 Shows this help" << endl;
+    cout << endl;
+    cout << "Tests:" << endl;
     cout << "   -t                     Run threading test" << endl;
+    cout << "   -b                     Basic logger test" << endl;
     
     cout << endl;
 }
