@@ -22,58 +22,30 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "fileoutputter.h"
+#ifndef __fileoutputtertest_H
+#define __fileoutputtertest_H
 
-using namespace sharklog;
+#include <gtest/gtest.h>
 
-std::mutex FileOutputter::mutex_;
-
-FileOutputter::FileOutputter(const std::string &filename)
+class FileOutputterTest : public ::testing::Test
 {
-    setFilename(filename);
-    setAppend(false);
-}
-
-FileOutputter::~FileOutputter()
-{
-}
-
-bool FileOutputter::open()
-{
-    return false;
-}
-
-void FileOutputter::writeLog(const std::string &logMessage)
-{
+protected:
+    FileOutputterTest()
+    {
+    }
     
-}
-
-void FileOutputter::close()
-{
+    virtual ~FileOutputterTest()
+    {
+    }
     
-}
+    void SetUp()
+    {
+    }
+    
+    void TearDown()
+    {
+    }
+};
 
-bool FileOutputter::isOpen() const
-{
-    return Outputter::isOpen();
-}
+#endif // fileoutputtertest_H
 
-void FileOutputter::setFilename(const std::string &filename)
-{
-    filename_ = filename;
-}
-
-std::string FileOutputter::filename() const
-{
-    return filename_;
-}
-
-void FileOutputter::setAppend(bool append)
-{
-    append_ = append;
-}
-
-bool FileOutputter::append() const
-{
-    return append_;
-}

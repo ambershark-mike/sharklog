@@ -22,58 +22,36 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include "fileoutputtertest.h"
 #include "fileoutputter.h"
 
 using namespace sharklog;
 
-std::mutex FileOutputter::mutex_;
-
-FileOutputter::FileOutputter(const std::string &filename)
+TEST(FileOutputterTest, SetAppendWorks)
 {
-    setFilename(filename);
-    setAppend(false);
+    FileOutputter fo;
+    EXPECT_FALSE(fo.append());
+    fo.setAppend(true);
+    ASSERT_TRUE(fo.append());
 }
 
-FileOutputter::~FileOutputter()
+TEST(FileOutputterTest, ConstructorSetsName)
+{
+    FileOutputter fo("test");
+    ASSERT_STREQ("test", fo.filename().c_str());
+}
+
+TEST(FileOutputterTest, SetNameWorks)
+{
+    FileOutputter fo;
+    fo.setFilename("test");
+    ASSERT_STREQ("test", fo.filename().c_str());
+}
+
+TEST(FileOutputterTest, DISABLED_SetFileNameClosesFile)
 {
 }
 
-bool FileOutputter::open()
+TEST(FileOutputterTest, DISABLED_DestructorClosesFile)
 {
-    return false;
-}
-
-void FileOutputter::writeLog(const std::string &logMessage)
-{
-    
-}
-
-void FileOutputter::close()
-{
-    
-}
-
-bool FileOutputter::isOpen() const
-{
-    return Outputter::isOpen();
-}
-
-void FileOutputter::setFilename(const std::string &filename)
-{
-    filename_ = filename;
-}
-
-std::string FileOutputter::filename() const
-{
-    return filename_;
-}
-
-void FileOutputter::setAppend(bool append)
-{
-    append_ = append;
-}
-
-bool FileOutputter::append() const
-{
-    return append_;
 }
