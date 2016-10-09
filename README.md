@@ -83,9 +83,9 @@ $ make
 
 To build the documentation (follow above build then do):
 
-@code
+~~~~~~~~~~~~~~~~~~~~~~~
 $ make docs
-@endcode
+~~~~~~~~~~~~~~~~~~~~~~~
 
 To run the tests (assuming google test is installed, also following steps above):
 
