@@ -36,11 +36,21 @@ FileOutputter::FileOutputter(const std::string &filename)
 
 FileOutputter::~FileOutputter()
 {
+	close();
 }
 
 bool FileOutputter::open()
 {
-    return false;
+	// close file if it's already open
+	close();
+
+	// open file
+	if (append_)
+		file_.open(filename_, std::ofstream::out | std::ofstream::app);
+	else
+		file_.open(filename_, std::ofstream::out | std::ofstream::trunc);
+
+    return file_.is_open();
 }
 
 void FileOutputter::writeLog(const std::string &logMessage)
@@ -50,12 +60,13 @@ void FileOutputter::writeLog(const std::string &logMessage)
 
 void FileOutputter::close()
 {
-    
+	if (file_.is_open())
+		file_.close();
 }
 
 bool FileOutputter::isOpen() const
 {
-    return Outputter::isOpen();
+	return file_.is_open();
 }
 
 void FileOutputter::setFilename(const std::string &filename)

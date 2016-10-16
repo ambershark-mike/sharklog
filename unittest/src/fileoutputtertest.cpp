@@ -30,6 +30,7 @@ using namespace sharklog;
 TEST(FileOutputterTest, SetAppendWorks)
 {
     FileOutputter fo;
+	fo.setAppend(false);
     EXPECT_FALSE(fo.append());
     fo.setAppend(true);
     ASSERT_TRUE(fo.append());
@@ -46,6 +47,35 @@ TEST(FileOutputterTest, SetNameWorks)
     FileOutputter fo;
     fo.setFilename("test");
     ASSERT_STREQ("test", fo.filename().c_str());
+}
+
+TEST(FileOutputterTest, OpenWorks)
+{
+	FileOutputter fo("test-file-41983.tmp");
+	ASSERT_TRUE(fo.open());
+	ASSERT_TRUE(fo.isOpen());
+}
+
+TEST(FileOutputterTest, CloseWorks)
+{
+	FileOutputter fo("test-file-41983.tmp");
+	EXPECT_TRUE(fo.open());
+	fo.close();
+	ASSERT_FALSE(fo.isOpen());
+}
+
+TEST(FileOutputterTest, DefaultAppendIsFalse)
+{
+	FileOutputter fo;
+	ASSERT_FALSE(fo.append());
+}
+
+TEST(FileOutputterTest, DISABLED_AppendModeWorks)
+{
+}
+
+TEST(FileOutputterTest, DISABLED_NonAppendTruncates)
+{
 }
 
 TEST(FileOutputterTest, DISABLED_SetFileNameClosesFile)
