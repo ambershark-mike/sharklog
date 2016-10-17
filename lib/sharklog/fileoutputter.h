@@ -60,7 +60,7 @@ private:
     std::ofstream file_;
     std::string filename_;
     bool append_;
-    static std::mutex mutex_;
+    static std::recursive_mutex mutex_;
 };
     
 } // sharklog

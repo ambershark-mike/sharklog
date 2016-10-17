@@ -24,10 +24,30 @@
 
 #include "fileoutputtertest.h"
 #include "fileoutputter.h"
+#include <fstream>
 
 using namespace sharklog;
+using namespace std;
 
-TEST(FileOutputterTest, SetAppendWorks)
+int FileOutputterTest::getFileSize(const std::string &filename)
+{
+	ifstream f(filename, ios::binary);
+	f.seekg(0, ios::end);
+	auto end = f.tellg();
+	f.close();
+
+	return end;
+}
+
+void FileOutputterTest::writeTest()
+{
+	FileOutputter fo(filename_);
+	EXPECT_TRUE(fo.open());
+	fo.writeLog("test");
+	fo.close();
+}
+
+TEST_F(FileOutputterTest, SetAppendWorks)
 {
     FileOutputter fo;
 	fo.setAppend(false);
@@ -36,52 +56,88 @@ TEST(FileOutputterTest, SetAppendWorks)
     ASSERT_TRUE(fo.append());
 }
 
-TEST(FileOutputterTest, ConstructorSetsName)
+TEST_F(FileOutputterTest, ConstructorSetsName)
 {
     FileOutputter fo("test");
     ASSERT_STREQ("test", fo.filename().c_str());
 }
 
-TEST(FileOutputterTest, SetNameWorks)
+TEST_F(FileOutputterTest, SetNameWorks)
 {
     FileOutputter fo;
     fo.setFilename("test");
     ASSERT_STREQ("test", fo.filename().c_str());
 }
 
-TEST(FileOutputterTest, OpenWorks)
+TEST_F(FileOutputterTest, OpenWorks)
 {
-	FileOutputter fo("test-file-41983.tmp");
+	FileOutputter fo(filename_);
 	ASSERT_TRUE(fo.open());
 	ASSERT_TRUE(fo.isOpen());
 }
 
-TEST(FileOutputterTest, CloseWorks)
+TEST_F(FileOutputterTest, CloseWorks)
 {
-	FileOutputter fo("test-file-41983.tmp");
+	FileOutputter fo(filename_);
 	EXPECT_TRUE(fo.open());
 	fo.close();
 	ASSERT_FALSE(fo.isOpen());
 }
 
-TEST(FileOutputterTest, DefaultAppendIsFalse)
+TEST_F(FileOutputterTest, DefaultAppendIsFalse)
 {
 	FileOutputter fo;
 	ASSERT_FALSE(fo.append());
 }
 
-TEST(FileOutputterTest, DISABLED_AppendModeWorks)
+TEST_F(FileOutputterTest, AppendModeWorks)
 {
+	writeTest();
+
+	auto startSize = getFileSize(filename_);
+	EXPECT_GT(startSize, 0);
+
+	FileOutputter fo(filename_);
+	fo.setAppend(true);
+	EXPECT_TRUE(fo.open());
+	fo.writeLog("x");
+	fo.close();
+
+	ASSERT_EQ(getFileSize(filename_), startSize+1);
 }
 
-TEST(FileOutputterTest, DISABLED_NonAppendTruncates)
+TEST_F(FileOutputterTest, NonAppendTruncates)
 {
+	writeTest();
+
+	EXPECT_GT(getFileSize(filename_), 0);
+
+	FileOutputter fo(filename_);
+	EXPECT_TRUE(fo.open());
+	fo.close();
+
+	EXPECT_EQ(0, getFileSize(filename_));
 }
 
-TEST(FileOutputterTest, DISABLED_SetFileNameClosesFile)
+TEST_F(FileOutputterTest, SetFileNameClosesFile)
 {
+	FileOutputter fo(filename_);
+	EXPECT_TRUE(fo.open());
+	fo.setFilename("xyz");
+	ASSERT_FALSE(fo.isOpen());
 }
 
-TEST(FileOutputterTest, DISABLED_DestructorClosesFile)
+TEST_F(FileOutputterTest, WriteLogWorks)
 {
+	FileOutputter fo(filename_);
+	EXPECT_TRUE(fo.open());
+	fo.writeLog("test\n");
+	fo.close();
+
+	string line;
+	ifstream file(filename_);
+	EXPECT_TRUE(file.is_open());
+	getline(file, line);
+	ASSERT_STREQ("test", line.c_str());
+	file.close();
 }

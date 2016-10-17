@@ -25,8 +25,9 @@
 #include "fileoutputter.h"
 
 using namespace sharklog;
+using namespace std;
 
-std::mutex FileOutputter::mutex_;
+std::recursive_mutex FileOutputter::mutex_;
 
 FileOutputter::FileOutputter(const std::string &filename)
 {
@@ -41,6 +42,8 @@ FileOutputter::~FileOutputter()
 
 bool FileOutputter::open()
 {
+    lock_guard<recursive_mutex> lock(mutex_);
+
 	// close file if it's already open
 	close();
 
@@ -55,11 +58,18 @@ bool FileOutputter::open()
 
 void FileOutputter::writeLog(const std::string &logMessage)
 {
-    
+	if (!isOpen())
+		return;
+
+    lock_guard<recursive_mutex> lock(mutex_);
+
+	file_ << logMessage;
 }
 
 void FileOutputter::close()
 {
+    lock_guard<recursive_mutex> lock(mutex_);
+
 	if (file_.is_open())
 		file_.close();
 }
@@ -71,6 +81,9 @@ bool FileOutputter::isOpen() const
 
 void FileOutputter::setFilename(const std::string &filename)
 {
+    lock_guard<recursive_mutex> lock(mutex_);
+
+	close();
     filename_ = filename;
 }
 
@@ -81,6 +94,7 @@ std::string FileOutputter::filename() const
 
 void FileOutputter::setAppend(bool append)
 {
+    lock_guard<recursive_mutex> lock(mutex_);
     append_ = append;
 }
 

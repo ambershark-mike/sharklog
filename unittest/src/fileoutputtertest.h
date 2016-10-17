@@ -26,6 +26,8 @@
 #define __fileoutputtertest_H
 
 #include <gtest/gtest.h>
+#include <string>
+#include <cstdio>
 
 class FileOutputterTest : public ::testing::Test
 {
@@ -43,8 +45,14 @@ protected:
     }
     
     void TearDown()
-    {
-    }
+	{
+		remove(filename_.c_str());
+	}
+
+	int getFileSize(const std::string &filename);
+	void writeTest();
+
+	const std::string filename_ = "test-file-41983.tmp";
 };
 
 #endif // fileoutputtertest_H

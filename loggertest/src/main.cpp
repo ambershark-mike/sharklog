@@ -9,6 +9,7 @@
 #include <sharklog/logger.h>
 #include <sharklog/consoleoutputter.h>
 #include <sharklog/standardlayout.h>
+#include <sharklog/fileoutputter.h>
 
 using namespace std;
 using namespace sharklog;
@@ -16,7 +17,7 @@ using namespace sharklog;
 std::map<int, std::string> threadResults_;
 
 void usage();
-int threadTest();
+int threadTest(const std::string &filename="");
 int basicTest();
 
 int main(int ac, char **av)
@@ -42,6 +43,11 @@ int main(int ac, char **av)
         if (find(params.begin(), params.end(), "-t") != params.end())
         {
             return threadTest();
+        }
+
+        if (find(params.begin(), params.end(), "-ft") != params.end())
+        {
+			return threadTest("file-thread-test.tmp");
         }
         
         if (find(params.begin(), params.end(), "-b") != params.end())
@@ -75,6 +81,7 @@ void usage()
     cout << endl;
     cout << "Tests:" << endl;
     cout << "   -t                     Run threading test" << endl;
+	cout << "   -ft                    Run threading test with files" << endl;
     cout << "   -b                     Basic logger test" << endl;
     
     cout << endl;
@@ -120,13 +127,27 @@ void run(int tnum)
     threadResults_[tnum ] = result.str();
 }
 
-int threadTest()
+int threadTest(const std::string &filename)
 {
     threadResults_.clear();
     
     auto root = Logger::rootLogger();
     root->setLayout(LayoutPtr(new StandardLayout));
-    root->addOutputter(OutputterPtr(new ConsoleOutputter));
+
+	if (filename.empty())
+	{
+		root->addOutputter(OutputterPtr(new ConsoleOutputter));
+	}
+	else
+	{
+		OutputterPtr fop(new FileOutputter(filename));
+		if (!fop->open())
+		{
+			cout << "Failed to open file " << filename << endl;
+			return 1;
+		}
+		root->addOutputter(fop);
+	}
     
     cout << "Starting threads...." << endl;
     unsigned int numThreads = 10;
