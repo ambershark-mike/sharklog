@@ -41,19 +41,112 @@ namespace sharklog
 class FileOutputter : public Outputter
 {
 public:
+    /*!
+     * @brief Constructor
+     *
+     * Creates a FileOutputter.  You can pass a parmater \a filename
+     * which tells the class which path to write the log file to.
+     *
+     * This function calls @ref setFilename().
+     *
+     * @param filename the file path to the file you want to write
+     * @sa setFilename()
+     */
     FileOutputter(const std::string &filename = std::string());
+    
+    /*!
+     * @brief Deconstructor
+     */
     virtual ~FileOutputter();
     
+    /*!
+     * @brief Sets the file name/path
+     *
+     * Set the filename (and path) of the log file to write.  For example you can
+     * have /tmp/myfile.log or just myfile.log to write to the current directory.
+     *
+     * Any call to this function will close an existing and open file, by calling
+     * \ref close().
+     *
+     * @param filename the filename and path for the log file
+     * @sa close()
+     */
     void setFilename(const std::string &filename);
+    
+    /*!
+     * @brief Gets the current filename
+     *
+     * Gets the file name and path for the current log file.
+     *
+     * @return the filename for the log file
+     */
     std::string filename() const;
     
+    /*!
+     * @brief Set append file mode
+     *
+     * Sets whether or not the file should be appended or truncated when
+     * opened.
+     *
+     * The default is truncate mode.
+     *
+     * Set to true in order to append when opening.  This value is only used
+     * when opening the file.
+     *
+     * @param append true to append, false to truncate
+     * @sa append(), open()
+     */
     void setAppend(bool append);
+    
+    /*!
+     * @brief Get append mode
+     *
+     * Returns the current value of append mode.
+     *
+     * @return bool representing the append mode
+     */
     bool append() const;
     
+    /*!
+     * @brief Open the log file
+     *
+     * This opens the log file.  Filename should be set already by now via the
+     * constructor or \ref setFilename().
+     *
+     * @return true if opened, false if failed
+     */
     virtual bool open() override;
+    
+    /*!
+     * @brief Write a log message
+     *
+     * Called to write \a logMessage to the log file.
+     *
+     * Logger should be open or this log message will be discarded.
+     *
+     * @param logMessage The message to log
+     * @sa open()
+     */
     virtual void writeLog(const std::string &logMessage) override;
+    
+    /*!
+     * @brief Close the log file
+     *
+     * Closes the log file.  It must be reopened before you log again or the
+     * messages will be lost.
+     *
+     * @sa open()
+     */
     virtual void close() override;
     
+    /*!
+     * @brief Checks file open status
+     *
+     * Checks to see if the file is open.
+     *
+     * @return true if open, false if not
+     * @sa open()
+     */
     virtual bool isOpen() const override;
     
 private:
