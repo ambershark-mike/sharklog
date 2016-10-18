@@ -28,6 +28,7 @@
 #include <sharklog/level.h>
 #include <sharklog/outputter.h>
 #include <sharklog/layout.h>
+#include <sharklog/location.h>
 #include <string>
 #include <memory>
 #include <list>
@@ -376,7 +377,7 @@ public:
      * @sa addOutputter(), setLayout(), LoggerStream
      * @returns true if logged, false if not
      */
-    bool log(const Level &level, const std::string &msg) const;
+    bool log(const Level &level, const std::string &msg, const Location &loc=Location()) const;
     
 protected:
     /*!
@@ -407,5 +408,9 @@ private:
 };
     
 } // sharklog
+
+#define SHARKLOG_DEBUG(logger, message) { \
+    if (logger->level().hasDebug()) {\
+        logger->log(Level::fatal(), message, SHARKLOG_LOCATION); }}
 
 #endif // Logger_H

@@ -358,3 +358,8 @@ TEST_F(LoggerTest, LoggingWorks)
     auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[FATAL\\] this is a test\n");
     ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
 }
+
+TEST_F(LoggerTest, LocationLoggingWorks)
+{
+    FAIL() << "do location test";
+}

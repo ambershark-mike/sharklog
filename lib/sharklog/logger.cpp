@@ -29,6 +29,7 @@
 #include "logger.h"
 #include "utilfunctions.h"
 #include <iostream>
+#include "location.h"
 
 using namespace sharklog;
 using namespace std;
@@ -267,7 +268,7 @@ void Logger::removeOutputter(OutputterPtr op)
     outputters_.remove(op);
 }
 
-bool Logger::log(const Level &level, const std::string &msg) const
+bool Logger::log(const Level &level, const std::string &msg, const Location &loc) const
 {
     // make sure we have this level
     if (!level_.hasLevel(level))
