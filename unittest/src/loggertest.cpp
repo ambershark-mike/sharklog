@@ -49,6 +49,22 @@ void LoggerTest::TearDown()
     Logger::closeRootLogger();
 }
 
+StringOutputter *LoggerTest::setupMacroTest()
+{
+    auto logger = Logger::rootLogger();
+    logger->addOutputter(OutputterPtr(new StringOutputter));
+    logger->setLayout(LayoutPtr(new StandardLayout));
+    return dynamic_cast<StringOutputter *>(logger->outputters().front().get());
+}
+
+bool LoggerTest::testMacro(const std::string &type, const std::string &test)
+{
+    stringstream ss;
+    ss << "^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[" << type << "\\] test\n";
+    auto re = regex(ss.str());
+    return regex_match(test.c_str(), re);
+}
+
 TEST_F(LoggerTest, HasRootLogger)
 {
     ASSERT_TRUE((bool)Logger::rootLogger());
@@ -359,7 +375,49 @@ TEST_F(LoggerTest, LoggingWorks)
     ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
 }
 
-TEST_F(LoggerTest, LocationLoggingWorks)
+TEST_F(LoggerTest, DISABLED_LocationLoggingShowsLocation)
 {
-    FAIL() << "do location test";
+    // need support for custom/pattern logging in order to test it
+}
+
+TEST_F(LoggerTest, TestDEBUGMacro)
+{
+    auto sop = setupMacroTest();
+    SHARKLOG_DEBUG(Logger::rootLogger(), "test");
+    ASSERT_TRUE(testMacro("DEBUG", sop->output_));
+}
+
+TEST_F(LoggerTest, TestTRACEMacro)
+{
+    auto sop = setupMacroTest();
+    SHARKLOG_TRACE(Logger::rootLogger(), "test");
+    ASSERT_TRUE(testMacro("TRACE", sop->output_));
+}
+
+TEST_F(LoggerTest, TestINFOMacro)
+{
+    auto sop = setupMacroTest();
+    SHARKLOG_INFO(Logger::rootLogger(), "test");
+    ASSERT_TRUE(testMacro("INFO", sop->output_));
+}
+
+TEST_F(LoggerTest, TestWARNMacro)
+{
+    auto sop = setupMacroTest();
+    SHARKLOG_WARN(Logger::rootLogger(), "test");
+    ASSERT_TRUE(testMacro("WARN", sop->output_));
+}
+
+TEST_F(LoggerTest, TestERRORMacro)
+{
+    auto sop = setupMacroTest();
+    SHARKLOG_ERROR(Logger::rootLogger(), "test");
+    ASSERT_TRUE(testMacro("ERROR", sop->output_));
+}
+
+TEST_F(LoggerTest, TestFATALMacro)
+{
+    auto sop = setupMacroTest();
+    SHARKLOG_FATAL(Logger::rootLogger(), "test");
+    ASSERT_TRUE(testMacro("FATAL", sop->output_));
 }

@@ -57,6 +57,9 @@ protected:
 
     virtual void SetUp();
     virtual void TearDown();
+    
+    StringOutputter *setupMacroTest();
+    bool testMacro(const std::string &type, const std::string &test);
 };
 
 #endif // loggertest_H

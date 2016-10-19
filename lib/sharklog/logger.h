@@ -409,8 +409,35 @@ private:
     
 } // sharklog
 
+//! \todo document these macros
 #define SHARKLOG_DEBUG(logger, message) { \
     if (logger->level().hasDebug()) {\
-        logger->log(Level::fatal(), message, SHARKLOG_LOCATION); }}
+        logger->log(Level::debug(), message, SHARKLOG_LOCATION); } \
+    }
+
+#define SHARKLOG_TRACE(logger, message) { \
+    if (logger->level().hasTrace()) {\
+        logger->log(Level::trace(), message, SHARKLOG_LOCATION); } \
+    }
+
+#define SHARKLOG_INFO(logger, message) { \
+    if (logger->level().hasInfo()) {\
+        logger->log(Level::info(), message, SHARKLOG_LOCATION); } \
+    }
+
+#define SHARKLOG_WARN(logger, message) { \
+    if (logger->level().hasWarn()) {\
+        logger->log(Level::warn(), message, SHARKLOG_LOCATION); } \
+    }
+
+#define SHARKLOG_ERROR(logger, message) { \
+    if (logger->level().hasError()) {\
+        logger->log(Level::error(), message, SHARKLOG_LOCATION); } \
+    }
+
+#define SHARKLOG_FATAL(logger, message) { \
+    if (logger->level().hasFatal()) {\
+        logger->log(Level::fatal(), message, SHARKLOG_LOCATION); } \
+    }
 
 #endif // Logger_H

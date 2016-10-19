@@ -55,6 +55,7 @@ private:
     
 } // sharklog
 
+//! \todo Document SHARKLOG_LOCATION
 #if !defined(SHARKLOG_LOCATION)
     #if defined(_MSC_VER)
         #if _MSC_VER >= 1300
