@@ -22,6 +22,9 @@ set(SRCS
 	src/consoleoutputtertest.h
 	src/loggerstreamtest.cpp
 	src/loggerstreamtest.h
+	src/locationtest.cpp
+	src/fileoutputtertest.cpp
+	src/fileoutputtertest.h
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})

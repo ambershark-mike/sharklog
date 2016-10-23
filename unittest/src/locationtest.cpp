@@ -22,44 +22,44 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __loggertest_H
-#define __loggertest_H
-
 #include <gtest/gtest.h>
-#include <sharklog/outputter.h>
-#include <string>
+#include "location.h"
+#include <regex>
 
-class StringOutputter : public sharklog::Outputter
+using namespace sharklog;
+using namespace std;
+
+TEST(LocationTest, ConstructorDefaultMakesEmpty)
 {
-public:
-    bool open() final
-    {
-        return true;
-    }
-    
-    void writeLog(const std::string &logMessage) final
-    {
-        output_ = logMessage;
-    }
-    
-    void close() final { }
-    
-    bool isOpen() const final { return true; }
-    
-    std::string output_;
-};
+    Location loc;
+    ASSERT_TRUE(loc.file().empty());
+    ASSERT_TRUE(loc.function().empty());
+    ASSERT_FALSE(loc.line());
+}
 
-class LoggerTest : public ::testing::Test
+TEST(LocationTest, FilledConstructorWorks)
 {
-protected:
-    LoggerTest();
-    virtual ~LoggerTest();
+    Location loc("file", "function", 10);
+    ASSERT_STREQ("file", loc.file().c_str());
+    ASSERT_STREQ("function", loc.function().c_str());
+    ASSERT_EQ(10, loc.line());
+}
 
-    virtual void SetUp();
-    virtual void TearDown();
+TEST(LocationTest, TestLocationCreationMacro)
+{
+    auto loc = SHARKLOG_LOCATION;
     
-    StringOutputter *setupMacroTest();
-    bool testMacro(const std::string &type, const std::string &test);
-};
+    auto re = regex("^[a-z]* [a-z].*\\(.*\\)");
+    ASSERT_TRUE(regex_match(loc.function().c_str(), re)) << loc.function().c_str();
+    
+    re = regex("^.*(locationtest.cpp)");
+    ASSERT_TRUE(regex_match(loc.file().c_str(), re)) << loc.file().c_str();
+    
+    ASSERT_GT(loc.line(), 0);
+}
 
-#endif // loggertest_H
+TEST(LocationTest, TestEmpty)
+{
+    ASSERT_FALSE(SHARKLOG_LOCATION.empty());
+    ASSERT_TRUE(Location().empty());
+}

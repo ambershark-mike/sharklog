@@ -22,44 +22,56 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __loggertest_H
-#define __loggertest_H
+#ifndef __location_H
+#define __location_H
 
-#include <gtest/gtest.h>
-#include <sharklog/outputter.h>
 #include <string>
 
-class StringOutputter : public sharklog::Outputter
+namespace sharklog
+{
+    
+/*!
+ * @brief Location
+ *
+ * @todo document this
+ */
+class Location
 {
 public:
-    bool open() final
-    {
-        return true;
-    }
+    Location() : line_(0) { }
+    Location(const std::string &file, const std::string &function, int line);
     
-    void writeLog(const std::string &logMessage) final
-    {
-        output_ = logMessage;
-    }
+    bool empty() const;
     
-    void close() final { }
+    inline std::string file() const { return file_; }
+    inline std::string function() const { return function_; }
+    inline int line() const { return line_; }
     
-    bool isOpen() const final { return true; }
-    
-    std::string output_;
+private:
+    std::string file_;
+    std::string function_;
+    int line_;
 };
-
-class LoggerTest : public ::testing::Test
-{
-protected:
-    LoggerTest();
-    virtual ~LoggerTest();
-
-    virtual void SetUp();
-    virtual void TearDown();
     
-    StringOutputter *setupMacroTest();
-    bool testMacro(const std::string &type, const std::string &test);
-};
+} // sharklog
 
-#endif // loggertest_H
+//! \todo Document SHARKLOG_LOCATION
+#if !defined(SHARKLOG_LOCATION)
+    #if defined(_MSC_VER)
+        #if _MSC_VER >= 1300
+            #define __SHARKLOG_FUNC__ __FUNCSIG__
+        #endif
+    #else
+        #if defined(__GNUC__)
+            #define __SHARKLOG_FUNC__ __PRETTY_FUNCTION__
+        #endif
+    #endif
+
+    #if !defined(__SHARKLOG_FUNC__)
+        #define __SHARKLOG_FUNC__ ""
+    #endif
+
+    #define SHARKLOG_LOCATION sharklog::Location(__FILE__, __SHARKLOG_FUNC__, __LINE__)
+#endif
+
+#endif // location_H

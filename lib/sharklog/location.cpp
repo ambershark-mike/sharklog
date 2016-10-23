@@ -22,44 +22,18 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __loggertest_H
-#define __loggertest_H
+#include "location.h"
 
-#include <gtest/gtest.h>
-#include <sharklog/outputter.h>
-#include <string>
+using namespace sharklog;
 
-class StringOutputter : public sharklog::Outputter
+Location::Location(const std::string &file, const std::string &function, int line)
+    : file_(file)
+    , function_(function)
+    , line_(line)
 {
-public:
-    bool open() final
-    {
-        return true;
-    }
-    
-    void writeLog(const std::string &logMessage) final
-    {
-        output_ = logMessage;
-    }
-    
-    void close() final { }
-    
-    bool isOpen() const final { return true; }
-    
-    std::string output_;
-};
+}
 
-class LoggerTest : public ::testing::Test
+bool Location::empty() const
 {
-protected:
-    LoggerTest();
-    virtual ~LoggerTest();
-
-    virtual void SetUp();
-    virtual void TearDown();
-    
-    StringOutputter *setupMacroTest();
-    bool testMacro(const std::string &type, const std::string &test);
-};
-
-#endif // loggertest_H
+    return !(line_ && !function_.empty() && !file_.empty());
+}

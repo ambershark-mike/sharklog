@@ -22,44 +22,38 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#ifndef __loggertest_H
-#define __loggertest_H
+#ifndef __fileoutputtertest_H
+#define __fileoutputtertest_H
 
 #include <gtest/gtest.h>
-#include <sharklog/outputter.h>
 #include <string>
+#include <cstdio>
 
-class StringOutputter : public sharklog::Outputter
-{
-public:
-    bool open() final
-    {
-        return true;
-    }
-    
-    void writeLog(const std::string &logMessage) final
-    {
-        output_ = logMessage;
-    }
-    
-    void close() final { }
-    
-    bool isOpen() const final { return true; }
-    
-    std::string output_;
-};
-
-class LoggerTest : public ::testing::Test
+class FileOutputterTest : public ::testing::Test
 {
 protected:
-    LoggerTest();
-    virtual ~LoggerTest();
-
-    virtual void SetUp();
-    virtual void TearDown();
+    FileOutputterTest()
+    {
+    }
     
-    StringOutputter *setupMacroTest();
-    bool testMacro(const std::string &type, const std::string &test);
+    virtual ~FileOutputterTest()
+    {
+    }
+    
+    void SetUp()
+    {
+    }
+    
+    void TearDown()
+	{
+		remove(filename_.c_str());
+	}
+
+	int getFileSize(const std::string &filename);
+	void writeTest();
+
+	const std::string filename_ = "test-file-41983.tmp";
 };
 
-#endif // loggertest_H
+#endif // fileoutputtertest_H
+

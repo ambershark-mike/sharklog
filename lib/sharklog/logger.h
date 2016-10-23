@@ -28,6 +28,7 @@
 #include <sharklog/level.h>
 #include <sharklog/outputter.h>
 #include <sharklog/layout.h>
+#include <sharklog/location.h>
 #include <string>
 #include <memory>
 #include <list>
@@ -36,6 +37,10 @@
 #include <map>
 #include <mutex>
 #include <string.h>
+
+/*!
+ * \file logger.h
+ */
 
 /*!
  * The main namespace of the SharkLog project.
@@ -376,7 +381,7 @@ public:
      * @sa addOutputter(), setLayout(), LoggerStream
      * @returns true if logged, false if not
      */
-    bool log(const Level &level, const std::string &msg) const;
+    bool log(const Level &level, const std::string &msg, const Location &loc=Location()) const;
     
 protected:
     /*!
@@ -407,5 +412,89 @@ private:
 };
     
 } // sharklog
+
+/*!
+ * \brief Debug log macro
+ *
+ * Use this macro to quickly and easily log using the debug level.
+ *
+ * \code
+ * SHARKLOG_DEBUG(Logger::rootLogger(), "hi guys");
+ * \endcode
+ */
+#define SHARKLOG_DEBUG(logger, message) { \
+    if (logger->level().hasDebug()) {\
+        logger->log(Level::debug(), message, SHARKLOG_LOCATION); } \
+    }
+
+/*!
+ * \brief Trace log macro
+ *
+ * Use this macro to quickly and easily log using the trace level.
+ *
+ * \code
+ * SHARKLOG_TRACE(Logger::rootLogger(), "hi guys");
+ * \endcode
+ */
+#define SHARKLOG_TRACE(logger, message) { \
+    if (logger->level().hasTrace()) {\
+        logger->log(Level::trace(), message, SHARKLOG_LOCATION); } \
+    }
+
+/*!
+ * \brief Info log macro
+ *
+ * Use this macro to quickly and easily log using the info level.
+ *
+ * \code
+ * SHARKLOG_INFO(Logger::rootLogger(), "hi guys");
+ * \endcode
+ */
+#define SHARKLOG_INFO(logger, message) { \
+    if (logger->level().hasInfo()) {\
+        logger->log(Level::info(), message, SHARKLOG_LOCATION); } \
+    }
+
+/*!
+ * \brief Warn log macro
+ *
+ * Use this macro to quickly and easily log using the warn level.
+ *
+ * \code
+ * SHARKLOG_WARN(Logger::rootLogger(), "hi guys");
+ * \endcode
+ */
+#define SHARKLOG_WARN(logger, message) { \
+    if (logger->level().hasWarn()) {\
+        logger->log(Level::warn(), message, SHARKLOG_LOCATION); } \
+    }
+
+/*!
+ * \brief Error log macro
+ *
+ * Use this macro to quickly and easily log using the error level.
+ *
+ * \code
+ * SHARKLOG_ERROR(Logger::rootLogger(), "hi guys");
+ * \endcode
+ */
+#define SHARKLOG_ERROR(logger, message) { \
+    if (logger->level().hasError()) {\
+        logger->log(Level::error(), message, SHARKLOG_LOCATION); } \
+    }
+
+/*!
+ * \brief Fatal log macro
+ *
+ * Use this macro to quickly and easily log using the fatal level.
+ *
+ * \code
+ * SHARKLOG_FATAL(Logger::rootLogger(), "hi guys");
+ * \endcode
+ */
+#define SHARKLOG_FATAL(logger, message) { \
+    if (logger->level().hasFatal()) {\
+        logger->log(Level::fatal(), message, SHARKLOG_LOCATION); } \
+    }
 
 #endif // Logger_H
