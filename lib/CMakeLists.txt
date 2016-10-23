@@ -3,7 +3,7 @@ project(sharklog)
 
 # version
 set(sharklog_VERSION_MAJOR 0)
-set(sharklog_VERSION_MINOR 1)
+set(sharklog_VERSION_MINOR 2)
 set(sharklog_VERSION_MAINT 0)
 set(sharklog_VERSION_STRING
 	${sharklog_VERSION_MAJOR}.${sharklog_VERSION_MINOR}.${sharklog_VERSION_MAINT}
@@ -41,6 +41,8 @@ set(SRCS
 	sharklog/consoleoutputter.h
 	sharklog/location.cpp
 	sharklog/location.h
+	sharklog/fileoutputter.cpp
+	sharklog/fileoutputter.h
 	)
 
 # build
