@@ -28,18 +28,62 @@ using namespace sharklog;
 
 LoggerStream::LoggerStream(LoggerPtr lp, const Level &lev)
 {
-    
+    setLevel(lev);
+    setLogger(lp);
 }
 
 LoggerStream::LoggerStream(const std::string &loggerName, const Level &lev)
 {
-    
+    setLevel(lev);
+    setLogger(Logger::logger(loggerName));
 }
 
 LoggerStream &LoggerStream::operator<<(const Level &lev)
 {
+    setLevel(lev);
+    return *this;
 }
 
 LoggerStream &LoggerStream::operator<<(const Location &loc)
 {
+    return *this;
+}
+
+void LoggerStream::end()
+{
+}
+
+LoggerStream &LoggerStream::end(LoggerStream &s)
+{
+    return s;
+}
+
+LoggerPtr LoggerStream::logger() const
+{
+    return logger_;
+}
+
+Level LoggerStream::level() const
+{
+    return level_;
+}
+
+void LoggerStream::setLevel(const Level &lev)
+{
+    level_ = lev;
+}
+
+void LoggerStream::setLogger(LoggerPtr lp)
+{
+    logger_ = lp;
+}
+
+std::string LoggerStream::data() const
+{
+    return data_.str();
+}
+
+LoggerStream::operator std::basic_ostream<char> &()
+{
+    return data_;
 }

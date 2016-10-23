@@ -27,6 +27,7 @@
 
 #include <sharklog/level.h>
 #include <sharklog/logger.h>
+#include <sstream>
 
 namespace sharklog
 {
@@ -44,10 +45,17 @@ public:
     LoggerStream(LoggerPtr lp=Logger::rootLogger(), const Level &lev=Level::trace());
     LoggerStream(const std::string &loggerName, const Level &lev=Level::trace());
     
+    LoggerPtr logger() const;
+    Level level() const;
+    std::string data() const;
+    
+    void setLevel(const Level &lev);
+    void setLogger(LoggerPtr lp);
+    
     // stream control/manipulation
     LoggerStream &operator<<(const Level &lev);
     LoggerStream &operator<<(const Location &loc);
-    LoggerStream &end();
+    static LoggerStream &end(LoggerStream &s);
     
     // allow casting to the underlying basic_ostream
     operator std::basic_ostream<char>&();
@@ -60,15 +68,16 @@ public:
         return *this;
     }
     
-    //void end();
+    void end();
     
 private:
     // block copies
     LoggerStream(LoggerStream &) { }
-    LoggerStream &operator=(LoggerStream &) { }
+    LoggerStream &operator=(LoggerStream &) { return *this; }
     
     LoggerPtr logger_;
     Level level_;
+    std::basic_stringstream<char> data_;
 };
     
 } // sharklog
