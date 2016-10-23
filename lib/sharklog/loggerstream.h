@@ -44,8 +44,31 @@ public:
     LoggerStream(LoggerPtr lp=Logger::rootLogger(), const Level &lev=Level::trace());
     LoggerStream(const std::string &loggerName, const Level &lev=Level::trace());
     
+    // stream control/manipulation
     LoggerStream &operator<<(const Level &lev);
     LoggerStream &operator<<(const Location &loc);
+    LoggerStream &end();
+    
+    // allow casting to the underlying basic_ostream
+    operator std::basic_ostream<char>&();
+    
+    // allow streaming of anything that basic_ostream can handle
+    template <class var>
+    inline sharklog::LoggerStream &operator<<(const var &val)
+    {
+        ((std::basic_ostream<char>&) *this) << val;
+        return *this;
+    }
+    
+    //void end();
+    
+private:
+    // block copies
+    LoggerStream(LoggerStream &) { }
+    LoggerStream &operator=(LoggerStream &) { }
+    
+    LoggerPtr logger_;
+    Level level_;
 };
     
 } // sharklog
