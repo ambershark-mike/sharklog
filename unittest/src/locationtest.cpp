@@ -63,3 +63,9 @@ TEST(LocationTest, TestEmpty)
     ASSERT_FALSE(SHARKLOG_LOCATION.empty());
     ASSERT_TRUE(Location().empty());
 }
+
+TEST(LocationTest, FormattedStringWorks)
+{
+    Location loc("file", "func", 10);
+    ASSERT_STREQ("file func 10", loc.formattedString().c_str());
+}

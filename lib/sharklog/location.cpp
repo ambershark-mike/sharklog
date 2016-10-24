@@ -23,8 +23,10 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "location.h"
+#include <sstream>
 
 using namespace sharklog;
+using namespace std;
 
 Location::Location(const std::string &file, const std::string &function, int line)
     : file_(file)
@@ -36,4 +38,11 @@ Location::Location(const std::string &file, const std::string &function, int lin
 bool Location::empty() const
 {
     return !(line_ && !function_.empty() && !file_.empty());
+}
+
+std::string Location::formattedString() const
+{
+    stringstream ss;
+    ss << "File: " << file() << " Function: " << function() << " Line: " << line();
+    return ss.str();
 }

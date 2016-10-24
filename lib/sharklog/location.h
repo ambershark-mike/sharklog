@@ -47,6 +47,8 @@ public:
     inline std::string function() const { return function_; }
     inline int line() const { return line_; }
     
+    std::string formattedString() const;
+    
 private:
     std::string file_;
     std::string function_;
