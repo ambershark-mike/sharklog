@@ -10,6 +10,7 @@
 #include <sharklog/consoleoutputter.h>
 #include <sharklog/standardlayout.h>
 #include <sharklog/fileoutputter.h>
+#include <sharklog/functrace.h>
 
 using namespace std;
 using namespace sharklog;
@@ -59,6 +60,24 @@ int main(int ac, char **av)
 	return 0;
 }
 
+void funcTracePart3()
+{
+    SHARKLOG_FUNCTRACE_ROOT;
+}
+
+void funcTracePart2()
+{
+    SHARKLOG_FUNCTRACE(Logger::rootLogger());
+    SHARKLOG_TRACE(Logger::rootLogger(), "inside functrace part 2");
+}
+
+void funcTraceTest()
+{
+    SHARKLOG_FUNCTRACE_ROOT;
+    SHARKLOG_INFO(Logger::rootLogger(), "inside the functrace test");
+    funcTracePart2();
+}
+
 int basicTest()
 {
     // setup logger
@@ -69,6 +88,13 @@ int basicTest()
     // do some logging
     //for (int i=0;i<1000;++i)
     root->log(Level::info(), "testing");
+    
+    // test functrace
+    funcTraceTest();
+    
+    FuncTrace::setEnterHeader("==>");
+    FuncTrace::setExitHeader("<==");
+    funcTracePart3();
     
     return 0;
 }
