@@ -46,15 +46,23 @@ LoggerStream &LoggerStream::operator<<(const Level &lev)
 
 LoggerStream &LoggerStream::operator<<(const Location &loc)
 {
+    loc_ = loc;
     return *this;
 }
 
 void LoggerStream::end()
 {
+    // log the message
+    logger()->log(level(), data_.str(), loc_);
+    
+    // clear the stream
+    std::basic_string<char> emp;
+    data_.str(emp);
 }
 
 LoggerStream &LoggerStream::end(LoggerStream &s)
 {
+    s.end();
     return s;
 }
 
@@ -81,6 +89,16 @@ void LoggerStream::setLogger(LoggerPtr lp)
 std::string LoggerStream::data() const
 {
     return data_.str();
+}
+
+Location LoggerStream::location() const
+{
+    return loc_;
+}
+
+LoggerStream &LoggerStream::operator<<(LoggerFuncPtr pf)
+{
+    return (*pf)(*this);
 }
 
 LoggerStream::operator std::basic_ostream<char> &()

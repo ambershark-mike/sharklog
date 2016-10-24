@@ -24,7 +24,11 @@
 
 #include "loggerstreamtest.h"
 #include "loggerstream.h"
+#include "location.h"
 #include <string>
+#include <standardlayout.h>
+#include "loggertest.h"
+#include <regex>
 
 using namespace sharklog;
 using namespace std;
@@ -77,5 +81,58 @@ TEST_F(LoggerStreamTest, ConstructorWithNameWorks)
 TEST_F(LoggerStreamTest, LocationStreamingWorks)
 {
     LoggerStream ls;
-    //ls << Location();
+    ls << Location("file", "func", 20);
+    ASSERT_STREQ("File: file Function: func Line: 20", ls.location().formattedString().c_str());
+}
+
+TEST_F(LoggerStreamTest, StreamedEndFlushesAndClears)
+{
+    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    LoggerStream ls;
+    ls << "hello world" << LoggerStream::end;
+    ASSERT_TRUE(ls.data().empty());
+}
+
+TEST_F(LoggerStreamTest, StreamedEndLogs)
+{
+    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    Logger::rootLogger()->addOutputter(OutputterPtr(new StringOutputter));
+    LoggerStream ls;
+    ls << "hello world" << LoggerStream::end;
+    auto sop = dynamic_cast<StringOutputter *>(Logger::rootLogger()->outputters().front().get());
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[TRACE\\] hello world\n");
+    ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
+}
+
+TEST_F(LoggerStreamTest, StreamingAfterEndWorks)
+{
+    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    Logger::rootLogger()->addOutputter(OutputterPtr(new StringOutputter));
+    LoggerStream ls;
+    ls << "hello world" << LoggerStream::end;
+    auto sop = dynamic_cast<StringOutputter *>(Logger::rootLogger()->outputters().front().get());
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[TRACE\\] hello world\n");
+    EXPECT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
+    
+    ls << Level::fatal() << "next one" << LoggerStream::end;
+    re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[FATAL\\] next one\n");
+    ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
+}
+
+TEST_F(LoggerStreamTest, TestEndMacro)
+{
+    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    Logger::rootLogger()->addOutputter(OutputterPtr(new StringOutputter));
+    LoggerStream ls;
+    ls << "test" << SHARKLOG_END;
+    auto sop = dynamic_cast<StringOutputter *>(Logger::rootLogger()->outputters().front().get());
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[TRACE\\] test\n");
+    ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
+}
+
+TEST_F(LoggerStreamTest, TestEndMacroAddsLocation)
+{
+    LoggerStream ls;
+    ls << "test" << SHARKLOG_END;
+    ASSERT_FALSE(ls.location().empty());
 }

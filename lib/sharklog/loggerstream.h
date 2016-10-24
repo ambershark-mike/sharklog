@@ -27,12 +27,18 @@
 
 #include <sharklog/level.h>
 #include <sharklog/logger.h>
+#include <sharklog/location.h>
 #include <sstream>
+
+/*!
+ * \file loggerstream.h
+ */
 
 namespace sharklog
 {
     
-class Location;
+class LoggerStream;
+using LoggerFuncPtr = LoggerStream &(*)(LoggerStream&);
     
 /*!
  * \brief Streams for the Logger
@@ -48,6 +54,7 @@ public:
     LoggerPtr logger() const;
     Level level() const;
     std::string data() const;
+    Location location() const;
     
     void setLevel(const Level &lev);
     void setLogger(LoggerPtr lp);
@@ -55,6 +62,7 @@ public:
     // stream control/manipulation
     LoggerStream &operator<<(const Level &lev);
     LoggerStream &operator<<(const Location &loc);
+    LoggerStream &operator<<(LoggerFuncPtr pf);
     static LoggerStream &end(LoggerStream &s);
     
     // allow casting to the underlying basic_ostream
@@ -75,11 +83,27 @@ private:
     LoggerStream(LoggerStream &) { }
     LoggerStream &operator=(LoggerStream &) { return *this; }
     
+    Location loc_;
     LoggerPtr logger_;
     Level level_;
     std::basic_stringstream<char> data_;
 };
-    
+
+/*!
+ * \brief End log macro
+ *
+ * Use this macro to easily end a log message that is being written
+ * via a \ref LoggerStream.
+ *
+ * It also adds location information to the log message.
+ *
+ * \code
+ * LoggerStream ls;
+ * ls << "testing" << SHARKLOG_END;
+ * \endcode
+ */
+#define SHARKLOG_END SHARKLOG_LOCATION << sharklog::LoggerStream::end
+
 } // sharklog
 
 #endif // loggerstream_H
