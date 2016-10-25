@@ -383,6 +383,16 @@ public:
      */
     bool log(const Level &level, const std::string &msg, const Location &loc=Location()) const;
     
+    /*!
+     * \brief Gets the version
+     *
+     * Gets a string with the current version in it.  The format is major.minor.maint.
+     * I.e. "1.2.3".  Valid values can be X.YY.ZZZ.
+     *
+     * You can also access this version a const char * in a definition with SHARKLOG_VERSION.
+     *
+     * @return the current version
+     */
     static std::string version();
     
 protected:
