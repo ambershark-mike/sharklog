@@ -421,3 +421,9 @@ TEST_F(LoggerTest, TestFATALMacro)
     SHARKLOG_FATAL(Logger::rootLogger(), "test");
     ASSERT_TRUE(testMacro("FATAL", sop->output_));
 }
+
+TEST_F(LoggerTest, TestVersion)
+{
+    auto re = regex("^[0-9]\\.[0-9]{1,2}\\.[0-9]{1,3}");
+    ASSERT_TRUE(regex_match(Logger::version().c_str(), re)) << Logger::version().c_str();
+}

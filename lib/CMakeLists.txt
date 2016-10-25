@@ -8,7 +8,7 @@ set(sharklog_VERSION_MAINT 0)
 set(sharklog_VERSION_STRING
 	${sharklog_VERSION_MAJOR}.${sharklog_VERSION_MINOR}.${sharklog_VERSION_MAINT}
 	)
-add_definitions("-DSHARKLOG_VERSION=${sharklog_VERSION_STRING}")
+add_definitions("-DSHARKLOG_VERSION=\"${sharklog_VERSION_STRING}\"")
 
 # set lib type
 if (NOT LIBTYPE)

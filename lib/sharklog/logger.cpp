@@ -37,6 +37,7 @@ using namespace std;
 LoggerPtr Logger::rootLogger_;
 Logger::LoggerMap Logger::allNamedLoggers_;
 std::recursive_mutex Logger::mutex_;
+std::string Logger::version_ = SHARKLOG_VERSION;
 
 Logger::Logger()
 {
@@ -293,4 +294,9 @@ bool Logger::log(const Level &level, const std::string &msg, const Location &loc
         op->writeLog(res);
     
     return true;
+}
+
+std::string Logger::version()
+{
+    return version_;
 }

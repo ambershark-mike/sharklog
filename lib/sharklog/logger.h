@@ -383,6 +383,8 @@ public:
      */
     bool log(const Level &level, const std::string &msg, const Location &loc=Location()) const;
     
+    static std::string version();
+    
 protected:
     /*!
      * Logger constructor
@@ -409,6 +411,7 @@ private:
     LayoutPtr layout_;
 	OutputterList outputters_;
 	static std::recursive_mutex mutex_;
+    static std::string version_;
 };
     
 } // sharklog
