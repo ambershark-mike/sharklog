@@ -1,5 +1,18 @@
-
 ## Overview
+
+## Table of Contents
+
+- [Overview](#overview)
+- [Release Notes](#relnotes)
+- [Future Plans](#future)
+- [Requirements](#reqs)
+- [License](#license)
+- [Building](#building)
+- [Including Sharklog Libraries In Your Project](#including)
+- [Using the Library](#using)
+- [Credits](#credits)
+
+## <a name="overview"></a>Overview
 
 Sharklog is a powerful and fast logging library written in C++ for use in C++ applications.  It can be used on multiple platforms including, linux, windows (visual c++), windows (mingw), and OSX.  It can be built for the ARM processor and used on the Android platform as well.  In the future iOS will be supported as well.
 
@@ -25,16 +38,7 @@ Logger streaming is now available as well.  You can use the \ref sharklog::Logge
     
 The entire logger has been and will continue to be written with TDD using google test.  I am aiming for 90% or better code coverage with unit tests, to make sure the library stays stable and crash free.
 
-## Release Notes
-
-#### 0.1
-
-- This release only tested/working with OSX and Linux, no windows support yet (sorry, my least favorite platform)
-- The basic Logger system (supporting multi-level named loggers)
-- StandardLayout (a basic/standard layout for messages)
-- ConsoleOutputter (outputs log messages to the console)
-- Synchronous thread-safe logging
-- A simple loggertest application (including thread testing)
+## <a name="relnotes"></a>Release Notes
 
 #### 0.2
 
@@ -45,7 +49,16 @@ The entire logger has been and will continue to be written with TDD using google
 - Function tracing, using \ref sharklog::FuncTrace or \ref SHARKLOG_FUNCTRACE you can now trace enter and exit of functions
 - Better documentation / examples
 
-## Upcoming Version Plans
+#### 0.1
+
+- This release only tested/working with OSX and Linux, no windows support yet (sorry, my least favorite platform)
+- The basic Logger system (supporting multi-level named loggers)
+- StandardLayout (a basic/standard layout for messages)
+- ConsoleOutputter (outputs log messages to the console)
+- Synchronous thread-safe logging
+- A simple loggertest application (including thread testing)
+
+## <a name="future"></a>Upcoming Version Plans
 
 #### 0.3
 - Configuration system (files, command line parameters, classes)
@@ -67,7 +80,7 @@ The entire logger has been and will continue to be written with TDD using google
 - Android support including JNI interfaces
 - iOS support with objective-c/swift interfaces
 
-## Requirements
+## <a name="reqs"></a>Requirements
 
 Linux: 
 
@@ -75,7 +88,7 @@ Linux:
 - g++ with c++11 support (tested with 6.2.1)
 - Google Test (gtest) (optional, to run tests, tested with 1.7.0)
 
-## License
+## <a name="license"></a>License
 
 Copyright (c) 2016 Ambershark, LLC.
 
@@ -83,7 +96,7 @@ Released under the L-GPL license available at http://www.gnu.org/licenses/lgpl.h
 
 See \ref copying, or the COPYING.dox file.
 
-## Building
+## <a name="building"></a>Building
 
 ### Linux
 
@@ -137,11 +150,15 @@ Not supported yet.
 
 Not supported yet.
 
-## Using the Library
+## <a name="including"></a>Including the Library In Your Projects
+
+Blah
+
+## <a name="using"></a>Using the Library
 
 TODO: for now see \ref sharklog::Logger.
 
-## Author
+## <a name="credits"></a>Author
 
 Written by Mike Ryan (<public@ambershark.com>).
 
