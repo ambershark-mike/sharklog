@@ -11,8 +11,18 @@ I designed this logger to be easy to use (as I believe log4cxx is), fast, and mo
 
 I don't intend to mirror all the features of log4cxx (maybe some day, but definitely not now), but I am planning on including the support for what I view as the most popular parts.  I'm not copying anything from log4cxx but am loosely basing my design on theirs.  I really like the idea of Appenders/Layouts/Configurators/etc.  It makes the logging library very versatile and expandable.
 
-This project is in it's infancy and as of this release (0.1) it has limited support.  It is however a fully functional synchronous (blocking) logger.  There aren't many log interfaces in place as of now, consider this a very early access alpha.  I will be adding macros for logging i.e. LOG_DEBUG(), and most importantly be adding a LoggerStream class that will handle streaming log messages (my preferred way of logging).  The macros will increase the speed of the library as they will limit cpu operations to a simple *if* check to determine if a logger is enabled and taking logs at the specified level, and the log message itself.
+This project is in it's infancy and as of this release (0.2) it has limited support.  It is however a fully functional synchronous (blocking) logger.  There are now interfaces for logging streams as well as logging macros.  You can use the following macros:
+    - \ref SHARKLOG_DEBUG
+    - \ref SHARKLOG_TRACE
+    - \ref SHARKLOG_INFO
+    - \ref SHARKLOG_WARN
+    - \ref SHARKLOG_ERROR
+    - \ref SHARKLOG_FATAL
+    
+These macros will be fast.  In a situation where the logger is off for a specific level there is only the single *if* check to see if the logger is enabled.  If not nothing else happens.
 
+Logger streaming is now available as well.  You can use the \ref sharklog::LoggerStream class do handle logging in a C++ stream manner.
+    
 The entire logger has been and will continue to be written with TDD using google test.  I am aiming for 90% or better code coverage with unit tests, to make sure the library stays stable and crash free.
 
 ## Release Notes
@@ -26,21 +36,26 @@ The entire logger has been and will continue to be written with TDD using google
 - Synchronous thread-safe logging
 - A simple loggertest application (including thread testing)
 
-## Upcoming Version Plans
-
 #### 0.2
 
-- File outputter
-- Logging macros
-- Logger stream
+- File outputter via \ref sharklog::FileOutputter
+- Logging macros, \ref SHARKLOG_TRACE, etc
+- Logger streaming via \ref sharklog::LoggerStream
+- Version checking interface into Logger, see \ref sharklog::Logger::version()
+- Function tracing, using \ref sharklog::FuncTrace or \ref SHARKLOG_FUNCTRACE you can now trace enter and exit of functions
 - Better documentation / examples
+
+## Upcoming Version Plans
+
+#### 0.3
+- Configuration system (files, command line parameters, classes)
+- Custom/Patterned Layout
+- Windows support (mingw and visual c++)
 
 #### Future Versions
 
-- Configuration system (files, command line parameters, classes)
 - Log file rotation
 - Asynchronous logging
-- Custom/Patterned Layout
 - HTML layout
 - XML layout
 - syslog Outputter

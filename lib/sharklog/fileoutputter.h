@@ -36,7 +36,27 @@ namespace sharklog
 /*!
  * \brief File outputter
  *
- * \todo document this
+ * This outputter is used to write logs to a file.  To use the file outputter,
+ * just add it to a Logger.  Here is an example of setting up a logger with a
+ * file outputter:
+ *
+ * \code
+ * // setup logger
+ * auto log = Logger::rootLogger();
+ * log->setLayout(LayoutPtr(new StandardLayout()));
+ *
+ * // setup our file
+ * auto fop = new FileOutputter("/tmp/test.log");
+ * if (!fop->open())
+ *    return 1; // fail
+ *
+ * // add outputter to the logger
+ * log->addOutputter(OutputterPtr(fop));
+ * fop = nullptr; // clear this pointer since we handed it off to a smart one
+ *
+ * // log a message
+ * SHARKLOG_TRACE(log, "hello log file");
+ * \endcode
  */
 class FileOutputter : public Outputter
 {
