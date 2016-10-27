@@ -48,7 +48,33 @@ using LoggerFuncPtr = LoggerStream &(*)(LoggerStream&);
 class LoggerStream
 {
 public:
+    /*!
+     * \brief Constructor
+     *
+     * Use this to create a LoggerStream.
+     *
+     * It takes a \ref LoggerPtr and a \ref Level.  It defaults to the root logger
+     * at a trace level.
+     *
+     * Example:
+     * \code
+     * LoggerStream(Logger::logger("test"), Level::info()) << "this is a test log to the test logger at info level" << SHARKLOG_END;
+     * \endcode
+     *
+     * @param lp pointer to a logger
+     * @param lev level for logging
+     */
     LoggerStream(LoggerPtr lp=Logger::rootLogger(), const Level &lev=Level::trace());
+    
+    /*!
+     * \brief Constructor
+     *
+     * Takes a name for a logger, same as using Logger::logger(loggerName).  Also takes
+     * a level.
+     *
+     * @param loggerName name of a logger
+     * @param lev level for logging
+     */
     LoggerStream(const std::string &loggerName, const Level &lev=Level::trace());
     
     LoggerPtr logger() const;

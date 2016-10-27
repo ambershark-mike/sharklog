@@ -144,19 +144,56 @@ $ ./bin/unittest
 
 #### Visual C++
 
-Not supported yet.
+Not supported yet.  Coming in the next release.
 
 #### MinGW
 
-Not supported yet.
+Not supported yet.  Coming in the next release.
 
 ## <a name="including"></a>Including the Library In Your Projects
 
-Blah
+To use the library in your project just include the base directory in your includes for whatever build system you use.  For example using cmake below:
+
+Assuming the library has been installed to /usr/local/include/sharklog, and the libraries installed to /usr/local/lib.  This also assumes /usr/local/lib is in your library path for your build.
+
+```
+cmake_minimum_required(VERSION 3.2)
+project(yourproject)
+
+include_directories(/usr/local/include)
+add_executable(${PROJECT_NAME} main.cpp)
+target_link_libraries(${PROJECT_NAME} sharklog)
+```
+
+In the future there will be a cmake detection script for sharklog that will detect where it is installed on your system and set up the libraries and include automatically.
 
 ## <a name="using"></a>Using the Library
 
-TODO: for now see \ref sharklog::Logger.
+```
+#include <sharklog/standardlayout.h>
+#include <sharklog/consoleoutputter.h>
+#include <sharklog/logger.h>
+#include <sharklog/loggerstream.h>
+
+using namespace sharklog;
+
+int main()
+{
+   // set up logger
+   auto root = Logger::rootLogger();
+   root->setLayout(LayoutPtr(new StandardLayout()));
+   root->addOutputter(OutputterPtr(new ConsoleOutputter()));
+   
+   // log a message to root
+   root->log(Level::trace(), "Hello");
+   
+   // log a message at trace level to root using a macro
+   SHARKLOG_TRACE(Logger::rootLogger(), "this is a trace");
+   
+   // log a message to root with a stream
+   LoggerStream() << "this is also a root trace" << SHARKLOG_END;
+}
+```
 
 ## <a name="credits"></a>Author
 
