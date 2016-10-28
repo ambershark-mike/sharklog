@@ -3,7 +3,7 @@ project(sharklog)
 
 # version
 set(sharklog_VERSION_MAJOR 0)
-set(sharklog_VERSION_MINOR 2)
+set(sharklog_VERSION_MINOR 3)
 set(sharklog_VERSION_MAINT 0)
 set(sharklog_VERSION_STRING
 	${sharklog_VERSION_MAJOR}.${sharklog_VERSION_MINOR}.${sharklog_VERSION_MAINT}
