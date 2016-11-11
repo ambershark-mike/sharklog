@@ -1,3 +1,20 @@
-0.1
----
+#### 0.3
+
+#### 0.2
+
+- File outputter via \ref sharklog::FileOutputter
+- Logging macros, \ref SHARKLOG_TRACE, etc
+- Logger streaming via \ref sharklog::LoggerStream
+- Version checking interface into Logger, see \ref sharklog::Logger::version()
+- Function tracing, using \ref sharklog::FuncTrace or \ref SHARKLOG_FUNCTRACE you can now trace enter and exit of functions
+- Better documentation / examples
+
+#### 0.1
+
+- This release only tested/working with OSX and Linux, no windows support yet (sorry, my least favorite platform)
+- The basic Logger system (supporting multi-level named loggers)
+- StandardLayout (a basic/standard layout for messages)
+- ConsoleOutputter (outputs log messages to the console)
+- Synchronous thread-safe logging
+- A simple loggertest application (including thread testing)
 
