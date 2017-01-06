@@ -23,9 +23,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "layout.h"
+#include <time.h>
+#include <chrono>
+#include <iomanip>
 
 using namespace sharklog;
 using namespace std;
+using namespace std::chrono;
 
 std::string Layout::contentType() const
 {
@@ -42,4 +46,16 @@ void Layout::appendFooter(std::string &result)
 
 Layout::~Layout()
 {
+}
+
+std::string Layout::formatTime(const std::string &format, tm *timeToUse)
+{
+	/*tm *tmt = timeToUse;
+	if (!tmt)
+	{
+		auto ms = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
+		time_t current = duration_cast<seconds>(ms).count();
+		tmt = localtime(&current);
+	}*/
+    
 }

@@ -56,3 +56,19 @@ TEST(LayoutTest, BaseAppendFooterDoesNothing)
     lay.appendFooter(res);
     ASSERT_TRUE(res.empty());
 }
+
+TEST(LayoutTest, FormatTimeWithNullTimeGivesCurrentTime)
+{
+}
+
+TEST(LayoutTest, FormatTimeWithTimePassedWorks)
+{
+}
+
+TEST(LayoutTest, EmptyFormatReturnsEmptyString)
+{
+}
+
+TEST(LayoutTest, InvalidTimeFormatReturnsProperly)
+{
+}
