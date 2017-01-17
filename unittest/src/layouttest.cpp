@@ -33,6 +33,11 @@ public:
     void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) final
     {
     }
+
+	std::string formatTime(const std::string &format, tm *ttu=0)
+	{
+		return Layout::formatTime(format, ttu);
+	}
 };
 
 TEST(LayoutTest, BaseContentTypeIsTextPlain)
@@ -59,16 +64,57 @@ TEST(LayoutTest, BaseAppendFooterDoesNothing)
 
 TEST(LayoutTest, FormatTimeWithNullTimeGivesCurrentTime)
 {
+	TestLayout lay;
+	const char *format = "%Y-%m-%d %H:%M:%S";
+	auto res = lay.formatTime(format);
+
+	// NOTE: this could potentially fail if the second changes between the above func call and this one..
+	char curTimeStr[100];
+	auto curtime = time(NULL);
+	auto curTimeTM = localtime(&curtime);
+
+	strftime(curTimeStr, sizeof(curTimeStr), format, curTimeTM);
+
+	ASSERT_STREQ(curTimeStr, res.c_str()) << "NOTE: this could fail by 1 second potentially expected was: " << res.c_str() << " and actual was: " << curTimeStr;
 }
 
 TEST(LayoutTest, FormatTimeWithTimePassedWorks)
 {
+	TestLayout lay;
+	const char *format = "%Y-%m-%d %H:%M:%S";
+
+	/*struct tm my_time = { .tm_year=112, // = year 2012
+                          .tm_mon=9,    // = 10th month
+                          .tm_mday=9,   // = 9th day
+                          .tm_hour=8,   // = 8 hours
+                          .tm_min=10,   // = 10 minutes
+                          .tm_sec=20    // = 20 secs
+	};*/
+
+	struct tm my_time;
+	my_time.tm_year = 76;
+	my_time.tm_mon = 8;
+	my_time.tm_mday = 1;
+	my_time.tm_hour = 8;
+	my_time.tm_min = 10;
+	my_time.tm_sec = 20;
+
+	auto res = lay.formatTime(format, &my_time);
+	ASSERT_STREQ("1976-09-01 08:10:20", res.c_str());
 }
 
 TEST(LayoutTest, EmptyFormatReturnsEmptyString)
 {
+	TestLayout lay;
+	auto res = lay.formatTime("");
+	ASSERT_STREQ("", res.c_str());
 }
 
 TEST(LayoutTest, InvalidTimeFormatReturnsProperly)
 {
+	TestLayout lay;
+
+	// test should just return the invalid string %q instead of trying to format it
+	auto res = lay.formatTime("%q");
+	ASSERT_STREQ("%q", res.c_str());
 }

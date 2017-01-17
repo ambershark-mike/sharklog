@@ -66,7 +66,7 @@ public:
     virtual void appendHeader(std::string &result);
     virtual void appendFooter(std::string &result);
 
-private:
+protected:
 	std::string formatTime(const std::string &format, tm *timeToUse=0);
 };
     
