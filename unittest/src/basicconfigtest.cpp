@@ -24,13 +24,41 @@
 
 #include "basicconfigtest.h"
 #include "basicconfig.h"
-#include "logger.h"
 
 using namespace sharklog;
 
 TEST_F(BasicConfigTest, BasicConfigureWorks)
 {
+	BasicConfig::configure();
 	auto root = Logger::rootLogger();
-	FAIL();
+	ASSERT_TRUE(root->outputters().size() == 1);
+	ASSERT_TRUE(root->layout());
 }
 
+TEST_F(BasicConfigTest, LevelConfigWorks)
+{
+	BasicConfig::configure(Level::error());
+	auto root = Logger::rootLogger();
+	ASSERT_TRUE(root->outputters().size() == 1);
+	ASSERT_TRUE(root->layout());
+	ASSERT_TRUE(root->level() == Level::error());
+}
+
+TEST_F(BasicConfigTest, NameConfigureWorks)
+{
+	const char *name = "test";
+	BasicConfig::configure(name);
+	auto logger = Logger::logger(name);
+	ASSERT_TRUE(logger->layout());
+	ASSERT_TRUE(logger->outputters().size() == 1);
+}
+
+TEST_F(BasicConfigTest, NameAndLevelWorks)
+{
+	const char *name = "test2";
+	BasicConfig::configure(name, Level::fatal());
+	auto logger = Logger::logger(name);
+	ASSERT_TRUE(logger->layout());
+	ASSERT_TRUE(logger->outputters().size() == 1);
+	ASSERT_TRUE(logger->level() == Level::fatal());
+}

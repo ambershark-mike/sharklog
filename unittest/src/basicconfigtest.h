@@ -26,6 +26,7 @@
 #define BasicConfigTest_H
 
 #include <gtest/gtest.h>
+#include "logger.h"
 
 class BasicConfigTest : public ::testing::Test
 {
@@ -40,6 +41,7 @@ protected:
 
 	virtual void SetUp()
 	{
+		sharklog::Logger::closeRootLogger();
 	}
 
 	virtual void TearDown()

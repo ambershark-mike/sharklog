@@ -24,22 +24,34 @@
 
 #include "basicconfig.h"
 #include "logger.h"
+#include "consoleoutputter.h"
+#include "standardlayout.h"
 
 using namespace sharklog;
 
 void sharklog::BasicConfig::configure()
 {
 	auto root = Logger::rootLogger();
+	root->addOutputter(OutputterPtr(new ConsoleOutputter));
+	root->setLayout(LayoutPtr(new StandardLayout));
 }
 
 void sharklog::BasicConfig::configure(const Level &level)
 {
+	configure();
+	auto root = Logger::rootLogger();
+	root->setLevel(level);
 }
 
 void sharklog::BasicConfig::configure(const std::string &name)
 {
+	auto logger = Logger::logger(name);
+	logger->addOutputter(OutputterPtr(new ConsoleOutputter));
+	logger->setLayout(LayoutPtr(new StandardLayout));
 }
 
 void sharklog::BasicConfig::configure(const std::string &name, const Level &level)
 {
+	configure(name);
+	Logger::logger(name)->setLevel(level);
 }
