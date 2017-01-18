@@ -28,6 +28,8 @@
 #include <string>
 #include <memory>
 
+struct tm;
+
 namespace sharklog
 {
     
@@ -63,6 +65,9 @@ public:
     virtual std::string contentType() const;
     virtual void appendHeader(std::string &result);
     virtual void appendFooter(std::string &result);
+
+protected:
+	std::string formatTime(const std::string &format, tm *timeToUse=0);
 };
     
 } // sharklog
