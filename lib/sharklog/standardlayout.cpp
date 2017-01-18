@@ -73,7 +73,7 @@ void StandardLayout::setupDate(std::string &s)
     time_t current = system_clock::to_time_t(system_clock::now());
     tm *tmt = localtime(&current);
     
-    ss << "[" << put_time(tmt, "%m/%d/%Y") << "]";
+    ss << "[" << formatTime("%m/%d/%Y", tmt) << "]";
     
     s.append(ss.str());
 }
@@ -86,7 +86,7 @@ void StandardLayout::setupTime(std::string &s)
     auto msec = ms.count() % 1000;
     tm *tmt = localtime(&current);
     
-    ss << "[" << put_time(tmt, "%H:%M:%S") << "." << setfill('0') << setw(3) << msec << "]";
+    ss << "[" << formatTime("%H:%M:%S", tmt) << "." << setfill('0') << setw(3) << msec << "]";
     s.append(ss.str());
 }
 

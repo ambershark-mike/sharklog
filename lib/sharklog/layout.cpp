@@ -23,9 +23,12 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "layout.h"
+#include <time.h>
+#include <chrono>
 
 using namespace sharklog;
 using namespace std;
+using namespace std::chrono;
 
 std::string Layout::contentType() const
 {
@@ -42,4 +45,23 @@ void Layout::appendFooter(std::string &result)
 
 Layout::~Layout()
 {
+}
+
+std::string Layout::formatTime(const std::string &format, tm *timeToUse)
+{
+	// get a time to use either from being passed in, or if that was null, get current time
+	tm *tmt = timeToUse;
+	if (!tmt)
+	{
+		auto ms = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
+		time_t current = duration_cast<seconds>(ms).count();
+		tmt = localtime(&current);
+	}
+
+	// using this method instead of put_time due to put_time being in gcc 5+ only.
+	// figured this would be more compatible across compilers
+	char curTimeStr[100];
+	strftime(curTimeStr, sizeof(curTimeStr), format.c_str(), tmt);
+
+	return string(curTimeStr);
 }
