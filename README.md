@@ -85,12 +85,12 @@ The entire logger has been and will continue to be written with TDD using google
 Linux: 
 
 - cmake 3.2+
-- g++ with c++11 support (tested with 6.2.1)
+- g++ with c++11 support (tested with 6.2.1 and 4.9.4)
 - Google Test (gtest) (optional, to run tests, tested with 1.7.0)
 
 ## <a name="license"></a>License
 
-Copyright (c) 2016 Ambershark, LLC.
+Copyright (c) 2016-17 Ambershark, LLC.
 
 Released under the L-GPL license available at http://www.gnu.org/licenses/lgpl.html.
 
@@ -174,18 +174,17 @@ In the future there will be a cmake detection script for sharklog that will dete
 #include <sharklog/consoleoutputter.h>
 #include <sharklog/logger.h>
 #include <sharklog/loggerstream.h>
+#include <sharklog/basicconfig.h>
 
 using namespace sharklog;
 
 int main()
 {
    // set up logger
-   auto root = Logger::rootLogger();
-   root->setLayout(LayoutPtr(new StandardLayout()));
-   root->addOutputter(OutputterPtr(new ConsoleOutputter()));
+   BasicConfig::configure();
    
    // log a message to root
-   root->log(Level::trace(), "Hello");
+   Logger::rootLogger()->log(Level::trace(), "Hello");
    
    // log a message at trace level to root using a macro
    SHARKLOG_TRACE(Logger::rootLogger(), "this is a trace");

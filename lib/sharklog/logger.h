@@ -86,16 +86,15 @@ using LoggerPtr = std::shared_ptr<Logger>;
  * #include <sharklog/standardlayout.h>
  * #include <sharklog/consoleoutputter.h>
  * #include <sharklog/logger.h>
+ * #include <sharklog/basicconfig.h>
  *
  * int main()
  * {
  *    // set up logger
- *    auto root = Logger::rootLogger();
- *    root->setLayout(LayoutPtr(new StandardLayout()));
- *    root->addOutputter(OutputterPtr(new ConsoleOutputter()));
+ *    BasicConfig::configure(); // this sets up with console logging in standard layout
  *
  *    // log a message to root
- *    root->log(Level::trace(), "Hello");
+ *    Logger::rootLogger()->log(Level::trace(), "Hello");
  *
  *    // log a message to a new name logger that inherits from root
  *    Logger::logger("test")->log(Level::info(), "World");
