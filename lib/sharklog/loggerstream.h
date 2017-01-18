@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016, by Ambershark, LLC.
+// Copyright (c) 2016-17, by Ambershark, LLC.
 //
 // Distributed under the L-GPL license.
 //

@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-17, by Ambershark, LLC.
+// Copyright (c) 2017, by Ambershark, LLC.
 //
 // Distributed under the L-GPL license.
 //
@@ -22,35 +22,15 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "consoleoutputtertest.h"
-#include "consoleoutputter.h"
+#include "basicconfigtest.h"
+#include "basicconfig.h"
+#include "logger.h"
 
 using namespace sharklog;
 
-TEST_F(ConsoleOutputterTest, OpenIsTrue)
+TEST_F(BasicConfigTest, BasicConfigureWorks)
 {
-    ConsoleOutputter co;
-    ASSERT_TRUE(co.open());
+	auto root = Logger::rootLogger();
+	FAIL();
 }
 
-TEST_F(ConsoleOutputterTest, IsOpen)
-{
-    ConsoleOutputter co;
-    ASSERT_TRUE(co.isOpen());
-}
-
-TEST_F(ConsoleOutputterTest, SetUseStdOutWorks)
-{
-    ConsoleOutputter co;
-    EXPECT_TRUE(co.useStdOut());
-    co.setUseStdOut(false);
-    ASSERT_FALSE(co.useStdOut());
-}
-
-TEST_F(ConsoleOutputterTest, SetUseStdErrWorks)
-{
-    ConsoleOutputter co;
-    EXPECT_FALSE(co.useStdErr());
-    co.setUseStdErr(true);
-    ASSERT_TRUE(co.useStdErr());
-}

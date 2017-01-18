@@ -47,6 +47,8 @@ set(SRCS
 	sharklog/fileoutputter.h
 	sharklog/functrace.cpp
 	sharklog/functrace.h
+	sharklog/basicconfig.h
+	sharklog/basicconfig.cpp
 	)
 
 # build

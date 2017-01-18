@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (c) 2016-17, by Ambershark, LLC.
+// Copyright (c) 2017, by Ambershark, LLC.
 //
 // Distributed under the L-GPL license.
 //
@@ -22,35 +22,30 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
-#include "consoleoutputtertest.h"
-#include "consoleoutputter.h"
+#ifndef BasicConfigTest_H
+#define BasicConfigTest_H
 
-using namespace sharklog;
+#include <gtest/gtest.h>
 
-TEST_F(ConsoleOutputterTest, OpenIsTrue)
+class BasicConfigTest : public ::testing::Test
 {
-    ConsoleOutputter co;
-    ASSERT_TRUE(co.open());
-}
+protected:
+	BasicConfigTest()
+	{
+	}
 
-TEST_F(ConsoleOutputterTest, IsOpen)
-{
-    ConsoleOutputter co;
-    ASSERT_TRUE(co.isOpen());
-}
+	virtual ~BasicConfigTest()
+	{
+	}
 
-TEST_F(ConsoleOutputterTest, SetUseStdOutWorks)
-{
-    ConsoleOutputter co;
-    EXPECT_TRUE(co.useStdOut());
-    co.setUseStdOut(false);
-    ASSERT_FALSE(co.useStdOut());
-}
+	virtual void SetUp()
+	{
+	}
 
-TEST_F(ConsoleOutputterTest, SetUseStdErrWorks)
-{
-    ConsoleOutputter co;
-    EXPECT_FALSE(co.useStdErr());
-    co.setUseStdErr(true);
-    ASSERT_TRUE(co.useStdErr());
-}
+	virtual void TearDown()
+	{
+	}
+}; 
+
+#endif /* BasicConfigTest_H */
+

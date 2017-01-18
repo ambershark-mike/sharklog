@@ -277,18 +277,20 @@
 					Name="src"
 					AutoCustom="1"
 					GUID="{87CB571C-EB73-4E25-9B3A-4D27E6CA3E31}">
-					<F N="unittest/src/locationtest.cpp"/>
+					<F N="unittest/src/basicconfigtest.cpp"/>
+					<F N="unittest/src/basicconfigtest.h"/>
 					<F N="unittest/src/consoleoutputtertest.cpp"/>
-					<F N="unittest/src/leveltest.cpp"/>
-					<F N="unittest/src/standardlayouttest.cpp"/>
-					<F N="unittest/src/functracetest.cpp"/>
-					<F N="unittest/src/outputtertest.cpp"/>
-					<F N="unittest/src/loggerstreamtest.cpp"/>
-					<F N="unittest/src/utilfunctionstest.cpp"/>
-					<F N="unittest/src/loggertest.cpp"/>
-					<F N="unittest/src/layouttest.cpp"/>
-					<F N="unittest/src/main.cpp"/>
 					<F N="unittest/src/fileoutputtertest.cpp"/>
+					<F N="unittest/src/functracetest.cpp"/>
+					<F N="unittest/src/layouttest.cpp"/>
+					<F N="unittest/src/leveltest.cpp"/>
+					<F N="unittest/src/locationtest.cpp"/>
+					<F N="unittest/src/loggerstreamtest.cpp"/>
+					<F N="unittest/src/loggertest.cpp"/>
+					<F N="unittest/src/main.cpp"/>
+					<F N="unittest/src/outputtertest.cpp"/>
+					<F N="unittest/src/standardlayouttest.cpp"/>
+					<F N="unittest/src/utilfunctionstest.cpp"/>
 				</Folder>
 			</Folder>
 			<Folder
@@ -310,17 +312,19 @@
 					Name="sharklog"
 					AutoCustom="1"
 					GUID="{91CF879B-8638-4CC9-96E6-A7A37485F704}">
-					<F N="lib/sharklog/location.cpp"/>
-					<F N="lib/sharklog/loggerstream.cpp"/>
-					<F N="lib/sharklog/layout.cpp"/>
-					<F N="lib/sharklog/outputter.cpp"/>
+					<F N="lib/sharklog/basicconfig.cpp"/>
+					<F N="lib/sharklog/basicconfig.h"/>
 					<F N="lib/sharklog/consoleoutputter.cpp"/>
-					<F N="lib/sharklog/level.cpp"/>
-					<F N="lib/sharklog/utilfunctions.cpp"/>
 					<F N="lib/sharklog/fileoutputter.cpp"/>
 					<F N="lib/sharklog/functrace.cpp"/>
-					<F N="lib/sharklog/standardlayout.cpp"/>
+					<F N="lib/sharklog/layout.cpp"/>
+					<F N="lib/sharklog/level.cpp"/>
+					<F N="lib/sharklog/location.cpp"/>
 					<F N="lib/sharklog/logger.cpp"/>
+					<F N="lib/sharklog/loggerstream.cpp"/>
+					<F N="lib/sharklog/outputter.cpp"/>
+					<F N="lib/sharklog/standardlayout.cpp"/>
+					<F N="lib/sharklog/utilfunctions.cpp"/>
 				</Folder>
 			</Folder>
 		</Folder>
