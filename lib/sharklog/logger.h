@@ -93,6 +93,13 @@ using LoggerPtr = std::shared_ptr<Logger>;
  *    // set up logger
  *    BasicConfig::configure(); // this sets up with console logging in standard layout
  *
+ *    // or you can set it up manually like so ...
+ *    {
+ *       auto root = Logger::rootLogger();
+ *       root->setLayout(LayoutPtr(new StandardLayout()));
+ *       root->addOutputter(OutputterPtr(new ConsoleOutputter()));
+ *    }
+ *
  *    // log a message to root
  *    Logger::rootLogger()->log(Level::trace(), "Hello");
  *
