@@ -28,6 +28,8 @@ set(SRCS
 	src/functracetest.cpp
 	src/basicconfigtest.h
 	src/basicconfigtest.cpp
+	src/basicfileconfigtest.h
+	src/basicfileconfigtest.cpp
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})
