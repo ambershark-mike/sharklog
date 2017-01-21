@@ -27,6 +27,7 @@
 
 #include <string>
 #include <sharklog/level.h>
+#include <sharklog/logger.h>
 
 namespace sharklog
 {
@@ -36,6 +37,9 @@ class BasicFileConfig
 public:
 	static bool configure(const std::string &path, const Level &lev = Level::all());
 	static bool configure(const std::string &path, const std::string &logger, const Level &lev = Level::all());
+
+private:
+	static bool configure(LoggerPtr logger, const std::string &path, const Level &lev);
 }; 
 
 } // sharklog

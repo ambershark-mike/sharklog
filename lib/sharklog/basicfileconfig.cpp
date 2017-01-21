@@ -31,23 +31,28 @@ using namespace sharklog;
 
 bool sharklog::BasicFileConfig::configure(const std::string &path, const Level &lev)
 {
-	// don't bother with an empty path
-	if (path.empty())
-		return false;
-
-	auto root = Logger::rootLogger();
-	auto fop = new FileOutputter(path);
-	if (!fop->open()) 
-		return false;
-
-	root->setLevel(lev);
-	root->addOutputter(OutputterPtr(fop));
-	fop = nullptr;
-	root->setLayout(LayoutPtr(new StandardLayout));
-
-	return true;
+	return configure(Logger::rootLogger(), path, lev);
 }
 
 bool sharklog::BasicFileConfig::configure(const std::string &path, const std::string &logger, const Level &lev)
 {
+	return configure(Logger::logger(logger), path, lev);
+}
+
+bool sharklog::BasicFileConfig::configure(LoggerPtr logger, const std::string &path, const Level &lev)
+{
+	// don't bother with an empty path or an empty logger ptr
+	if (path.empty() || !logger)
+		return false;
+
+	auto fop = new FileOutputter(path);
+	if (!fop->open()) 
+		return false;
+
+	logger->setLevel(lev);
+	logger->addOutputter(OutputterPtr(fop));
+	fop = nullptr;
+	logger->setLayout(LayoutPtr(new StandardLayout));
+
+	return true;
 }
