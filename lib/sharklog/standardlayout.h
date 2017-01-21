@@ -33,17 +33,48 @@ namespace sharklog
     
 /*!
  * @brief Standard log layout
- *
- * \todo document this
+ * 
+ * This is the standard layout (the default if you will) for the Logger. 
+ * It has a format like so: 
+ *  
+ * \code 
+ * // Date [MM/DD/YYYY] Time [HH:MM:SS.msec] Thread ID [0xff] Level [INFO] Log message
+ * [01/20/2017][23:23:11.788][0x7f7a19143740][INFO] testing
+ * \endcode 
+ *  
+ * All loggers must have a layout that derives from \ref Layout. 
+ *  
+ * When using a \ref BasicConfig or \ref BasicFileConfig this is the layout that 
+ * is used. 
  */
 class StandardLayout : public Layout
 {
 public:
+	//! Destructor
     virtual ~StandardLayout();
     
+	/*!
+	 * \brief Layout formatMessage 
+	 *  
+	 * This is called by the Logger and is not used besides that. 
+	 * 
+	 */
     void formatMessage(std::string &result, const Level &level, const std::string &loggerName, const std::string &logMessage) override;
     
+	/*!
+	 * \brief Appends Header 
+	 *  
+	 * Called by the logger, not used outside of that. 
+	 * 
+	 */
     void appendHeader(std::string &result) override;
+
+	/*!
+	 * \brief Appends Footer
+	 *  
+	 * Called by the logger, not used manually. 
+	 * 
+	 */
     void appendFooter(std::string &result) override;
     
 private:

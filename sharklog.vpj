@@ -315,9 +315,7 @@
 					AutoCustom="1"
 					GUID="{91CF879B-8638-4CC9-96E6-A7A37485F704}">
 					<F N="lib/sharklog/basicconfig.cpp"/>
-					<F N="lib/sharklog/basicconfig.h"/>
 					<F N="lib/sharklog/basicfileconfig.cpp"/>
-					<F N="lib/sharklog/basicfileconfig.h"/>
 					<F N="lib/sharklog/consoleoutputter.cpp"/>
 					<F N="lib/sharklog/fileoutputter.cpp"/>
 					<F N="lib/sharklog/functrace.cpp"/>
@@ -361,16 +359,18 @@
 					Name="sharklog"
 					AutoCustom="1"
 					GUID="{6265C491-1955-4B2F-815E-93194DC55FD8}">
-					<F N="lib/sharklog/standardlayout.h"/>
-					<F N="lib/sharklog/outputter.h"/>
-					<F N="lib/sharklog/loggerstream.h"/>
-					<F N="lib/sharklog/level.h"/>
-					<F N="lib/sharklog/fileoutputter.h"/>
-					<F N="lib/sharklog/layout.h"/>
-					<F N="lib/sharklog/logger.h"/>
-					<F N="lib/sharklog/functrace.h"/>
+					<F N="lib/sharklog/basicconfig.h"/>
+					<F N="lib/sharklog/basicfileconfig.h"/>
 					<F N="lib/sharklog/consoleoutputter.h"/>
+					<F N="lib/sharklog/fileoutputter.h"/>
+					<F N="lib/sharklog/functrace.h"/>
+					<F N="lib/sharklog/layout.h"/>
+					<F N="lib/sharklog/level.h"/>
 					<F N="lib/sharklog/location.h"/>
+					<F N="lib/sharklog/logger.h"/>
+					<F N="lib/sharklog/loggerstream.h"/>
+					<F N="lib/sharklog/outputter.h"/>
+					<F N="lib/sharklog/standardlayout.h"/>
 					<F N="lib/sharklog/utilfunctions.h"/>
 				</Folder>
 			</Folder>
