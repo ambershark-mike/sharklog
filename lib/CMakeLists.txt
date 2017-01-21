@@ -49,6 +49,8 @@ set(SRCS
 	sharklog/functrace.h
 	sharklog/basicconfig.h
 	sharklog/basicconfig.cpp
+	sharklog/basicfileconfig.h
+	sharklog/basicfileconfig.cpp
 	)
 
 # build
