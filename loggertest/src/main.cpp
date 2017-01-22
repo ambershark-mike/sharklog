@@ -34,6 +34,8 @@
 #include <sharklog/standardlayout.h>
 #include <sharklog/fileoutputter.h>
 #include <sharklog/functrace.h>
+#include <sharklog/basicconfig.h>
+#include <sharklog/loggerstream.h>
 
 using namespace std;
 using namespace sharklog;
@@ -107,6 +109,9 @@ int basicTest()
     auto root = Logger::rootLogger();
     root->setLayout(LayoutPtr(new StandardLayout));
     root->addOutputter(OutputterPtr(new ConsoleOutputter));
+
+	// setup a named logger
+	BasicConfig::configure("one");
     
     // do some logging
     //for (int i=0;i<1000;++i)
@@ -118,6 +123,17 @@ int basicTest()
     FuncTrace::setEnterHeader("==>");
     FuncTrace::setExitHeader("<==");
     funcTracePart3();
+
+	// do some logging on named logger one
+	LoggerStream() << "Named logger one has " << (Logger::logger("one")->layout() ? "a valid" : "an invalid") << " layout and "
+	   << Logger::logger("one")->outputters().size() << " outputters and it's level is " << Logger::logger("one")->level().name()
+	   << SHARKLOG_END;
+
+	for (auto i=0;i<10;++i)
+	{
+		LoggerStream() << "xxx" << SHARKLOG_END;
+		LoggerStream(Logger::logger("one")) << "test " << i << SHARKLOG_END;
+	}
     
     return 0;
 }

@@ -279,6 +279,8 @@
 					GUID="{87CB571C-EB73-4E25-9B3A-4D27E6CA3E31}">
 					<F N="unittest/src/basicconfigtest.cpp"/>
 					<F N="unittest/src/basicconfigtest.h"/>
+					<F N="unittest/src/basicfileconfigtest.cpp"/>
+					<F N="unittest/src/basicfileconfigtest.h"/>
 					<F N="unittest/src/consoleoutputtertest.cpp"/>
 					<F N="unittest/src/fileoutputtertest.cpp"/>
 					<F N="unittest/src/functracetest.cpp"/>
@@ -301,8 +303,6 @@
 					Name="src"
 					AutoCustom="1"
 					GUID="{BFFAB977-624A-4231-B195-942BD46EAFE3}">
-					<F N="unittest/src/basicfileconfigtest.cpp"/>
-					<F N="unittest/src/basicfileconfigtest.h"/>
 					<F N="loggertest/src/main.cpp"/>
 				</Folder>
 			</Folder>
