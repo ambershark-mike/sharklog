@@ -201,3 +201,43 @@ TEST_F(LevelTest, StaticNameCreationWorks)
 {
 	ASSERT_TRUE(Level::name("info") == Level::info());
 }
+
+TEST_F(LevelTest, FatalNameWorks)
+{
+	ASSERT_TRUE(Level("fatal") == Level::fatal());
+}
+
+TEST_F(LevelTest, ErrorNameWorks)
+{
+	ASSERT_TRUE(Level("error") == Level::error());
+}
+
+TEST_F(LevelTest, WarnNameWorks)
+{
+	ASSERT_TRUE(Level("warn") == Level::warn());
+}
+
+TEST_F(LevelTest, InfoNameWorks)
+{
+	ASSERT_TRUE(Level("info") == Level::info());
+}
+
+TEST_F(LevelTest, TraceNameWorks)
+{
+	ASSERT_TRUE(Level("trace") == Level::trace());
+}
+
+TEST_F(LevelTest, DebugNameWorks)
+{
+	ASSERT_TRUE(Level("debug") == Level::debug());
+}
+
+TEST_F(LevelTest, FuncNameWorks)
+{
+	ASSERT_TRUE(Level("func") == Level::functrace());
+}
+
+TEST_F(LevelTest, AllNameWorks)
+{
+	ASSERT_TRUE(Level("all") == Level::all());
+}
