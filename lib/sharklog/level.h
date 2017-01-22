@@ -120,6 +120,17 @@ public:
 	 * \param lev An \ref LogLevel enumerated value
 	 */
     Level(LogLevel lev = NONE);
+
+	/*!
+	 * \brief Overloaded constructor 
+	 *  
+	 * Takes a \a name of a level and sets this Level object to the appropriate level. 
+	 *  
+	 * \note Names are not case sensitive. 
+	 * 
+	 * \param name the name of a level, i.e. "debug"
+	 */
+	Level(const std::string &name);
     
 	//! Creates a fatal Level
     static Level fatal();
@@ -144,6 +155,29 @@ public:
 
 	//! Creates an level that covers everything
     static Level all();
+
+	/*!
+	 * \brief Create a named level
+	 *  
+	 * Creates a Level object based on a \a name.  Case does not 
+	 * matter for the name. 
+	 *  
+	 * Valid names are: 
+	 * - none 
+	 * - fatal 
+	 * - error 
+	 * - warn 
+	 * - info 
+	 * - trace 
+	 * - debug 
+	 * - func 
+	 * - all 
+	 * 
+	 * \param name The level name, see list above.
+	 * 
+	 * \return Level a Level object at level of name.  Will be NONE if name is invalid.
+	 */
+	static Level name(const std::string &name);
     
 	/*!
 	 * \brief Gets the level name 

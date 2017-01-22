@@ -184,3 +184,20 @@ TEST_F(LevelTest, HasNoneWorks)
 {
     ASSERT_TRUE(Level().hasNone());
 }
+
+TEST_F(LevelTest, NamedConstructorWorks)
+{
+	Level l("debug");
+	ASSERT_TRUE(l == Level::debug());
+}
+
+TEST_F(LevelTest, BadNameToConstructorIsNone)
+{
+	Level none;
+	ASSERT_TRUE(Level::name("random") == none);
+}
+
+TEST_F(LevelTest, StaticNameCreationWorks)
+{
+	ASSERT_TRUE(Level::name("info") == Level::info());
+}

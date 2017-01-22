@@ -24,12 +24,40 @@
 
 #include "level.h"
 #include <map>
+#include <algorithm>
 
 using namespace sharklog;
 using namespace std;
 
 Level::Level(Level::LogLevel lev) : level_(lev)
 {
+}
+
+Level::Level(const std::string &name)
+{
+    static map<string, LogLevel> levels;
+	if (levels.empty())
+	{
+		levels["NONE"] = NONE;
+		levels["FATAL"] = FATAL;
+		levels["ERROR"] = ERROR;
+		levels["WARN"] = WARN;
+		levels["INFO"] = INFO;
+		levels["TRACE"] = TRACE;
+		levels["DEBUG"] = DEBUG;
+		levels["FUNC"] = FUNCTRACE;
+		levels["ALL"] = ALL;
+	}
+
+	// turn our string to upper case for the compare
+	string upName = name;
+	transform(upName.begin(), upName.end(), upName.begin(), ::toupper);
+
+	auto f = levels.find(upName);
+	if (f == levels.end())
+		level_ = NONE;
+	else
+		level_ = f->second;
 }
 
 Level::LogLevel Level::level() const
@@ -179,4 +207,9 @@ bool Level::hasAll() const
 bool Level::hasNone() const
 {
     return hasLevel(NONE);
+}
+
+Level Level::name(const std::string &name)
+{
+	return Level(name);
 }
