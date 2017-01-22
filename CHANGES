@@ -1,4 +1,9 @@
 #### 0.3
+- Added a BasicConfig class that sets up a basic console logger automatically
+- Added a BasicFileConfig class that sets up sa basic file logger automatically
+- Fixed time functions to work with gcc 4 (no longer is gcc 5 required to build)
+- Updated documentation for all classes, finished incomplete docs
+- Added ability to set Level's by text name with Level::name("debug") function
 
 #### 0.2
 

@@ -40,6 +40,13 @@ The entire logger has been and will continue to be written with TDD using google
 
 ## <a name="relnotes"></a>Release Notes
 
+#### 0.3
+- Added a BasicConfig class that sets up a basic console logger automatically
+- Added a BasicFileConfig class that sets up sa basic file logger automatically
+- Fixed time functions to work with gcc 4 (no longer is gcc 5 required to build)
+- Updated documentation for all classes, finished incomplete docs
+- Added ability to set Level's by text name with Level::name("debug") function
+
 #### 0.2
 
 - File outputter via \ref sharklog::FileOutputter
@@ -59,11 +66,6 @@ The entire logger has been and will continue to be written with TDD using google
 - A simple loggertest application (including thread testing)
 
 ## <a name="future"></a>Upcoming Version Plans
-
-#### 0.3
-- Configuration system (files, command line parameters, classes)
-- Custom/Patterned Layout
-- Windows support (mingw and visual c++)
 
 #### Future Versions
 
