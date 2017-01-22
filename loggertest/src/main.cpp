@@ -111,7 +111,7 @@ int basicTest()
     root->addOutputter(OutputterPtr(new ConsoleOutputter));
 
 	// setup a named logger
-	BasicConfig::configure("one");
+	BasicConfig::configure("one", Level::all());
     
     // do some logging
     //for (int i=0;i<1000;++i)
@@ -131,9 +131,10 @@ int basicTest()
 
 	for (auto i=0;i<10;++i)
 	{
-		LoggerStream() << "xxx" << SHARKLOG_END;
 		LoggerStream(Logger::logger("one")) << "test " << i << SHARKLOG_END;
 	}
+
+	Logger::closeRootLogger();
     
     return 0;
 }
@@ -230,7 +231,8 @@ int threadTest(const std::string &filename)
         cout << "=======> NOT ENOUGH THREADS REPORTED RESULTS!!!" << endl;
     
     for (auto it : threadResults_)
-        cout << it.second;
+		cout << it.second;
     
+	Logger::closeRootLogger();
     return 0;
 }
