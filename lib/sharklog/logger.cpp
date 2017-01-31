@@ -233,22 +233,15 @@ void Logger::setLevel(const Level &lev)
     level_ = lev;
 }
 
-LayoutPtr Logger::layout() const
-{
-    return layout_;
-}
-
-void Logger::setLayout(LayoutPtr p)
-{
-    layout_ = p;
-}
-
 bool Logger::isValid() const
 {
-    if (layout_)
-        return true;
-    
-    return false;
+	for (auto it : outputters())
+	{
+		if (it->isValid())
+			return true;
+	}
+
+	return false;
 }
 
 Logger::OutputterList Logger::outputters() const
@@ -275,23 +268,13 @@ bool Logger::log(const Level &level, const std::string &msg, const Location &loc
     if (!level_.hasLevel(level))
         return false;
     
-    // make sure we have a layout
-    if (!layout())
-        return false;
-    
     // make sure we have at least 1 outputter
     if (outputters().empty())
         return false;
     
-    // format message
-    string res;
-    layout()->appendHeader(res);
-    layout()->formatMessage(res, level, name(), msg);
-    layout()->appendFooter(res);
-    
     // output message
     for (auto op : outputters())
-        op->writeLog(res);
+		op->writeLog(level, name(), msg, loc);
     
     return true;
 }

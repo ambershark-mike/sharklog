@@ -27,10 +27,13 @@
 
 #include <string>
 #include <memory>
+#include <sharklog/layout.h>
 
 namespace sharklog
 {
 
+class Level;
+class Location;
 class Outputter;
 
 /*!
@@ -48,6 +51,9 @@ using OutputterPtr = std::shared_ptr<Outputter>;
  *  
  * isOpen() is a virtual that can be overriden based on your needs.  By 
  * default it returns false. 
+ *  
+ * All outputters must have a layout set to be valid.  If there is no layout 
+ * they will not output anything and isValid() will return false. 
  *  
  * For an example of an Outputter derived class look at \ref ConsoleOutputter 
  * or \ref FileOutputter. 
@@ -78,12 +84,17 @@ public:
 	 * \brief Writes a log message 
 	 *  
 	 * This function is called by the logger to write a log message 
-	 * \a logMessage.  Your outputter should take this string and log 
-	 * it however you want. 
+	 * \a logMessage.  Your outputter should take the \a logMessage 
+	 * and log it using it's layout. 
+	 *  
+	 * Level and logger name are passed in as well in order to help 
+	 * the layout format a proper message. 
 	 * 
+	 * \param lev the level of the message
+	 * \param loggerName the name of the logger this message is logged to
 	 * \param logMessage the string to log
 	 */
-    virtual void writeLog(const std::string &logMessage) = 0;
+    virtual void writeLog(const Level &lev, const std::string &loggerName, const std::string &logMessage, const Location &loc) = 0;
 
 	/*!
 	 * \brief Closes the outputter 
@@ -102,6 +113,44 @@ public:
 	 * \return bool true if open, false if not
 	 */
     virtual bool isOpen() const;
+    
+    /*!
+     * @brief Gets the layout
+     *
+     * Returns a LayoutPtr to the current layout for this Outputter.
+     *
+     * @return the current layout
+     */
+    LayoutPtr layout() const;
+    
+    /*!
+     * @brief Sets the layout
+     *
+     * Set the \ref Layout for this Outputter.
+     *
+     * For example:
+     *
+     * \code
+     * myOutputter->setLayout(LayoutPtr(new StandardLayout));
+     * \endcode
+     *
+     * @param p the layout you want to set
+     * \sa layout()
+     */
+    void setLayout(LayoutPtr p);
+
+	/*!
+	 * \brief Checks for valid outputter 
+	 *  
+	 * Checks if the outputter is valid.  It is valid if it has 
+	 * a layout set. 
+	 * 
+	 * \return bool true if valid, false if not
+	 */
+	bool isValid() const;
+
+private:
+	LayoutPtr layout_;
 };
     
 } // sharklog

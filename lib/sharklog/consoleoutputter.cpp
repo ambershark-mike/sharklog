@@ -50,7 +50,7 @@ bool ConsoleOutputter::isOpen() const
     return true;
 }
 
-void ConsoleOutputter::writeLog(const std::string &message)
+void ConsoleOutputter::writeLog(const Level &lev, const std::string &loggerName, const std::string &message, const Location &loc)
 {
     lock_guard<mutex> lock(mutex_);
     

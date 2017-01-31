@@ -27,7 +27,6 @@
 
 #include <sharklog/level.h>
 #include <sharklog/outputter.h>
-#include <sharklog/layout.h>
 #include <sharklog/location.h>
 #include <string>
 #include <memory>
@@ -308,39 +307,17 @@ public:
     void setLevel(const Level &lev);
     
     /*!
-     * @brief Gets the layout
-     *
-     * Returns a LayoutPtr to the current layout for this Logger.
-     *
-     * @return the current layout
-     */
-    LayoutPtr layout() const;
-    
-    /*!
-     * @brief Sets the layout
-     *
-     * Set the \ref Layout for this logger.
-     *
-     * For example:
-     *
-     * \code
-     * Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
-     * \endcode
-     *
-     * @param p the layout you want to set
-     * \sa layout()
-     */
-    void setLayout(LayoutPtr p);
-    
-    /*!
      * @brief Checks if valid
      *
      * Checks if the Logger is valid.
      *
-     * It is valid if it has a layout and outputter.
+	 * It is valid if it has at least 1 outputter that is valid.
+
+	 * It will return true if it has invalid Outputters as long
+	 * as one is valid.
      *
      * @return true if valid, false if not
-     * @sa setLayout(), addOutputter()
+     * @sa addOutputter()
      */
     bool isValid() const;
 
@@ -424,7 +401,6 @@ private:
     LoggerList children_;
     LoggerPtr parent_;
     Level level_;
-    LayoutPtr layout_;
 	OutputterList outputters_;
 	static std::recursive_mutex mutex_;
     static std::string version_;

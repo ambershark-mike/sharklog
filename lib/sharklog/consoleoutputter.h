@@ -68,7 +68,7 @@ public:
     void close() final;
 
 	//! Writes the log message to the console
-    void writeLog(const std::string &message) final;
+    void writeLog(const Level &lev, const std::string &loggerName, const std::string &message, const Location &loc) final;
     
 	//! Always returns true, not used
     bool isOpen() const final;

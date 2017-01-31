@@ -34,3 +34,18 @@ bool Outputter::isOpen() const
 {
     return false;
 }
+
+LayoutPtr Outputter::layout() const
+{
+    return layout_;
+}
+
+void Outputter::setLayout(LayoutPtr p)
+{
+    layout_ = p;
+}
+
+bool Outputter::isValid() const
+{
+	return (layout() != nullptr);
+}

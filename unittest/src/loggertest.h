@@ -27,6 +27,8 @@
 
 #include <gtest/gtest.h>
 #include <sharklog/outputter.h>
+#include <sharklog/location.h>
+#include <sharklog/level.h>
 #include <string>
 
 class StringOutputter : public sharklog::Outputter
@@ -37,7 +39,7 @@ public:
         return true;
     }
     
-    void writeLog(const std::string &logMessage) final
+    void writeLog(const sharklog::Level &lev, const std::string &logName, const std::string &logMessage, const sharklog::Location &loc) final
     {
         output_ = logMessage;
     }

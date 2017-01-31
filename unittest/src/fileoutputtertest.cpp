@@ -24,6 +24,7 @@
 
 #include "fileoutputtertest.h"
 #include "fileoutputter.h"
+#include "level.h"
 #include <fstream>
 
 using namespace sharklog;
@@ -100,7 +101,7 @@ TEST_F(FileOutputterTest, AppendModeWorks)
 	FileOutputter fo(filename_);
 	fo.setAppend(true);
 	EXPECT_TRUE(fo.open());
-	fo.writeLog("x");
+	fo.writeLog(Level::trace(), Logger::rootLogger->name(), "x");
 	fo.close();
 
 	ASSERT_EQ(getFileSize(filename_), startSize+1);

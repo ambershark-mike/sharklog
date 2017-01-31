@@ -32,8 +32,9 @@ using namespace sharklog;
 void sharklog::BasicConfig::configure()
 {
 	auto root = Logger::rootLogger();
-	root->addOutputter(OutputterPtr(new ConsoleOutputter));
-	root->setLayout(LayoutPtr(new StandardLayout));
+	auto op = OutputterPtr(new ConsoleOutputter);
+	op->setLayout(LayoutPtr(new StandardLayout));
+	root->addOutputter(op);
 }
 
 void sharklog::BasicConfig::configure(const Level &level)
@@ -46,8 +47,9 @@ void sharklog::BasicConfig::configure(const Level &level)
 void sharklog::BasicConfig::configure(const std::string &name)
 {
 	auto logger = Logger::logger(name);
-	logger->addOutputter(OutputterPtr(new ConsoleOutputter));
-	logger->setLayout(LayoutPtr(new StandardLayout));
+	auto op = OutputterPtr(new ConsoleOutputter);
+	op->setLayout(LayoutPtr(new StandardLayout));
+	logger->addOutputter(op);
 }
 
 void sharklog::BasicConfig::configure(const std::string &name, const Level &level)

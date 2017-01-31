@@ -40,3 +40,30 @@ TEST(OutputterTest, OutputterIsClosed)
     TestOutputter t;
     ASSERT_FALSE(t.isOpen());
 }
+
+TEST(OutputterTest, DefaultLayoutIsEmpty)
+{
+	TestOutputter t;
+	ASSERT_TRUE(t.layout() == nullptr);
+}
+
+TEST(OutputterTest, LayoutReturnsLayout)
+{
+	TestOutputter t;
+	auto lo = new StandardLayout();
+	t.setLayout(LayoutPtr(lo));
+	ASSERT_TRUE(t.layout() == lo);
+}
+
+TEST(OutputterTest, IsValidFailsWithNoLayout)
+{
+	TestOutputter t;
+	ASSERT_FALSE(t.isValid());
+}
+
+TEST(OutputterTest, IsValidWorksWithLayout)
+{
+	TestOutputter t;
+	t.setLayout(LayoutPtr(new StandardLayout));
+	ASSERT_TRUE(t.isValid());
+}

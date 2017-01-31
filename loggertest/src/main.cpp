@@ -107,8 +107,9 @@ int basicTest()
 {
     // setup logger
     auto root = Logger::rootLogger();
-    root->setLayout(LayoutPtr(new StandardLayout));
-    root->addOutputter(OutputterPtr(new ConsoleOutputter));
+	auto op = new ConsoleOutputter;
+	op->setLayout(LayoutPtr(new StandardLayout));
+    root->addOutputter(OutputterPtr(op));
 
 	// setup a named logger
 	BasicConfig::configure("one", Level::all());
@@ -125,7 +126,7 @@ int basicTest()
     funcTracePart3();
 
 	// do some logging on named logger one
-	LoggerStream() << "Named logger one has " << (Logger::logger("one")->layout() ? "a valid" : "an invalid") << " layout and "
+	LoggerStream() << "Named logger one has " << (Logger::logger("one")->isValid() ? "a valid" : "an invalid") << " layout and "
 	   << Logger::logger("one")->outputters().size() << " outputters and it's level is " << Logger::logger("one")->level().name()
 	   << SHARKLOG_END;
 
@@ -198,11 +199,12 @@ int threadTest(const std::string &filename)
     threadResults_.clear();
     
     auto root = Logger::rootLogger();
-    root->setLayout(LayoutPtr(new StandardLayout));
 
 	if (filename.empty())
 	{
-		root->addOutputter(OutputterPtr(new ConsoleOutputter));
+		auto op = new ConsoleOutputter;
+		op->setLayout(LayoutPtr(new StandardLayout));
+		root->addOutputter(OutputterPtr(op));
 	}
 	else
 	{
@@ -212,6 +214,7 @@ int threadTest(const std::string &filename)
 			cout << "Failed to open file " << filename << endl;
 			return 1;
 		}
+		fop->setLayout(LayoutPtr(new StandardLayout));
 		root->addOutputter(fop);
 	}
     

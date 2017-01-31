@@ -48,11 +48,11 @@ bool sharklog::BasicFileConfig::configure(LoggerPtr logger, const std::string &p
 	auto fop = new FileOutputter(path);
 	if (!fop->open()) 
 		return false;
+	fop->setLayout(LayoutPtr(new StandardLayout));
 
 	logger->setLevel(lev);
 	logger->addOutputter(OutputterPtr(fop));
 	fop = nullptr;
-	logger->setLayout(LayoutPtr(new StandardLayout));
 
 	return true;
 }

@@ -147,7 +147,7 @@ public:
      * @param logMessage The message to log
      * @sa open()
      */
-    virtual void writeLog(const std::string &logMessage) override;
+    virtual void writeLog(const Level &lev, const std::string &loggerName, const std::string &logMessage, const Location &loc) override;
     
     /*!
      * @brief Close the log file
