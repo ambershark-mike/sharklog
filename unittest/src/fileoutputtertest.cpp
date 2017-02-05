@@ -22,10 +22,9 @@
 //
 ////////////////////////////////////////////////////////////////////////////////
 
+#include <regex>
 #include "fileoutputtertest.h"
 #include "fileoutputter.h"
-#include "level.h"
-#include "location.h"
 #include "logger.h"
 
 using namespace sharklog;
@@ -44,7 +43,9 @@ unsigned int FileOutputterTest::getFileSize(const std::string &filename)
 void FileOutputterTest::writeTest()
 {
 	FileOutputter fo(filename_);
+    fo.setLayout(make_shared<FOTestLayout>());
 	EXPECT_TRUE(fo.open());
+    EXPECT_TRUE(fo.isValid());
 	fo.writeLog(Level::trace(), "", "test", Location());
 	fo.close();
 }
@@ -100,9 +101,11 @@ TEST_F(FileOutputterTest, AppendModeWorks)
 	EXPECT_GT(startSize, 0);
 
 	FileOutputter fo(filename_);
+    fo.setLayout(make_shared<FOTestLayout>());
 	fo.setAppend(true);
 	EXPECT_TRUE(fo.open());
-	fo.writeLog(Level::trace(), Logger::rootLogger()->name(), "x", Location());
+    EXPECT_TRUE(fo.isValid());
+	fo.writeLog(Level::trace(), "", "x", Location());
 	fo.close();
 
 	ASSERT_EQ(getFileSize(filename_), startSize+1);
@@ -132,6 +135,7 @@ TEST_F(FileOutputterTest, SetFileNameClosesFile)
 TEST_F(FileOutputterTest, WriteLogWorks)
 {
 	FileOutputter fo(filename_);
+    fo.setLayout(make_shared<FOTestLayout>());
 	EXPECT_TRUE(fo.open());
 	fo.writeLog(Level::trace(), "", "test\n", Location());
 	fo.close();
@@ -140,6 +144,11 @@ TEST_F(FileOutputterTest, WriteLogWorks)
 	ifstream file(filename_);
 	EXPECT_TRUE(file.is_open());
 	getline(file, line);
+    EXPECT_FALSE(line.empty());
+    
+    //auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[TRACE\\] test\n");
+    //ASSERT_TRUE(regex_match(line.c_str(), re)) << line.c_str();
+    
 	ASSERT_STREQ("test", line.c_str());
 	file.close();
 }

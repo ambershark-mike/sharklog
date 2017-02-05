@@ -58,12 +58,16 @@ bool FileOutputter::open()
 
 void FileOutputter::writeLog(const Level &lev, const std::string &loggerName, const std::string &logMessage, const Location &loc)
 {
-	if (!isOpen())
+	if (!isOpen() || !isValid())
 		return;
 
     lock_guard<recursive_mutex> lock(mutex_);
 
-	file_ << logMessage;
+    string log;
+    layout()->appendHeader(log);
+    layout()->formatMessage(log, lev, loggerName, logMessage);
+    layout()->appendFooter(log);
+	file_ << log;
 }
 
 void FileOutputter::close()

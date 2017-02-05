@@ -28,6 +28,18 @@
 #include <gtest/gtest.h>
 #include <string>
 #include <cstdio>
+#include <sharklog/layout.h>
+#include <sharklog/level.h>
+#include <sharklog/location.h>
+
+class FOTestLayout : public sharklog::Layout
+{
+public:
+    void formatMessage(std::string &result, const sharklog::Level &level, const std::string &loggerName, const std::string &logMessage) final
+    {
+        result += logMessage;
+    }
+};
 
 class FileOutputterTest : public ::testing::Test
 {
