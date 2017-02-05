@@ -52,13 +52,21 @@ bool ConsoleOutputter::isOpen() const
 
 void ConsoleOutputter::writeLog(const Level &lev, const std::string &loggerName, const std::string &message, const Location &loc)
 {
+    if (!isValid())
+        return;
+    
     lock_guard<mutex> lock(mutex_);
     
+    string log;
+    layout()->appendHeader(log);
+    layout()->formatMessage(log, lev, loggerName, message);
+    layout()->appendFooter(log);
+    
     if (useStdErr_)
-        cerr << message;
+        cerr << log;
     
     if (useStdOut_)
-        cout << message;
+        cout << log;
     
     cerr.flush();
     cout.flush();
