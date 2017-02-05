@@ -95,8 +95,9 @@ using LoggerPtr = std::shared_ptr<Logger>;
  *    // or you can set it up manually like so ...
  *    {
  *       auto root = Logger::rootLogger();
- *       root->setLayout(LayoutPtr(new StandardLayout()));
- *       root->addOutputter(OutputterPtr(new ConsoleOutputter()));
+ *       auto op = std::make_shared<ConsoleOutputter>();
+ *       op->setLayout(std::make_shared<StandardLayout>());
+ *       root->addOutputter(op);
  *    }
  *
  *    // log a message to root

@@ -41,7 +41,7 @@ class Layout;
  *
  * A C++ shared_ptr pointer to a \ref Layout.
  *
- * To allocate this you would do:
+ * To allocate this you would do (the second method is faster and more efficient):
  * @code
  * LayoutPtr p(new StandardLayout);
  * // or

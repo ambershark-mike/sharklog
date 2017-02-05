@@ -43,16 +43,15 @@ namespace sharklog
  * \code
  * // setup logger
  * auto log = Logger::rootLogger();
- * log->setLayout(LayoutPtr(new StandardLayout()));
  *
  * // setup our file
- * auto fop = new FileOutputter("/tmp/test.log");
+ * auto fop = std::make_shared<FileOutputter>("/tmp/test.log");
  * if (!fop->open())
  *    return 1; // fail
  *
  * // add outputter to the logger
+ * fop->setLayout(std::make_shared<StandardLayout>());
  * log->addOutputter(OutputterPtr(fop));
- * fop = nullptr; // clear this pointer since we handed it off to a smart one
  *
  * // log a message
  * SHARKLOG_TRACE(log, "hello log file");
