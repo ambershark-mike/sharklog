@@ -26,7 +26,6 @@
 #include "logger.h"
 #include "standardlayout.h"
 #include "consoleoutputter.h"
-#include <iostream>
 #include <regex>
 
 using namespace sharklog;
@@ -52,8 +51,9 @@ void LoggerTest::TearDown()
 StringOutputter *LoggerTest::setupMacroTest()
 {
     auto logger = Logger::rootLogger();
-    logger->addOutputter(OutputterPtr(new StringOutputter));
-    logger->setLayout(LayoutPtr(new StandardLayout));
+    auto op = make_shared<StringOutputter>();
+    op->setLayout(make_shared<StandardLayout>());
+    logger->addOutputter(op);
     return dynamic_cast<StringOutputter *>(logger->outputters().front().get());
 }
 
@@ -269,19 +269,6 @@ TEST_F(LoggerTest, SetLevelWorks)
     ASSERT_TRUE(Level::info() == logger->level()) << logger->level().name();
 }
 
-TEST_F(LoggerTest, SetLayoutWorks)
-{
-    auto logger = Logger::rootLogger();
-    LayoutPtr lo(new StandardLayout);
-    logger->setLayout(lo);
-    ASSERT_TRUE(logger->layout() == lo);
-}
-
-TEST_F(LoggerTest, RootLoggerHasNoLayoutByDefault)
-{
-    ASSERT_FALSE((Logger::rootLogger()->layout()));
-}
-
 TEST_F(LoggerTest, BaseLoggerNotValid)
 {
     ASSERT_FALSE(Logger::rootLogger()->isValid());
@@ -289,7 +276,9 @@ TEST_F(LoggerTest, BaseLoggerNotValid)
 
 TEST_F(LoggerTest, RootLoggerIsValidWhenSetUp)
 {
-    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
+    auto op = make_shared<ConsoleOutputter>();
+    op->setLayout(make_shared<StandardLayout>());
+    Logger::rootLogger()->addOutputter(op);
     ASSERT_TRUE(Logger::rootLogger()->isValid());
 }
 
@@ -357,7 +346,6 @@ TEST_F(LoggerTest, LoggingWithNoLayoutFails)
 
 TEST_F(LoggerTest, LoggingWithNoOutputtersFails)
 {
-    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
     ASSERT_FALSE(Logger::rootLogger()->log(Level::fatal(), "test"));
 }
 
@@ -365,9 +353,10 @@ TEST_F(LoggerTest, LoggingWorks)
 {
     auto logger = Logger::rootLogger();
     EXPECT_TRUE(logger->outputters().empty());
-    EXPECT_FALSE(logger->layout());
-    logger->setLayout(LayoutPtr(new StandardLayout));
-    logger->addOutputter(OutputterPtr(new StringOutputter));
+    
+    auto op = make_shared<StringOutputter>();
+    op->setLayout(make_shared<StandardLayout>());
+    logger->addOutputter(op);
     EXPECT_TRUE(logger->log(Level::fatal(), "this is a test"));
     
     auto sop = dynamic_cast<StringOutputter *>(logger->outputters().front().get());

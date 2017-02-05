@@ -26,11 +26,26 @@
 #define __loggerstreamtest_H
 
 #include <gtest/gtest.h>
+#include "logger.h"
+#include "loggertest.h"
+#include "standardlayout.h"
 
 class LoggerStreamTest : public ::testing::Test
 {
 protected:
     LoggerStreamTest() { }
+    
+    void SetUp()
+    {
+        auto op = std::make_shared<StringOutputter>();
+        op->setLayout(std::make_shared<sharklog::StandardLayout>());
+        sharklog::Logger::rootLogger()->addOutputter(op);
+    }
+    
+    void TearDown()
+    {
+        sharklog::Logger::closeRootLogger();
+    }
 };
 
 #endif // loggerstreamtest_H

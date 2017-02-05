@@ -49,7 +49,7 @@ protected:
 		remove(filename_.c_str());
 	}
 
-	int getFileSize(const std::string &filename);
+	unsigned int getFileSize(const std::string &filename);
 	void writeTest();
 
 	const std::string filename_ = "test-file-41983.tmp";

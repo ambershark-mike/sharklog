@@ -24,6 +24,7 @@
 
 #include <gtest/gtest.h>
 #include "outputter.h"
+#include "standardlayout.h"
 
 using namespace sharklog;
 
@@ -32,7 +33,7 @@ class TestOutputter : public Outputter
 public:
     bool open() final { return false; }
     void close() final { }
-    void writeLog(const std::string &) final { }
+    void writeLog(const Level &lev, const std::string &loggerName, const std::string &logMessage, const Location &loc) final { }
 };
 
 TEST(OutputterTest, OutputterIsClosed)
@@ -52,7 +53,7 @@ TEST(OutputterTest, LayoutReturnsLayout)
 	TestOutputter t;
 	auto lo = new StandardLayout();
 	t.setLayout(LayoutPtr(lo));
-	ASSERT_TRUE(t.layout() == lo);
+	ASSERT_TRUE(t.layout().get() == lo);
 }
 
 TEST(OutputterTest, IsValidFailsWithNoLayout)

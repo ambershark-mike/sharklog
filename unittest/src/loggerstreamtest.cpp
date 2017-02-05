@@ -24,10 +24,6 @@
 
 #include "loggerstreamtest.h"
 #include "loggerstream.h"
-#include "location.h"
-#include <string>
-#include <standardlayout.h>
-#include "loggertest.h"
 #include <regex>
 
 using namespace sharklog;
@@ -87,7 +83,6 @@ TEST_F(LoggerStreamTest, LocationStreamingWorks)
 
 TEST_F(LoggerStreamTest, StreamedEndFlushesAndClears)
 {
-    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
     LoggerStream ls;
     ls << "hello world" << LoggerStream::end;
     ASSERT_TRUE(ls.data().empty());
@@ -95,8 +90,6 @@ TEST_F(LoggerStreamTest, StreamedEndFlushesAndClears)
 
 TEST_F(LoggerStreamTest, StreamedEndLogs)
 {
-    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
-    Logger::rootLogger()->addOutputter(OutputterPtr(new StringOutputter));
     LoggerStream ls;
     ls << "hello world" << LoggerStream::end;
     auto sop = dynamic_cast<StringOutputter *>(Logger::rootLogger()->outputters().front().get());
@@ -106,8 +99,6 @@ TEST_F(LoggerStreamTest, StreamedEndLogs)
 
 TEST_F(LoggerStreamTest, StreamingAfterEndWorks)
 {
-    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
-    Logger::rootLogger()->addOutputter(OutputterPtr(new StringOutputter));
     LoggerStream ls;
     ls << "hello world" << LoggerStream::end;
     auto sop = dynamic_cast<StringOutputter *>(Logger::rootLogger()->outputters().front().get());
@@ -121,8 +112,6 @@ TEST_F(LoggerStreamTest, StreamingAfterEndWorks)
 
 TEST_F(LoggerStreamTest, TestEndMacro)
 {
-    Logger::rootLogger()->setLayout(LayoutPtr(new StandardLayout));
-    Logger::rootLogger()->addOutputter(OutputterPtr(new StringOutputter));
     LoggerStream ls;
     ls << "test" << SHARKLOG_END;
     auto sop = dynamic_cast<StringOutputter *>(Logger::rootLogger()->outputters().front().get());

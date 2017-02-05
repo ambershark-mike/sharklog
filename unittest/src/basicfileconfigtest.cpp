@@ -24,7 +24,6 @@
 
 #include "basicfileconfigtest.h"
 #include "basicfileconfig.h"
-#include "level.h"
 
 using namespace sharklog;
 
@@ -32,7 +31,7 @@ TEST_F(BasicFileConfigTest, NormalConfigureWorks)
 {
 	BasicFileConfig::configure(testFile_);
 	ASSERT_TRUE(Logger::rootLogger()->outputters().size() == 1);
-	ASSERT_TRUE(Logger::rootLogger()->layout() != NULL);
+	ASSERT_TRUE(Logger::rootLogger()->isValid());
 	ASSERT_TRUE(testFileExists());
 }
 
@@ -40,7 +39,7 @@ TEST_F(BasicFileConfigTest, NormalConfigureWorksWithLevel)
 {
 	BasicFileConfig::configure(testFile_, Level::error());
 	ASSERT_TRUE(Logger::rootLogger()->outputters().size() == 1);
-	ASSERT_TRUE(Logger::rootLogger()->layout() != NULL);
+	ASSERT_TRUE(Logger::rootLogger()->isValid());
 	ASSERT_TRUE(testFileExists());
 	ASSERT_TRUE(Logger::rootLogger()->level() == Level::error());
 }
@@ -55,7 +54,7 @@ TEST_F(BasicFileConfigTest, NamedConfigureWorks)
 	const char *name = "test";
 	BasicFileConfig::configure(testFile_, name);
 	ASSERT_TRUE(Logger::logger(name)->outputters().size() == 1);
-	ASSERT_TRUE(Logger::logger(name)->layout() != NULL);
+	ASSERT_TRUE(Logger::logger(name)->isValid());
 	ASSERT_TRUE(testFileExists());
 }
 
@@ -64,7 +63,7 @@ TEST_F(BasicFileConfigTest, NamedConfigureWorksWithLevel)
 	const char *name = "test";
 	BasicFileConfig::configure(testFile_, name, Level::error());
 	ASSERT_TRUE(Logger::logger(name)->outputters().size() == 1);
-	ASSERT_TRUE(Logger::logger(name)->layout() != NULL);
+	ASSERT_TRUE(Logger::logger(name)->isValid());
 	ASSERT_TRUE(testFileExists());
 	ASSERT_TRUE(Logger::logger(name)->level() == Level::error());
 }

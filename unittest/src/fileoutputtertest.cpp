@@ -25,12 +25,13 @@
 #include "fileoutputtertest.h"
 #include "fileoutputter.h"
 #include "level.h"
-#include <fstream>
+#include "location.h"
+#include "logger.h"
 
 using namespace sharklog;
 using namespace std;
 
-int FileOutputterTest::getFileSize(const std::string &filename)
+unsigned int FileOutputterTest::getFileSize(const std::string &filename)
 {
 	ifstream f(filename, ios::binary);
 	f.seekg(0, ios::end);
@@ -44,7 +45,7 @@ void FileOutputterTest::writeTest()
 {
 	FileOutputter fo(filename_);
 	EXPECT_TRUE(fo.open());
-	fo.writeLog("test");
+	fo.writeLog(Level::trace(), "", "test", Location());
 	fo.close();
 }
 
@@ -101,7 +102,7 @@ TEST_F(FileOutputterTest, AppendModeWorks)
 	FileOutputter fo(filename_);
 	fo.setAppend(true);
 	EXPECT_TRUE(fo.open());
-	fo.writeLog(Level::trace(), Logger::rootLogger->name(), "x");
+	fo.writeLog(Level::trace(), Logger::rootLogger()->name(), "x", Location());
 	fo.close();
 
 	ASSERT_EQ(getFileSize(filename_), startSize+1);
@@ -132,7 +133,7 @@ TEST_F(FileOutputterTest, WriteLogWorks)
 {
 	FileOutputter fo(filename_);
 	EXPECT_TRUE(fo.open());
-	fo.writeLog("test\n");
+	fo.writeLog(Level::trace(), "", "test\n", Location());
 	fo.close();
 
 	string line;
