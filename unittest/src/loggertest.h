@@ -41,7 +41,11 @@ public:
     
     void writeLog(const sharklog::Level &lev, const std::string &logName, const std::string &logMessage, const sharklog::Location &loc) final
     {
-        output_ = logMessage;
+        std::string res;
+        layout()->appendHeader(res);
+        layout()->formatMessage(res, lev, logName, logMessage);
+        layout()->appendFooter(res);
+        output_ = res;
     }
     
     void close() final { }
