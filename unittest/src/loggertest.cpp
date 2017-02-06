@@ -60,7 +60,7 @@ StringOutputter *LoggerTest::setupMacroTest()
 bool LoggerTest::testMacro(const std::string &type, const std::string &test)
 {
     stringstream ss;
-    ss << "^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[" << type << "\\] test\n";
+    ss << "^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]*\\]\\[" << type << "\\] test\n";
     auto re = regex(ss.str());
     return regex_match(test.c_str(), re);
 }
@@ -360,7 +360,7 @@ TEST_F(LoggerTest, LoggingWorks)
     EXPECT_TRUE(logger->log(Level::fatal(), "this is a test"));
     
     auto sop = dynamic_cast<StringOutputter *>(logger->outputters().front().get());
-    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]{12}\\]\\[FATAL\\] this is a test\n");
+    auto re = regex("^\\[[0-9]{2}\\/[0-9]{2}\\/[0-9]{4}\\]\\[[0-9]{2}:[0-9]{2}:[0-9]{2}.[0-9]{3}\\]\\[0x[a-z0-9]*\\]\\[FATAL\\] this is a test\n");
     ASSERT_TRUE(regex_match(sop->output_.c_str(), re)) << sop->output_.c_str();
 }
 
