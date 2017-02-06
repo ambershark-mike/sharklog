@@ -51,9 +51,9 @@ TEST(OutputterTest, DefaultLayoutIsEmpty)
 TEST(OutputterTest, LayoutReturnsLayout)
 {
 	TestOutputter t;
-	auto lo = new StandardLayout();
-	t.setLayout(LayoutPtr(lo));
-	ASSERT_TRUE(t.layout().get() == lo);
+    auto lo = std::make_shared<StandardLayout>();
+	t.setLayout(lo);
+	ASSERT_TRUE(t.layout().get() == lo.get());
 }
 
 TEST(OutputterTest, IsValidFailsWithNoLayout)
@@ -65,6 +65,6 @@ TEST(OutputterTest, IsValidFailsWithNoLayout)
 TEST(OutputterTest, IsValidWorksWithLayout)
 {
 	TestOutputter t;
-	t.setLayout(LayoutPtr(new StandardLayout));
+	t.setLayout(std::make_shared<StandardLayout>());
 	ASSERT_TRUE(t.isValid());
 }

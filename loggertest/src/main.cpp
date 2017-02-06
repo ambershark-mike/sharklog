@@ -107,9 +107,9 @@ int basicTest()
 {
     // setup logger
     auto root = Logger::rootLogger();
-	auto op = new ConsoleOutputter;
-	op->setLayout(LayoutPtr(new StandardLayout));
-    root->addOutputter(OutputterPtr(op));
+	auto op = std::make_shared<ConsoleOutputter>();
+	op->setLayout(std::make_shared<StandardLayout>());
+    root->addOutputter(op);
 
 	// setup a named logger
 	BasicConfig::configure("one", Level::all());
@@ -202,19 +202,19 @@ int threadTest(const std::string &filename)
 
 	if (filename.empty())
 	{
-		auto op = new ConsoleOutputter;
-		op->setLayout(LayoutPtr(new StandardLayout));
-		root->addOutputter(OutputterPtr(op));
+		auto op = std::make_shared<ConsoleOutputter>();
+		op->setLayout(std::make_shared<StandardLayout>());
+		root->addOutputter(op);
 	}
 	else
 	{
-		OutputterPtr fop(new FileOutputter(filename));
+		auto fop = std::make_shared<FileOutputter>(filename);
 		if (!fop->open())
 		{
 			cout << "Failed to open file " << filename << endl;
 			return 1;
 		}
-		fop->setLayout(LayoutPtr(new StandardLayout));
+		fop->setLayout(std::make_shared<StandardLayout>());
 		root->addOutputter(fop);
 	}
     

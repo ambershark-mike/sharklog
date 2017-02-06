@@ -51,7 +51,7 @@ namespace sharklog
  *
  * // add outputter to the logger
  * fop->setLayout(std::make_shared<StandardLayout>());
- * log->addOutputter(OutputterPtr(fop));
+ * log->addOutputter(fop);
  *
  * // log a message
  * SHARKLOG_TRACE(log, "hello log file");

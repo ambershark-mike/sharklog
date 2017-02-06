@@ -23,7 +23,6 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include "basicfileconfig.h"
-#include "logger.h"
 #include "standardlayout.h"
 #include "fileoutputter.h"
 
@@ -45,14 +44,13 @@ bool sharklog::BasicFileConfig::configure(LoggerPtr logger, const std::string &p
 	if (path.empty() || !logger)
 		return false;
 
-	auto fop = new FileOutputter(path);
+	auto fop = std::make_shared<FileOutputter>(path);
 	if (!fop->open()) 
 		return false;
-	fop->setLayout(LayoutPtr(new StandardLayout));
+	fop->setLayout(std::make_shared<StandardLayout>());
 
 	logger->setLevel(lev);
-	logger->addOutputter(OutputterPtr(fop));
-	fop = nullptr;
+	logger->addOutputter(fop);
 
 	return true;
 }

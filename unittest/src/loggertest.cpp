@@ -287,7 +287,7 @@ TEST_F(LoggerTest, AddOutputterWorks)
 	auto logger = Logger::rootLogger();
 	EXPECT_TRUE(logger->outputters().empty());
 
-	auto op = OutputterPtr(new ConsoleOutputter);
+	auto op = std::make_shared<ConsoleOutputter>();
 	logger->addOutputter(op);
 	EXPECT_EQ(1, logger->outputters().size());
 	ASSERT_TRUE(logger->outputters().front() == op);
@@ -296,7 +296,7 @@ TEST_F(LoggerTest, AddOutputterWorks)
 TEST_F(LoggerTest, AddingSameOutputterFails)
 {
     auto logger = Logger::rootLogger();
-    auto op = OutputterPtr(new ConsoleOutputter);
+    auto op = std::make_shared<ConsoleOutputter>();
     logger->addOutputter(op);
     EXPECT_EQ(1, logger->outputters().size());
     logger->addOutputter(op);
@@ -306,7 +306,7 @@ TEST_F(LoggerTest, AddingSameOutputterFails)
 TEST_F(LoggerTest, RemoveOutputterWorks)
 {
     auto logger = Logger::rootLogger();
-    auto op = OutputterPtr(new ConsoleOutputter);
+    auto op = std::make_shared<ConsoleOutputter>();
     logger->addOutputter(op);
     EXPECT_TRUE(logger->outputters().size());
     logger->removeOutputter(op);
@@ -316,13 +316,13 @@ TEST_F(LoggerTest, RemoveOutputterWorks)
 TEST_F(LoggerTest, RemoveSameOutputterFails)
 {
     auto logger = Logger::rootLogger();
-    auto op = OutputterPtr(new ConsoleOutputter);
+    auto op = std::make_shared<ConsoleOutputter>();
     logger->addOutputter(op);
     EXPECT_TRUE(logger->outputters().size());
     logger->removeOutputter(op);
     EXPECT_TRUE(logger->outputters().empty());
     
-    logger->addOutputter(OutputterPtr(new ConsoleOutputter));
+    logger->addOutputter(std::make_shared<ConsoleOutputter>());
     logger->removeOutputter(op);
     ASSERT_EQ(1, logger->outputters().size());
 }
