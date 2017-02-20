@@ -25,6 +25,7 @@
 #ifndef basicfileconfig_H
 #define basicfileconfig_H
 
+#include <sharklog/sharklogdefs.h>
 #include <string>
 #include <sharklog/level.h>
 #include <sharklog/logger.h>
@@ -62,7 +63,7 @@ namespace sharklog
  * \endcode 
  *  
  */
-class BasicFileConfig
+class SHARKLOGAPI BasicFileConfig
 {
 public:
 	/*!
