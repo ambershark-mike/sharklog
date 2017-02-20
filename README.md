@@ -146,7 +146,9 @@ $ ./bin/unittest
 
 #### Visual C++
 
-Not supported yet.  Coming in the next release.
+~~~~~~~~~~~~~~~~~~~~~~~
+1. run MSBuild capable cmd, i.e. c:\program files (x86)\
+~~~~~~~~~~~~~~~~~~~~~~~
 
 #### MinGW
 

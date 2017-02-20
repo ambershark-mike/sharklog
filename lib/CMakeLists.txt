@@ -25,6 +25,7 @@ include_directories(
 	)
 
 set(SRCS
+    sharklog/sharklogdefs.h
 	sharklog/logger.cpp
     sharklog/logger.h
     sharklog/utilfunctions.cpp

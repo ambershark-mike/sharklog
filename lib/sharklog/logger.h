@@ -25,6 +25,7 @@
 #ifndef __Logger_H
 #define __Logger_H
 
+#include <sharklog/sharklogdefs.h>
 #include <sharklog/level.h>
 #include <sharklog/outputter.h>
 #include <sharklog/location.h>
