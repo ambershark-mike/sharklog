@@ -25,6 +25,7 @@
 #ifndef basicconfig_H
 #define basicconfig_H
 
+#include <sharklog/sharklogdefs.h>
 #include <string>
 
 namespace sharklog
@@ -60,7 +61,7 @@ class Level;
  * \endcode 
  *  
  */
-class BasicConfig
+class SHARKLOGAPI BasicConfig
 {
 public:
 	/*!

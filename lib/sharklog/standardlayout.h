@@ -25,6 +25,7 @@
 #ifndef __standardlayout_H
 #define __standardlayout_H
 
+#include <sharklog/sharklogdefs.h>
 #include <sharklog/layout.h>
 #include <string>
 
@@ -47,7 +48,7 @@ namespace sharklog
  * When using a \ref BasicConfig or \ref BasicFileConfig this is the layout that 
  * is used. 
  */
-class StandardLayout : public Layout
+class SHARKLOGAPI StandardLayout : public Layout
 {
 public:
 	//! Destructor

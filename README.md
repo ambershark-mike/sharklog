@@ -146,7 +146,27 @@ $ ./bin/unittest
 
 #### Visual C++
 
-Not supported yet.  Coming in the next release.
+**Using Vagrant**: There is a Vagrantfile in the root of the project that will set up a build environment for you.  It uses a custom box, but you can use any Windows 10 Pro base box that you'd like.
+
+Requirements:
+* CMake 3.2+ (choco install -y cmake)
+* Visual Studio or vc build tools (choco install -y vcbuildtools)
+
+Run MSBuild capable cmd, i.e. c:\program files (x86)\Microsoft Visual C++ Build Tools\Visual C++ 2015 MSBuild Command Prompt.
+
+Note: To get this I installed the build tools only (no visual studio) with chocolatey command "choco install vcbuildtools" see sharklog/provision/packages.bat.
+
+**Linking Type /MT or /MD**: The default for the library is /MD and /MDd for debug.  If you want to use /MT or /MTd you need to pass `-DVS_LINK_MT=1` to cmake.  This may be required for Google Test depending on which type of libraries you built for GTest.
+
+**Google Test**: To point cmake at your google test install you need to specify the root path to cmake like so `-DGTEST_ROOT="C:\path\to\googletest"`.  Make sure that inside that path is the *include* and *lib* directories.
+
+~~~~~~~~~~~~~~~~~~~~~~~
+> mkdir sharklog-build
+> cd sharklog-build
+> cmake -G "Visual Studio 14 2015" x:\path\to\sharklog
+    I.e. for vagrant: > cmake -G "Visual Studio 14 2015" c:\vagrant
+> msbuild Project.sln /t:Build /p:Configuration=Release
+~~~~~~~~~~~~~~~~~~~~~~~
 
 #### MinGW
 

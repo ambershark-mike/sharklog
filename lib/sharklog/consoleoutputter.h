@@ -25,6 +25,7 @@
 #ifndef __consoleoutputter_H
 #define __consoleoutputter_H
 
+#include <sharklog/sharklogdefs.h>
 #include <sharklog/outputter.h>
 #include <mutex>
 
@@ -43,7 +44,7 @@ namespace sharklog
  * for end users to see any warnings/error issues that might pop 
  * up. 
  */
-class ConsoleOutputter : public Outputter
+class SHARKLOGAPI ConsoleOutputter : public Outputter
 {
 public:
 	//! Constructor

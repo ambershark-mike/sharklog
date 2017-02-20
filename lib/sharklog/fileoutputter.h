@@ -25,6 +25,7 @@
 #ifndef __fileoutputter_H
 #define __fileoutputter_H
 
+#include <sharklog/sharklogdefs.h>
 #include <sharklog/outputter.h>
 #include <string>
 #include <fstream>
@@ -57,7 +58,7 @@ namespace sharklog
  * SHARKLOG_TRACE(log, "hello log file");
  * \endcode
  */
-class FileOutputter : public Outputter
+class SHARKLOGAPI FileOutputter : public Outputter
 {
 public:
     /*!

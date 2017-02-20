@@ -5,6 +5,7 @@ include_directories(
 	src
 	../lib/sharklog
     ../lib
+	${GTEST_INCLUDE_DIRS}
 	)
 
 set(SRCS
@@ -33,7 +34,7 @@ set(SRCS
 	)
 
 add_executable(${PROJECT_NAME} ${SRCS})
-target_link_libraries(${PROJECT_NAME} sharklog /usr/lib/libgtest.so)
+target_link_libraries(${PROJECT_NAME} sharklog ${GTEST_LIBRARIES})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION bin)
 

@@ -25,6 +25,7 @@
 #ifndef __level_H
 #define __level_H
 
+#include <sharklog/sharklogdefs.h>
 #include <string>
 
 namespace sharklog
@@ -92,7 +93,7 @@ namespace sharklog
  * also use the 'has' functions, i.e. hasError(). 
  *  
  */
-class Level
+class SHARKLOGAPI Level
 {
 public:
 	/*!

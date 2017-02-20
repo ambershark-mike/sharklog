@@ -18,6 +18,11 @@ endif()
 
 message(STATUS "Setting output library type to ${LIBTYPE}")
 
+if (MSVC)
+	message(STATUS "Setting export mode for visual studio via SHARKLOG_EXPORTS")
+	add_definitions("-DSHARKLOG_EXPORTS")
+endif()
+
 # source files
 include_directories(
 	sharklog
@@ -25,6 +30,7 @@ include_directories(
 	)
 
 set(SRCS
+    sharklog/sharklogdefs.h
 	sharklog/logger.cpp
     sharklog/logger.h
     sharklog/utilfunctions.cpp
