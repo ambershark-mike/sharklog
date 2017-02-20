@@ -25,6 +25,7 @@
 #ifndef __loggerstream_H
 #define __loggerstream_H
 
+#include <sharklog/sharklogdefs.h>
 #include <sharklog/level.h>
 #include <sharklog/logger.h>
 #include <sharklog/location.h>
@@ -69,7 +70,7 @@ using LoggerFuncPtr = LoggerStream &(*)(LoggerStream&);
  *
  * \note A stream will never flush out to the logger if you don't call \ref end() or \ref SHARKLOG_END.
  */
-class LoggerStream
+class SHARKLOGAPI LoggerStream
 {
 public:
     /*!

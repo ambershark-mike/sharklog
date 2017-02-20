@@ -25,6 +25,7 @@
 #ifndef PROJECT_UTILFUNCTIONS_H
 #define PROJECT_UTILFUNCTIONS_H
 
+#include <sharklog/sharklogdefs.h>
 #include <vector>
 #include <string>
 
@@ -40,7 +41,7 @@ namespace sharklog
  * your use if you need them.
  *
  */
-class UtilFunctions
+class SHARKLOGAPI UtilFunctions
 {
 public:
     /*!

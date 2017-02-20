@@ -146,8 +146,22 @@ $ ./bin/unittest
 
 #### Visual C++
 
+**Using Vagrant**: There is a Vagrantfile in the root of the project that will set up a build environment for you.  It uses a custom box, but you can use any Windows 10 Pro base box that you'd like.
+
+Requirements:
+* CMake 3.2+ (choco install -y cmake)
+* Visual Studio or vc build tools (choco install -y vcbuildtools)
+
+Run MSBuild capable cmd, i.e. c:\program files (x86)\Microsoft Visual C++ Build Tools\Visual C++ 2015 MSBuild Command Prompt.
+
+Note: To get this I installed the build tools only (no visual studio) with chocolatey command "choco install vcbuildtools" see sharklog/provision/packages.bat.
+    
 ~~~~~~~~~~~~~~~~~~~~~~~
-1. run MSBuild capable cmd, i.e. c:\program files (x86)\
+> mkdir sharklog-build
+> cd sharklog-build
+> cmake -G "Visual Studio 14 2015" x:\path\to\sharklog
+    I.e. for vagrant: > cmake -G "Visual Studio 14 2015" c:\vagrant
+> msbuild Project.sln /t:Build /p:Configuration=Release
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 #### MinGW

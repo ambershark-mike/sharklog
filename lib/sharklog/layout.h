@@ -25,6 +25,7 @@
 #ifndef __layout_H
 #define __layout_H
 
+#include <sharklog/sharklogdefs.h>
 #include <string>
 #include <memory>
 
@@ -64,7 +65,7 @@ using LayoutPtr = std::shared_ptr<Layout>;
  * See \ref StandardLayout for an example of a complete layout class. 
  *  
  */
-class Layout
+class SHARKLOGAPI Layout
 {
 public:
 	//! Destructor

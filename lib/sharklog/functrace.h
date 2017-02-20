@@ -25,6 +25,7 @@
 #ifndef __functrace_H
 #define __functrace_H
 
+#include <sharklog/sharklogdefs.h>
 #include <sharklog/logger.h>
 #include <sharklog/location.h>
 
@@ -98,7 +99,7 @@ class Location;
  * }
  * \endcode
  */
-class FuncTrace
+class SHARKLOGAPI FuncTrace
 {
 public:
     /*!

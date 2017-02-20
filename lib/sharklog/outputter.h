@@ -25,6 +25,7 @@
 #ifndef __outputter_H
 #define __outputter_H
 
+#include <sharklog/sharklogdefs.h>
 #include <string>
 #include <memory>
 #include <sharklog/layout.h>
@@ -59,7 +60,7 @@ using OutputterPtr = std::shared_ptr<Outputter>;
  * or \ref FileOutputter. 
  *  
  */
-class Outputter
+class SHARKLOGAPI Outputter
 {
 public:
 	//! Destructor

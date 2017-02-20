@@ -109,7 +109,7 @@ using LoggerPtr = std::shared_ptr<Logger>;
  * }
  * \endcode
  */
-class Logger
+class SHARKLOGAPI Logger
 {
     // custom case insensitive string compare
     struct caseInsensitiveCompare : public std::binary_function<std::string, std::string, bool>

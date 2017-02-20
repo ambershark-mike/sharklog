@@ -25,6 +25,7 @@
 #ifndef __location_H
 #define __location_H
 
+#include <sharklog/sharklogdefs.h>
 #include <string>
 
 namespace sharklog
@@ -48,7 +49,7 @@ namespace sharklog
  *  
  * You should not need to allocate or use this class in your logging. 
  */
-class Location
+class SHARKLOGAPI Location
 {
 public:
 	//! Default constructor
