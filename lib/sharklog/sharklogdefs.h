@@ -51,10 +51,17 @@
 
 #if defined(_MSC_VER) // Visual Studio in windows
 
-#if defined(SHARKLOG_EXPORTS)
-	#define SHARKLOGAPI __declspec(dllexport)
+// get rid of the warning about exporting interfaces for stl classes used
+#pragma warning(disable : 4251)
+
+#if defined(SHARKLOG_STATIC)
+	#define SHARKLOGAPI
 #else
-	#define SHARKLOGAPI __declspec(dllimport)
+	#if defined(SHARKLOG_EXPORTS)
+		#define SHARKLOGAPI __declspec(dllexport)
+	#else
+		#define SHARKLOGAPI __declspec(dllimport)
+	#endif
 #endif
 
 #endif // _MSC_VER

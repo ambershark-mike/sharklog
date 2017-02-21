@@ -10,17 +10,9 @@ set(sharklog_VERSION_STRING
 	)
 add_definitions("-DSHARKLOG_VERSION=\"${sharklog_VERSION_STRING}\"")
 
-# set lib type
-if (NOT LIBTYPE)
-	message("Libtype is SHARED, use -DLIBTYPE=STATIC to change to static")
-	set(LIBTYPE "SHARED")
-endif()
-
-message(STATUS "Setting output library type to ${LIBTYPE}")
-
-if (MSVC)
-	message(STATUS "Setting export mode for visual studio via SHARKLOG_EXPORTS")
-	add_definitions("-DSHARKLOG_EXPORTS")
+if (MSVC AND NOT (LIBTYPE STREQUAL "STATIC"))
+    message(STATUS "Setting export mode for visual studio via SHARKLOG_EXPORTS")
+    add_definitions("-DSHARKLOG_EXPORTS")
 endif()
 
 # source files

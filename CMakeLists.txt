@@ -13,6 +13,18 @@ if (NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "Release")
 endif()
 
+# set lib type
+if (NOT LIBTYPE)
+	message("Libtype is SHARED, use -DLIBTYPE=STATIC to change to static")
+	set(LIBTYPE "SHARED")
+endif()
+
+message(STATUS "Setting output library type to ${LIBTYPE}")
+
+if (LIBTYPE STREQUAL "STATIC")
+    add_definitions("-DSHARKLOG_STATIC")
+endif()
+
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
