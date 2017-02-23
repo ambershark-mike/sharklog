@@ -97,3 +97,27 @@ TEST_F(UtilFunctionsTest, StripLastReturnsStringWhenNoDelim)
     auto s = UtilFunctions::stripLastToken("testing 1 2 3", '.');
     ASSERT_STREQ("testing 1 2 3", s.c_str());
 }
+
+TEST_F(UtilFunctionsTest, CurrentTimeWorks)
+{
+	auto curTime = time(NULL);
+	tm curTimeTM;
+    localtime_r(&curTime, &curTimeTM);
+
+    UtilFunctions::Time testTime;
+
+	char curTimeStr[100], testTimeStr[100];
+    const char *format = "%Y-%m-%d %H:%M:%S";
+    strftime(curTimeStr, sizeof(curTimeStr), format, &curTimeTM);
+    strftime(testTimeStr, sizeof(testTimeStr), format, testTime.tmStruct());
+
+    ASSERT_STREQ(curTimeStr, testTimeStr);
+	ASSERT_TRUE(testTime.tmStruct()->tm_year >= (2017 - 1900)) << "Year is: " << testTime.tmStruct()->tm_year; // verify we don't get some 1970 default stamp on both times
+}
+
+TEST_F(UtilFunctionsTest, CurrentTimeMSReturnWorks)
+{
+	UtilFunctions::Time t;
+    ASSERT_TRUE(t.ms() >= 0);
+    ASSERT_TRUE(t.ms() < 1000);
+}

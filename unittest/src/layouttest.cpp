@@ -23,6 +23,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #include <gtest/gtest.h>
+#include <utilfunctions.h>
 #include "layout.h"
 
 using namespace sharklog;
@@ -70,10 +71,9 @@ TEST(LayoutTest, FormatTimeWithNullTimeGivesCurrentTime)
 
 	// NOTE: this could potentially fail if the second changes between the above func call and this one..
 	char curTimeStr[100];
-	auto curtime = time(NULL);
-	auto curTimeTM = localtime(&curtime);
+	UtilFunctions::Time curTime;
 
-	strftime(curTimeStr, sizeof(curTimeStr), format, curTimeTM);
+	strftime(curTimeStr, sizeof(curTimeStr), format, curTime.tmStruct());
 
 	ASSERT_STREQ(curTimeStr, res.c_str()) << "NOTE: this could fail by 1 second potentially expected was: " << res.c_str() << " and actual was: " << curTimeStr;
 }

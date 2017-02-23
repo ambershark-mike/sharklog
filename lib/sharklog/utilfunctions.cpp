@@ -24,9 +24,17 @@
 
 #include "utilfunctions.h"
 #include <sstream>
+#include <chrono>
+#include <time.h>
+#include <cstring>
+
+#if defined(_MSC_VER)
+#include <windows.h>
+#endif
 
 using namespace sharklog;
 using namespace std;
+using namespace std::chrono;
 
 std::vector<std::string> sharklog::UtilFunctions::split(const std::string &toSplit, char delim, bool discardEmptyTokens)
 {
@@ -50,4 +58,26 @@ std::string UtilFunctions::stripLastToken(const std::string &s, char delim)
         return s;
     
     return s.substr(0, pos);
+}
+
+UtilFunctions::Time::Time() :
+	ms_(0)
+{
+	getCurrentTime();
+}
+
+void UtilFunctions::Time::getCurrentTime()
+{
+#if defined(_MSC_VER)
+	auto tt = time(NULL);
+	localtime_r(&tt, &tms_);
+	SYSTEMTIME lt;
+	GetLocalTime(&lt);
+	ms_ = lt.wMilliseconds;
+#else
+	auto ms = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
+	time_t current = duration_cast<seconds>(ms).count();
+	localtime_r(&current, &tms_);
+	ms_ = ms.count() % 1000;
+#endif
 }

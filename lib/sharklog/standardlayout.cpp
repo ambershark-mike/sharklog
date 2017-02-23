@@ -24,6 +24,7 @@
 
 #include "standardlayout.h"
 #include "level.h"
+#include "utilfunctions.h"
 #include <sstream>
 #include <chrono>
 #include <thread>
@@ -69,11 +70,9 @@ void StandardLayout::appendFooter(std::string &result)
 void StandardLayout::setupDate(std::string &s)
 {
     stringstream ss;
-    
-    time_t current = system_clock::to_time_t(system_clock::now());
-    tm *tmt = localtime(&current);
-    
-    ss << "[" << formatTime("%m/%d/%Y", tmt) << "]";
+    UtilFunctions::Time t;
+
+    ss << "[" << formatTime("%m/%d/%Y", t.tmStruct()) << "]";
     
     s.append(ss.str());
 }
@@ -81,12 +80,10 @@ void StandardLayout::setupDate(std::string &s)
 void StandardLayout::setupTime(std::string &s)
 {
     stringstream ss;
-    auto ms = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
-    time_t current = duration_cast<seconds>(ms).count();
-    auto msec = ms.count() % 1000;
-    tm *tmt = localtime(&current);
-    
-    ss << "[" << formatTime("%H:%M:%S", tmt) << "." << setfill('0') << setw(3) << msec << "]";
+
+	UtilFunctions::Time t;
+
+    ss << "[" << formatTime("%H:%M:%S", t.tmStruct()) << "." << setfill('0') << setw(3) << t.ms() << "]";
     s.append(ss.str());
 }
 

@@ -25,11 +25,10 @@
 #include "layout.h"
 #include <time.h>
 #include "sharklogdefs.h"
-#include <chrono>
+#include "utilfunctions.h"
 
 using namespace sharklog;
 using namespace std;
-using namespace std::chrono;
 
 std::string Layout::contentType() const
 {
@@ -51,22 +50,18 @@ Layout::~Layout()
 std::string Layout::formatTime(const std::string &format, tm *timeToUse)
 {
 	// get a time to use either from being passed in, or if that was null, get current time
+	tm localCurTime;
 	tm *tmt = timeToUse;
 	if (!tmt)
 	{
-		auto ms = duration_cast<milliseconds>(high_resolution_clock::now().time_since_epoch());
-		time_t current = duration_cast<seconds>(ms).count();
-		tmt = new tm;
-		localtime_r(&current, tmt);
+		localCurTime = *UtilFunctions::Time().tmStruct();
+		tmt = &localCurTime;
 	}
 
 	// using this method instead of put_time due to put_time being in gcc 5+ only.
 	// figured this would be more compatible across compilers
 	char curTimeStr[100];
 	strftime(curTimeStr, sizeof(curTimeStr), format.c_str(), tmt);
-
-	if (tmt != timeToUse)
-		delete tmt;
 
 	return string(curTimeStr);
 }

@@ -31,7 +31,7 @@
 
 namespace sharklog
 {
-    
+
 /*!
  * @brief Utility Functions
  *
@@ -79,6 +79,57 @@ public:
      * @return A string without the final token
      */
     static std::string stripLastToken(const std::string &s, char delim);
+
+	/*!
+	 * \brief A current time class
+	 *
+	 * This class when constructed will contain the current local time.
+	 * It contains the underlying tm struct as well as platform independent
+	 * entry for current milliseconds.
+	 *
+	 */
+	class SHARKLOGAPI Time
+	{
+	public:
+		//! Constructor
+		Time();
+
+		/*!
+		 * \brief Loads current time
+		 *
+		 * Call this function to load/reload the current time.  It is called
+		 * for you by the constructor.
+		 *
+		 * You can call manually to refresh the current time though.
+		 *
+		 * \sa Time::Time()
+		 */
+		void getCurrentTime();
+
+		/*!
+		 * \brief Gets the tm struct
+		 *
+		 * Returns the underlying tm struct for this time.
+		 *
+		 * \return tm struct for this time
+		 */
+		tm *tmStruct() { return &tms_; }
+
+		/*!
+		 * \brief Returns milliseconds
+		 *
+		 * This returns the elapsed milliseconds for the current time.
+		 *
+		 * It uses platform independent functions to get the time.
+		 *
+		 * \return milliseconds elapsed in between the last second and this current one
+		 */
+		unsigned int ms() const { return ms_; }
+
+	private:
+		tm tms_;
+		unsigned int ms_;
+	};
 };
 
 } // sharklog
