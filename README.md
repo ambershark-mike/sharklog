@@ -40,6 +40,14 @@ The entire logger has been and will continue to be written with TDD using google
 
 ## <a name="relnotes"></a>Release Notes
 
+#### 0.4
+- Restructured object relationships.  NOTE: This breaks the ABI from previous versions.   I found that during design I had made a major mistake a related Layouts to a Logger and not to a specific Outputter.  I had to rectify this.  Unfortunately it breaks the ABI for previous versions.  Luckily it looks like nobody has used it before this version so it's fine anyway. ;)
+- Support for Visual C++ in Windows
+- Adds a Vagrantfile and provisioning for a build environment for windows
+- Changed smart pointer creation to use the faster make_shared
+- Fixed a problem with millisecond precision times in visual c++
+- Added support for building static with visual studio
+
 #### 0.3
 - Added a BasicConfig class that sets up a basic console logger automatically
 - Added a BasicFileConfig class that sets up sa basic file logger automatically
